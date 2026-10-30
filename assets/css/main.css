@@ -240,7 +240,9 @@ img { max-width: 100%; height: auto; }
   font-size: 14px;
   border-radius: 4px;
 }
-.entry-content table { border-collapse: collapse; width: 100%; margin: 0 0 1.2em; font-size: 15px; }
+/* Wide tables scroll inside the column instead of spilling into the sidebar. */
+.entry-content table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 0 0 1.2em; font-size: 15px; }
+.entry-content iframe, .entry-content video { max-width: 100%; }
 .entry-content td, .entry-content th { border: 1px solid var(--rule); padding: 6px 10px; }
 .entry-content figure { margin: 1.2em 0; }
 .entry-content figcaption { font-size: 14px; color: var(--muted); text-align: center; }
@@ -255,6 +257,39 @@ img { max-width: 100%; height: auto; }
 .has-text-align-right { text-align: right; }
 .wp-block-columns { display: flex; gap: 2em; flex-wrap: wrap; }
 .wp-block-column { flex: 1; min-width: 200px; }
+
+/* "Media & text" block (mostly author bios): image beside text. Inline style may set the column split. */
+.wp-block-media-text {
+  display: grid;
+  grid-template-columns: 50% 1fr;
+  align-items: center;
+  gap: 1.5em;
+  margin: 1.5em 0;
+}
+.wp-block-media-text__media { margin: 0; }
+.wp-block-media-text__media img { display: block; width: 100%; height: auto; }
+.wp-block-media-text__content > :last-child { margin-bottom: 0; }
+
+/* Galleries (block and classic list markup). */
+.wp-block-gallery, .blocks-gallery-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  list-style: none;
+  padding: 0;
+  margin: 1.2em 0;
+}
+.wp-block-gallery > .blocks-gallery-grid { margin: 0; width: 100%; }
+.blocks-gallery-item, .wp-block-gallery > figure.wp-block-image {
+  flex: 1 1 calc(50% - 1em);
+  margin: 0;
+  list-style: none;
+}
+.wp-block-gallery.columns-1 .blocks-gallery-item,
+.wp-block-gallery.columns-1 > figure.wp-block-image { flex-basis: 100%; }
+.blocks-gallery-item figure { margin: 0; }
+.blocks-gallery-item img, .wp-block-gallery figure img { display: block; width: 100%; height: auto; }
+.blocks-gallery-caption { width: 100%; font-size: 14px; color: var(--muted); text-align: center; }
 
 .author-box {
   clear: both;
@@ -305,12 +340,14 @@ img { max-width: 100%; height: auto; }
 
 .footer-widgets {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 5.5%;
   padding: 50px 0 20px;
 }
 .footer-widget h4 { color: #ffffff; font-size: 18px; margin-bottom: 12px; }
 .footer-widget p { font-size: 14px; margin: 0 0 20px; }
+.footer-logo { padding-bottom: 20px; }
+.footer-logo img { display: block; width: 100%; max-width: 300px; height: auto; }
 
 #footer-bottom { background: rgba(0, 0, 0, 0.32); padding: 15px 0 5px; }
 #footer-bottom p { margin: 0 0 10px; font-size: 14px; color: #666; }
@@ -369,4 +406,5 @@ img { max-width: 100%; height: auto; }
   .entry-title { font-size: 22px; }
   .single-post h1.entry-title { font-size: 26px; }
   .alignleft, .alignright { float: none; margin: 1em auto; display: block; }
+  .wp-block-media-text.is-stacked-on-mobile { grid-template-columns: 1fr !important; }
 }

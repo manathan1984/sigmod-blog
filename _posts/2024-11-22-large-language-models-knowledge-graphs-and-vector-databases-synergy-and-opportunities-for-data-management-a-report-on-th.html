@@ -1,0 +1,185 @@
+---
+layout: post
+title: "Large Language Models, Knowledge Graphs, and Vector Databases: Synergy and Opportunities for Data Management (A Report on the LLM+KG@VLDB24 Workshop’s Panel Discussion)"
+date: 2024-11-22 04:28:26
+last_modified_at: 2026-09-21 13:43:06
+author: "chen_hu_khan_shankar_wang_wang_wu"
+categories: ["knowledge graphs", "LLMs", "vector databases"]
+excerpt: "Introduction Large language models (LLMs) and vector databases (Vector DBs) are becoming two vital enablers of generative AI (GenAI), a form of artificial intelligence that learns from massive datasets to generate new data, showcasing human-like creativity in text, images to code, speech, and…"
+image: null
+wp_id: 3813
+permalink: "/2024/11/22/large-language-models-knowledge-graphs-and-vector-databases-synergy-and-opportunities-for-data-management-a-report-on-the-llmkgvldb24-workshops-panel-discussion/"
+---
+{% raw %}
+<h2 class="wp-block-heading">Introduction</h2>
+
+<p class="wp-block-paragraph">Large language models (LLMs) and vector databases (Vector DBs) are becoming two vital enablers of generative AI (GenAI), a form of artificial intelligence that learns from massive datasets to generate new data, showcasing human-like creativity in text, images to code, speech, and video. In particular, LLMs are currently revolutionizing the field of natural language processing with their remarkable capacity to understand and generate human-like texts [1]. On the other hand, the transformation of heterogeneous data forms – such as images, documents, and videos – into dense vectors with deep learning models sets the foundation for multimodal data querying and retrieval systems using semantic similarity. To manage these dense, high-dimensional, billion-scale vectors, Vector DBs have recently emerged as a hot topic [2]. Last but not least, knowledge graphs (KGs) can support a holistic integration solution for multi-modal data from heterogeneous sources. For instance, KGs use graph structures to describe relationships between things, where nodes and edges can have features of different types, e.g., tabular, key-value pairs, text, images, multimedia, etc. Therefore, KGs are increasingly being used to model cross-domain and diverse data. They are playing a central role in AI systems such as semantic search, intelligent QA, and recommendations [3].</p>
+
+<p class="wp-block-paragraph">The LLM+KG@VLDB24 panel’s goal was to bring together several leading experts in these three booming technologies (LLMs, Vector DBs, and KGs) to share their insights and experiences from various perspectives [4]. What are the synergies among LLMs, Vector DBs, and KGs? What are really new, what are the pain points, how to tackle them, and what future holds? The panel also aimed at discussing what interesting opportunities are waiting for the data management researchers in this domain, as the interdisciplinary fields like data-centric approaches to AI and ML and data science gain prominence. The panelists were Wei Hu (Nanjing University, China), Shreya Shankar (UC Berkeley, USA), Haofen Wang (Tongji University, China), and Jianguo Wang (Purdue University, USA). The panel was moderated by the LLM+KG@VLDB24 workshop co-chairs Arijit Khan (Aalborg University, Denmark), Tianxing Wu (Southeast University, China), and Xi Chen (Tencent, China). The panel was also well-attended, with a peak audience of over 150 persons.</p>
+
+<h2 class="wp-block-heading">Overview of Panel Discussion</h2>
+
+<p class="wp-block-paragraph">The moderators organized the discussion into five broad themes as follows.</p>
+
+<h3 class="wp-block-heading">Theme-1: Unifying LLMs + KGs + Vector Databases</h3>
+
+<p class="wp-block-paragraph"><strong>Context/Background and Questions: </strong>While recent years have witnessed the rapid developments of LLMs and Vector DBs, KGs have become mainstream and one of the most popular technologies in the AI community since Google introduced their knowledge graph in the past decade. Are LLMs and Vector DBs new kids on the block or noise from the hype cycle? What are the synergies among LLMs, vector databases, and graph data management including knowledge graphs? How can they benefit each other? What are the killer applications/ domains that require their unification?</p>
+
+<h4 class="wp-block-heading">Panel Discussion Summary</h4>
+
+<p class="wp-block-paragraph"><strong>Wei Hu. </strong>LLMs (a.k.a. foundation models) are currently on the center stage and are definitely a key to the artificial general intelligence (AGI). KGs and Vector DBs can support LLMs. For instance, KGs assist in knowledge enhancement to knowledge update of LLMs via parameter-efficient fine-tuning (PEFT) or retrieval-augmented generation (RAG) and resolve their hallucination problem. On the other hand, one of the most critical use cases of Vector DBs for LLMs is the RAG. Vector DBs such as Weaviate, Chroma, FAISS, Milvus, Qdrant, Vespa, or Pinecone act as external knowledge bases or external memory of LLMs. They enable low-latency similarity search using approximate nearest neighbor search (ANNS) algorithms over the vector space, providing the retrieved knowledge efficiently to the LLMs for high-quality generation.</p>
+
+<p class="wp-block-paragraph"><strong>Shreya Shankar.&nbsp; </strong>Many old DB ideas are relevant around LLMs’ self-consistency, thinking step-by-step, etc. [5]. Additionally, LLM pipelines are much faster than traditional ML lifecycles. This is because data preparation for traditional ML is challenging and expensive, whereas LLMs circumvent it entirely thanks to simpler prompt-based interactions without any requirement of model training, making it easy to build AI pipelines around LLMs. Therefore, LLMs expand the domain of downstream applications and what is feasible. For instance, LLMs can help automate knowledge graph creation in domain-specific settings. Journalists in the Berkeley Institute of Data Science have created knowledge graphs from civic data by supervising teams of annotators [6]<strong>.</strong> Can we replace part of the workflow with LLMs?</p>
+
+<p class="wp-block-paragraph"><strong>Haofen Wang. </strong>LLMs, Vector DBs, and KGs benefit each other by combining structured data for accuracy (knowledge graphs), efficient data retrieval (vector databases), and contextual understanding (LLMs), ensuring robust querying, reasoning, and interpretability.</p>
+
+<p class="wp-block-paragraph">The synergies have the potential to revolutionize data management and usage in various domains. The synergy is particularly transformative in domains like personalized healthcare and financial analytics. In healthcare, integrating patient data in knowledge graphs with LLMs can provide precise, personalized treatment recommendations [7]<strong>.</strong> In finance, it enables real-time risk assessments and portfolio optimization through a better understanding of complex relationships and data trends [8]<strong>.</strong></p>
+
+<p class="wp-block-paragraph">While some aspects may seem part of the hype cycle, the foundational ideas behind the integration of LLMs, vector databases, and knowledge graphs are well-grounded in addressing real-world data challenges. They are not merely &#8220;new kids on the block&#8221;, but rather evolving technologies that offer substantial benefits as they mature. As the underlying technology and methodologies improve, their combined application promises not only to address current inefficiencies, but also to unlock new, innovative capabilities in data management and AI.</p>
+
+<p class="wp-block-paragraph"><strong>Jianguo Wang. </strong>While vector-based RAGs are useful for LLMs, LLMs over graph-based applications need both vector- and graph-based RAGs, e.g., consider queries like “<em>What do others say about my papers?</em>” or “<em>Find competitors with similar products to mine and analyze their pricing strategies for different products</em>”. In particular, GraphRAG [9] is emerging as a viable alternative to conventional RAG to achieve more precise search results.</p>
+
+<h3 class="wp-block-heading">Theme-2: Data Management for LLMs, KGs, and Vector Data</h3>
+
+<p class="wp-block-paragraph"><strong>Context/Background and Questions: </strong>Data play a fundamental role in the modern machine learning ecosystem. How can state-of-the-art data curation, data management systems and algorithms (including graph systems) improve LLMs and vector data management?</p>
+
+<h4 class="wp-block-heading"><strong>Panel Discussion Summary:</strong></h4>
+
+<p class="wp-block-paragraph"><strong>Wei Hu. </strong>Huge multi-modal data, e.g., text, code, etc. are important for training LLMs. Therefore, data cleaning, data masking, data denoising, and other data engineering efforts are important for improving LLM’s performance and training efficiency during pre-training and fine-tuning. Considering broader machine learning systems (MLSys), effective and efficient DB implementations such as Graph DBs (KGs), Vector DBs, and even blockchains can be useful [10]. Core DB concepts such as declarative querying, query processing and optimization, indexing, checkpointing, etc. are critical for designing effective, efficient, scalable, and robust ML systems.</p>
+
+<p class="wp-block-paragraph"><strong>Shreya Shankar. </strong>There are plenty of opportunities for data management researchers in these emerging technologies. Training-wise, one needs sophisticated techniques to filter, or even repair bad data, e.g., see all the data filtering strategies used in the Llama 3 [11]. Deployment-wise, bolt-on data quality constraints for LLM-generated data is required [12].&nbsp; Analogously for RAG pipelines, LLM agents must check whether the retrieved data is high-quality and fix the data if they are not. For incorporating dynamic updates to data and models, data lifecycle management such as versioning, provenance tracking, incremental updates to vector indexes, etc. are also crucial, especially in the context of RAG-based LLMs.&nbsp;</p>
+
+<p class="wp-block-paragraph"><strong>Haofen Wang. </strong>State-of-the-art data curation and management systems, including graph systems, can significantly enhance LLMs and vector data management by ensuring high-quality, well-structured data input and efficient handling of complex data relationships. Advanced curation techniques reduce noise and bias, providing LLMs with cleaner, more relevant data, improving their accuracy and contextual understanding. Graph systems facilitate the management of intricate relationships within data, enriching vector representations and enabling better semantic understanding and retrieval capabilities. This integration supports more precise applications in search, recommendations, and decision-making processes.</p>
+
+<p class="wp-block-paragraph"><strong>Jianguo Wang. </strong>Relational DBs may support efficient vector data management. A recent study [13] identified the underlying root causes of the performance gap between generalized vector databases and specialized vector databases, and suggested directions for building future generalized vector databases to achieve comparable performance to high-performance specialized vector databases. Moreover, SingleStore, a modern distributed relational database system, has already supported vector search efficiently [28].</p>
+
+<h3 class="wp-block-heading">Theme-3: LLMs, KGs, and Vector Data for Data Science</h3>
+
+<p class="wp-block-paragraph"><strong>Context/Background and Questions: </strong>Data science [14] is an interdisciplinary field of scientific methods, tools, algorithms, and systems, involving data engineering, analytics, regulation, and ethics, studying each phase of the data pipeline, but ultimately for data use, to extract its full potential in an application-driven manner.How can LLMs and vector databases enhance data management, data science, and data pipelines? What roles can LLMs and vector databases play in the management of relational data, graphs, multi-modal data, and data lakes? How will they reshape databases, knowledge bases, and data science?</p>
+
+<h4 class="wp-block-heading"><strong>Panel Discussion Summary:</strong></h4>
+
+<p class="wp-block-paragraph"><strong>Wei Hu. </strong>Potential areas or success stories of LLMs for data management include NLIDB (natural language interfaces for databases)/ Text2SQL [15], query optimization [16], data curation [17], self-driving DBs [18], data education [19], etc. There are also many downstream applications of LLMs for data science such as generation tasks, e.g., protein sequence generation, and analysis tasks, e.g., summarization and statistics for end users. However, transparency and explainability remain key challenges, where KGs can potentially help, e.g., via fact-checking to justify LLMs’ decisions.</p>
+
+<p class="wp-block-paragraph"><strong>Shreya Shankar. </strong>LLMs and vector databases make complex, intelligent data processing pipelines much more feasible, e.g., a hospital employee can write a pipeline to extract all instances of medications from unstructured doctor notes via simpler prompt-based interactions without training any models. Researchers are already working on unstructured to structured data extraction with LLMs [20]. But how can one support more complex views beyond just data extraction? More “reasoning” tasks? E.g., a hospital employee needs to write a pipeline that strips all personal identifiable information (PII) from unstructured doctor notes and then summarizes any poor reactions to medications. This would require domain-specific understanding, domain-specific validators/guardrails, declarative interfaces, and more. Some interesting systems in this space are recently emerging, e.g., [21, 22, 23].&nbsp;</p>
+
+<p class="wp-block-paragraph"><strong>Haofen Wang. </strong>LLMs and Vector DBs enhance data management, data science, and data pipelines by providing improved data retrieval, semantic search capabilities, and insightful data analytics. LLMs can analyze and generate insights from relational data, graphs (e.g., OpenKG + Semantic-enhanced Programmable Graph framework (SPG) [24]), and multi-modal data by understanding context and relationships, while vector databases enable efficient storage and retrieval of high-dimensional data across diverse data types, including data lakes.</p>
+
+<p class="wp-block-paragraph">They will reshape databases and knowledge bases by enabling more dynamic and responsive search and query responses, facilitating richer interactions with data. In data science, they enhance model training and insights extraction by allowing for deeper, more interconnected data analyses, leading to more predictive and generalized models.</p>
+
+<p class="wp-block-paragraph"><strong>Jianguo Wang. </strong>LLMs, Vector DBs, and KGs have expanded the horizon of data management from traditional relational data, graph data, key-value pairs, etc. to embracing multi-modal data such as images and unstructured text. The future of data management is to unlock the full potential of an organization’s multi-modal data, and the benefits are evident across diverse domains such as e-commerce, healthcare, and finance.</p>
+
+<h3 class="wp-block-heading">Theme-4: Human-in-the-Loop for LLMs, KGs, and Vector Data Management</h3>
+
+<p class="wp-block-paragraph"><strong>Context/Background and Questions: </strong>LLMs learn parametric knowledge from large training corpora, and may not explicitly store consistent representations of knowledge, hence they can output unreliable and incoherent responses, and often hallucinate by generating factually incorrect statements. How can human-in-the-loop and KGs facilitate the alignment of LLMs? LLMs are “black-box” systems and can reveal private or sensitive data. Analogously, vector data are difficult to interpret. What is the significance of explainability, fairness, privacy, and responsible AI in LLM systems and Vector DBs?</p>
+
+<h4 class="wp-block-heading">Panel Discussion Summary:</h4>
+
+<p class="wp-block-paragraph"><strong>Wei Hu. </strong>Fine-tuning LLMs with human feedback can be done via reinforcement learning (RLHF). Therefore, in LLMs, human task design is important. Users can rank the model&#8217;s responses based on their preferences. This ranking provides a reward signal to align the model and enhances its outputs. More recently, reinforcement learning from AI feedback (RLAIF) improves on RLHF by getting feedback from an AI model or directly from the environment. KGs can also provide domain-specific or up-to-date knowledge to LLMs via pre-training, fine-tuning, and retrieval-augmented generation. Crowdsourcing and active learning can help in KG integration such as entity alignment [25, 26].</p>
+
+<p class="wp-block-paragraph"><strong>Shreya Shankar. </strong>LLMs make mistakes and require guardrails. Many of these guardrails are powered by LLMs, e.g., collaborative LLMs, LLM-as-a-Judge. Can we augment the LLM guardrail prompts with knowledge graphs? This requires retrieving the relevant subgraphs from KGs via graph reasoning or subgraph retrieval methods.</p>
+
+<p class="wp-block-paragraph"><strong>Haofen Wang. </strong>Significance of human-in-the-loop and other aspects: 1) Human-in-the-Loop: In LLM systems and vector databases, having a human-in-the-loop ensures that AI outputs are reviewed and refined by human expertise, improving accuracy, contextual relevance, and reducing errors. 2) Explainability: It is crucial for interpreting and understanding AI decisions, allowing users to trust and verify model predictions and data representations, especially in complex systems. 3) Fairness: Ensuring fairness in AI helps prevent biases that can arise from skewed data or model training, promoting equitable outcomes across different demographics. 4) Privacy: Respecting data privacy is critical, as LLMs and vector databases often handle sensitive information. Strategies to maintain privacy, such as data anonymization and secure data handling protocols, are essential. 5) Responsible AI: This involves developing AI systems that adhere to ethical guidelines, emphasizing safety, accountability, and transparency in AI operations.</p>
+
+<p class="wp-block-paragraph">Role of knowledge graphs in LLM Alignment: knowledge graphs can align LLMs by providing structured and interconnected information to enhance the contextual understanding of language models. They serve as a rich source of semantic relationships and factual data, helping LLMs to disambiguate meanings, answer queries more accurately, and maintain a comprehensive knowledge base. This integration ensures that LLMs are more grounded in real-world information, improving their logical coherence and ability to generate reliable and relevant outputs.</p>
+
+<h3 class="wp-block-heading">Theme-5: Interdisciplinary Collaboration on LLMs, KGs, and Vector Data</h3>
+
+<p class="wp-block-paragraph"><strong>Context/Background and Questions: </strong>How can research in this arena benefit through interdisciplinary collaborations across DB, ML, Systems, NLP, HCI, CV, among others? What would be the roles of benchmarking, open-source models, tools, and datasets? How to foster academia + industry partnership for actual impacts?</p>
+
+<h4 class="wp-block-heading">Panel Discussion Summary:</h4>
+
+<p class="wp-block-paragraph"><strong>Wei Hu. </strong>Benchmarks and open-source LLMs are very important. However, recently there are also concerns because of too many benchmark datasets and empirical studies. This is due to domain-specific LLMs reporting only “biased” results, whereas general LLMs cannot achieve SOTA results on all benchmarks.</p>
+
+<p class="wp-block-paragraph">Academia + industry collaborations are really important, since industry leads the LLM development. They also have plenty of GPU resources, engineering teams, and money. It is crucial to figure out how academia can participate, e.g., via student internship programs and industrial collaborations.</p>
+
+<p class="wp-block-paragraph"><strong>Shreya Shankar. </strong>This is a very interdisciplinary area. There are lots of working mechanisms in LLM pipelines and interfaces around them. The DB community is well-positioned to own the data preprocessing and validation parts of pipelines (see the DEEM workshop [27] at SIGMOD). The DB community also has a lot of knowledge about structured data and relational data and can potentially train custom models for these settings. LLM startups in industry are very open to collaboration in my experience.</p>
+
+<p class="wp-block-paragraph"><strong>Haofen Wang. </strong>Interdisciplinary collaborations in this domain can drive innovations, create comprehensive solutions, and encourage idea exchange by integrating diverse expertise from fields like DB, ML, NLP, HCI, and CV. It is important to identify what database systems can offer to ML such as ML-native DBs.</p>
+
+<p class="wp-block-paragraph">Benchmarking provides performance standards and comparison metrics. Open-source models/tools/data can enhance accessibility, speeds up innovation, and fosters community collaboration. To foster effective academia + industry partnerships, it is important to align objectives, collaborate on joint projects, offer internships, and co-fund initiatives for practical impacts and knowledge exchange.</p>
+
+<p class="wp-block-paragraph"><strong>Jianguo Wang. </strong>Startups can embrace disruptive technologies. To make impacts in this domain, it is important to work on real-world problems and build real systems.</p>
+
+<h2 class="wp-block-heading">Concluding Remarks</h2>
+
+<p class="wp-block-paragraph">The panel concluded by discussing the most pressing challenges, which include conducting neural-symbolic reasoning, scaling integration, ensuring data privacy and compliance, and managing complex, dynamic knowledge graphs. Off-the-shelf LLMs do not follow complex instructions well and need guardrails. Annotators learn and maintain information across document boundaries. Operating across document boundaries is difficult with LLMs. Aligning LLMs with structured data to reduce biases and managing the computational costs of querying vectorized data, while maintaining performance also remains significant obstacles. Hopefully, this panel discussion and the open problems will inspire others to work on the emerging data management issues in this domain.</p>
+
+<h2 class="wp-block-heading">References</h2>
+
+<p class="wp-block-paragraph">[1] Jingfeng Yang, Hongye Jin, Ruixiang Tang, Xiaotian Han, Qizhang Feng, Haoming Jiang, Shaochen Zhong, Bing Yin, and Xia Ben Hu, “Harnessing the Power of LLMs in Practice: A Survey on ChatGPT and Beyond,” ACM Trans. Knowl. Discov. Data, vol. 18, no. 6, pp. 160:1-160:32, 2024.</p>
+
+<p class="wp-block-paragraph">[2] James Jie Pan, Jianguo Wang, and Guoliang Li, “Survey of Vector Database Management Systems,” VLDB J., vol. 33, no. 5, pp. 1591–1615, 2024.</p>
+
+<p class="wp-block-paragraph">[3] Vinay K. Chaudhri, Chaitanya K. Baru, Naren Chittar, Xin Luna Dong, Michael R. Genesereth, James A. Hendler, Aditya Kalyanpur, Douglas B. Lenat, Juan Sequeda, Denny Vrandecic, and Kuansan Wang, “Knowledge Graphs: Introduction, History and, Perspectives,” AI Mag., vol. 43, no. 1, pp. 17-29, 2022.</p>
+
+<p class="wp-block-paragraph">[4] Arijit Khan, Tianxing Wu, and Xi Chen, “LLM+KG@VLDB&#8217;24 Workshop Summary,” arXiv:2410.01978, 2024.</p>
+
+<p class="wp-block-paragraph">[5] Aditya G. Parameswaran, Shreya Shankar, Parth Asawa, Naman Jain, and Yujie Wang, “Revisiting Prompt Engineering via Declarative Crowdsourcing,” CIDR, 2024.</p>
+
+<p class="wp-block-paragraph">[6] “California Police Records Access Project,” https://bids.berkeley.edu/california-police-records-access-project.</p>
+
+<p class="wp-block-paragraph">[7] Yanjun Gao, Ruizhe Li, John R. Caskey, Dmitriy Dligach, Timothy A. Miller, Matthew M. Churpek, and Majid Afshar, “Leveraging A Medical Knowledge Graph into Large Language Models for Diagnosis Prediction”, arXiv:2308.14321, 2023</p>
+
+<p class="wp-block-paragraph">[8] Xiaohui Victor Li and Francesco Sanna Passino, “FinDKG: Dynamic Knowledge Graphs with Large Language Models for Detecting Global Trends in Financial Markets”,&nbsp; arXiv:2407.10909, 2024</p>
+
+<p class="wp-block-paragraph">[9] Zhentao Xu, Mark Jerome Cruz, Matthew Guevara, Tie Wang, Manasi Deshpande, Xiaofeng Wang, and Zheng Li, “Retrieval-Augmented Generation with Knowledge Graphs for Customer Service Question Answering,” SIGIR, pp. 2905-2909, 2024.</p>
+
+<p class="wp-block-paragraph">[10] Honghu Wu, Xiangrong Zhu, and Wei Hu, “A Blockchain System for Clustered Federated Learning with Peer-to-Peer Knowledge Transfer,” Proc. VLDB Endow., vol. 17, no. 5, pp. 966-979, 2024.</p>
+
+<p class="wp-block-paragraph">[11] Abhimanyu Dubey, Abhinav Jauhri, Abhinav Pandey, and et al., “The Llama 3 Herd of Models,” arXiv:2407.21783, 2024.</p>
+
+<p class="wp-block-paragraph">[12] Shreya Shankar, Haotian Li, Parth Asawa, Madelon Hulsebos, Yiming Lin, J. D. Zamfirscu-Pereira, Harrison Chase, Will Fu-Hinthorn, Aditya G. Parameswaran, and Eugene Wu, “SPADE: Synthesizing Data Quality Assertions for Large Language Model Pipelines”, Proc. VLDB Endow., vol. 17, no. 12, pp. 4173-4186, 2024.</p>
+
+<p class="wp-block-paragraph">[13] Yunan Zhang, Shige Liu, and Jianguo Wang, “Are There Fundamental Limitations in Supporting Vector Data Management in Relational Databases? A Case Study of PostgreSQL,” ICDE, pp. 3640-3653, 2024.</p>
+
+<p class="wp-block-paragraph">[14] M. T. Ozsu, “Data Science &#8211; A Systematic Treatment,” Commun. ACM, vol. 66, no. 7, pp. 106–116, 2023.</p>
+
+<p class="wp-block-paragraph">[15] Dawei Gao, Haibin Wang, Yaliang Li, Xiuyu Sun, Yichen Qian, Bolin Ding, and Jingren Zhou, “Text-to-SQL Empowered by Large Language Models: A Benchmark Evaluation,” Proc. VLDB Endow., vol. 17, no. 5, pp. 1132-1145, 2024.</p>
+
+<p class="wp-block-paragraph">[16] Zhaodonghui Li, Haitao Yuan, Huiming Wang, Gao Cong, and Lidong Bing, “LLM-R2: A Large Language Model Enhanced Rule-based Rewrite System for Boosting Query Efficiency,” arXiv:2404.12872, 2024.</p>
+
+<p class="wp-block-paragraph">[17] Chengliang Chai, Nan Tang, Ju Fan, and Yuyu Luo, “Demystifying Artificial Intelligence for Data Preparation,” SIGMOD, 13-20, 2023.</p>
+
+<p class="wp-block-paragraph">[18] Immanuel Trummer, “DB-BERT: Making Database Tuning Tools &#8220;Read&#8221; the Manual,” VLDB J., vol. 33, no. 4, pp. 1085-1104, 2024.</p>
+
+<p class="wp-block-paragraph">[19] Sihem Amer-Yahia, Angela Bonifati, Lei Chen, Guoliang Li, Kyuseok Shim, Jianliang Xu, and Xiaochun Yang, “From Large Language Models to Databases and Back: A Discussion on Research and Education,” SIGMOD Rec., vol. 52, no. 3, pp. 49-56, 2023.</p>
+
+<p class="wp-block-paragraph">[20] Simran Arora, Brandon Yang, Sabri Eyuboglu, Avanika Narayan, Andrew Hojel, Immanuel Trummer, and Christopher Ré, “Language Models Enable Simple Systems for Generating Structured Views of Heterogeneous Data Lakes,” Proc. VLDB Endow., vol. 17, no. 2, pp. 92-105, 2023.</p>
+
+<p class="wp-block-paragraph">[21] Chunwei Liu, Matthew Russo, Michael J. Cafarella, Lei Cao, Peter Baile Chen, Zui Chen, Michael J. Franklin, Tim Kraska, Samuel Madden, and Gerardo Vitagliano, “A Declarative System for Optimizing AI Workloads,” arXiv:2405.14696, 2024.</p>
+
+<p class="wp-block-paragraph">[22] Liana Patel, Siddharth Jha, Carlos Guestrin, and Matei Zaharia, “LOTUS: Enabling Semantic Queries with LLMs Over Tables of Unstructured and Structured Data,” arXiv:2407.11418, 2024.</p>
+
+<p class="wp-block-paragraph">[23] Shreya Shankar, Aditya Parameswaran, and Eugene Wu, “Reimagining LLM-Powered Unstructured Data Analysis with DocETL,” https://data-people-group.github.io/blogs/2024/09/24/docetl/, 2024.</p>
+
+<p class="wp-block-paragraph">[24] Ant Group and OpenKG, “Semantic-enhanced Programmable Knowledge Graph (SPG) White paper (v1.0) ,” https://spg.openkg.cn/en-US, 2023.</p>
+
+<p class="wp-block-paragraph">[25] Jiacheng Huang, Wei Hu, Zhifeng Bao, Qijin Chen, and Yuzhong Qu, “Deep Entity Matching with Adversarial Active Learning,” VLDB J., vol. 32, no. 1, pp. 229-255, 2023.</p>
+
+<p class="wp-block-paragraph">[26] Jiacheng Huang, Zequn Sun, Qijin Chen, Xiaozhou Xu, Weijun Ren, and Wei Hu, “Deep Active Alignment of Knowledge Graph Entities and Schemata,” Proc. ACM Manag. Data, vol. 1, no. 2, pp. 159:1-159:26, 2023.</p>
+
+<p class="wp-block-paragraph">[27] DEEM’24: Proceedings of the Eighth Workshop on Data Management for End-to-End Machine Learning. Association for Computing Machinery, 2024.</p>
+
+<p class="wp-block-paragraph">[28] Cheng Chen, Chenzhe Jin, Yunan Zhang, Sasha Podolsky, Chun Wu, Szu-Po Wang, Eric Hanson, Zhou Sun, Robert Walzer, and Jianguo Wang. SingleStore-V: An Integrated Vector Database System in SingleStore. PVLDB, 17(12): 3772-3785, 2024.</p>
+
+<h3 class="wp-block-heading">Biographies of Panelists</h3>
+
+<p class="wp-block-paragraph"><strong>Wei Hu </strong>is a full professor in the School of Computer Science at Nanjing University. His main research areas include knowledge graph, data integration, and intelligent software. He has conducted visiting research at VU University Amsterdam, Stanford University, and University of Toronto. He has published over 50 papers in top-tier conferences and journals, such as SIGMOD, VLDB, ICDE, WWW, SIGIR, ICML, NeurIPS, AAAI, IJCAI, ACL, EMNLP, NAACL, ICSE, TKDE, VLDBJ, TSE, and TNNLS. He has received the Best Paper Awards at JIST, CCKS, and CHIP, and the Best Paper Nomination at ISWC. More information can be found at https://ws.nju.edu.cn/~whu.</p>
+
+<p class="wp-block-paragraph"><strong>Shreya Shankar </strong>is a PhD student in computer science at UC Berkeley, advised by Dr. Aditya Parameswaran. Her research addresses data challenges in production ML pipelines through a human-centered lens, focusing on data quality, observability, and more recently, leveraging large language models for data preprocessing. Shreya&#8217;s work has appeared in top data management and HCI venues, including SIGMOD, VLDB, CIDR, CSCW, and UIST. She is a recipient of the NDSEG Fellowship and co-organizes the DEEM workshop at SIGMOD, which focuses on data management in end-to-end machine learning. Prior to her PhD, Shreya worked as an ML engineer and completed her undergraduate degree in computer science at Stanford University. More information can be found at https://www.sh-reya.com/.</p>
+
+<p class="wp-block-paragraph"><strong>Haofen Wang </strong>is a Distinguished Researcher and Ph.D. supervisor under the &#8220;100 People Plan&#8221; at Tongji University. He is one of the initiators of OpenKG, the world&#8217;s largest alliance for Chinese open knowledge graphs. He has participated in and led several national-level AI-related projects, published over 100 high-level papers in the AI field with more than 3,900 citations and an H-index of 29. He developed the world&#8217;s first interactive virtual idol—&#8221;Amber Xuyan.&#8221; Additionally, the intelligent customer service robots he built have served over 1 billion users. Currently, he holds several social positions including Vice Chairman of the Terminology Committee of the Chinese Computer Federation (CCF), Secretary-General of the Natural Language Processing Society, Director of the Chinese Information Society of China, Executive Committee member of the Large Model Committee, Deputy Secretary-General of the Language and Knowledge Computing Committee, and Deputy Director of the Natural Language Processing Committee of the Shanghai Computer Society. More information can be found at https://scholar.google.com/citations?user=1FhdXpsAAAAJ&amp;hl=en.</p>
+
+<p class="wp-block-paragraph"><strong>Jianguo Wang </strong>is an Assistant Professor of Computer Science at Purdue University. He obtained his Ph.D. from the University of California, San Diego. He has worked or interned at Zilliz, Amazon AWS, Microsoft Research, Oracle, and Samsung on various database systems. His current research interests include database systems for the cloud and large language models, especially disaggregated databases and vector databases. He regularly publishes and serves as a program committee member at premier database conferences such as SIGMOD, VLDB, and ICDE. He also served as a panel moderator for theVLDB&#8217;24 panel on vector databases. He is a recipient of the NSF CAREER Award. More information can be found at https://cs.purdue.edu/homes/csjgwang/.</p>
+
+<h3 class="wp-block-heading"><strong>Biographies of Moderators</strong></h3>
+
+<p class="wp-block-paragraph"><strong>Arijit Khan</strong> is an IEEE senior member, an ACM distinguished speaker, and an associate professor in the Department of Computer Science, Aalborg University, Denmark. He earned his Ph.D. from UC Santa Barbara, USA and did a postdoc at ETH Zurich, Switzerland. He has been an assistant professor at NTU Singapore. Arijit is the recipient of the IBM Ph.D. Fellowship (2012-13), a VLDB Distinguished Reviewer award (2022), and a SIGMOD Distinguished PC award (2024). He published over 80 papers in premier data management and mining venues, e.g., SIGMOD, VLDB, TKDE, ICDE, WWW, SDM, EDBT, CIKM, WSDM, and TKDD. Arijit co-presented tutorials on graph queries, systems, applications, and machine learning at VLDB, ICDE, CIKM, and DSAA; and is serving in the program committee/ senior program committee of KDD, SIGMOD, VLDB, ICDE, ICDM, EDBT, SDM, CIKM, AAAI, WWW, and an associate editor of TKDE and TKDD. Arijit wrote a book on uncertain graphs in the Morgan &amp; Claypool’s Synthesis Lectures on Data Management and contributed invited chapters and articles on big graphs querying and mining in the ACM SIGMOD blog and in the Springer Encyclopedia of Big Data Technologies. More information at https://homes.cs.aau.dk/~Arijit/index.html.</p>
+
+<p class="wp-block-paragraph"><strong>Tianxing Wu </strong>is an associate professor working at School of Computer Science and Engineering of Southeast University, China. He is one of the main contributors to build Chinese large-scale encyclopedic knowledge graph: Zhishi.me and schema knowledge graph: Linked Open Schema. He was awarded the 2019 Excellent Ph.D. Degree Dissertation of Jiangsu Computer Society, 2020 Excellent Ph.D. Degree Dissertation of Southeast University, and CCKS 2022 Best Paper Award. His research interests include knowledge graph, knowledge representation and reasoning, and data mining. He has published over 50 papers in top-tier conferences and journals, such as ICDE, AAAI, IJCAI, ECAI, ISWC, TKDE, TKDD, JWS, WWWJ, and etc. He is the editorial board member of International Journal on Semantic Web and Information Systems, Data Intelligence, and etc. He also has served as the (senior) program committee member of AAAI, IJCAI, ACL, The WebConf, EMNLP, ISWC, ECAI, and etc. More information at https://tianxing-wu.github.io.</p>
+
+<p class="wp-block-paragraph"><strong>Xi Chen </strong>is the director of the algorithm Team of Platform and Content Group, Tencent. He received the Ph.D. Degree Dissertation of Zhejiang University and won good results in many KG and LLM competitions, such as CCKS2020 NER Task, CHIP2020 Relation Extraction Task, SuperGLUE Challenge, Semeval and so on. He has published over 40 papers in top-tier conferences and journals, such as ACL, EMNLP, NeurIPS, WWW, AAAI, IJCAI, TKDE, JWS, and etc. He was awarded the PAKDD 2021 Best Paper Award. More information at https://scholar.google.com/citations?user=qy0QX0MAAAAJ&amp;hl=zh-CN.</p>
+
+<p class="wp-block-paragraph"></p>
+{% endraw %}

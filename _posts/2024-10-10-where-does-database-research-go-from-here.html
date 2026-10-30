@@ -1,0 +1,119 @@
+---
+layout: post
+title: "Where Does Database Research Go From Here?"
+date: 2024-10-10 08:38:25
+last_modified_at: 2024-10-11 00:31:02
+author: "eugenewu"
+categories: ["Databases", "Machine Learning"]
+excerpt: "The past few years of generative AI have upended research agendas across academia. Having just spent my sabbatical in the Bay Area, where the San Francisco fog is mixed with a tinge of forest fire and LLMs, I wanted to reflect on the role of the academic database research community within this sea…"
+image: "/wp-content/uploads/2024/10/me_headshot.png"
+wp_id: 3801
+permalink: "/2024/10/10/where-does-database-research-go-from-here/"
+---
+{% raw %}
+<p class="wp-block-paragraph">The&nbsp;past few years of generative AI have upended research agendas across academia. Having just spent my sabbatical in the Bay Area, where the San Francisco fog is mixed with a tinge of forest fire and LLMs, I wanted to reflect on the role of the academic database research community within this sea change from the perspective of competitive advantage. &nbsp;The outlook is hazy, but there is room for hope.</p>
+
+<p class="wp-block-paragraph">Academic database research started around RDBMSes. &nbsp;While we have worked on an amazing array of data-related topics, our most visible, successful, and influential core has remained the RDBMS. &nbsp;Today, existing RDBMSes are ubiquitous and good enough. &nbsp;Continuing to improve RDBMS technology is helpful, but not necessarily competitive with industry, and the gains are increasingly marginal–we are&nbsp;<a href="https://www.vldb.org/conf/1993/P688.PDF">polishing a round ball</a>. &nbsp;A promising direction is AI, but while AI is “an application of data,” it doesn’t seem like AI&nbsp;<strong><em>needs</em></strong>&nbsp;us.</p>
+
+<p class="wp-block-paragraph">We, as a community, have to choose along a continuum with two extremes.   One extreme is to seek critical problems that are both sufficient to sustain a research community <strong><em>and</em></strong> that we are uniquely suited to solve.  The other is to become a diffuse community centered around “data-thinking”.  Wherever we choose to land along this continuum warrants serious discussion.</p>
+
+<p class="wp-block-paragraph"><em>I use the terms “we,” “community,” or “database community” to refer to the academic database community, distinct from industry and open source.</em></p>
+
+<h3 class="wp-block-heading">Codd’s Crusaders and the Chalice of Data</h3>
+
+<p class="wp-block-paragraph">A first-order approximation of&nbsp;databases&nbsp;as a field that our influence and success is centered around realizing Codd’s vision [1]: the relational database management system (RDBMS) as<a href="https://db.cs.cmu.edu/papers/2024/whatgoesaround-sigmodrec2024.pdf">&nbsp;</a><em><a href="https://db.cs.cmu.edu/papers/2024/whatgoesaround-sigmodrec2024.pdf">the</a></em><a href="https://db.cs.cmu.edu/papers/2024/whatgoesaround-sigmodrec2024.pdf">&nbsp;system for managing structured data</a>, and getting it into the hands of as many users as possible. &nbsp;Unlike other academic fields, this goal&nbsp;<strong>centers around building an artifact: the RDBMS</strong>. &nbsp;Because of that, the goal is concrete, actionable, and achievable. &nbsp;This goal ties experts from across computer science—theory, systems, PL, ML, HCI, architecture, and more—into a cohesive database community.</p>
+
+<p class="wp-block-paragraph">RDBMSes embody three principles: the one and true relational model, data independence through a declarative abstraction (e.g., SQL), and transactional semantics. &nbsp;These principles are so foundational that no modern organization can operate without an RDBMS. &nbsp;There was so much demand for RDBMSes, that over the past six decades, we could simply focus on answering the major questions to make them ubiquitous:</p>
+
+<ul class="wp-block-list">
+<li>1970s: is it even possible?</li>
+
+<li>1980s: should businesses try it?</li>
+
+<li>1990s: should businesses rely on it?</li>
+
+<li>2000s: can it analyze the past and predict the future?</li>
+
+<li>2010s: is it&nbsp;<a href="https://www.youtube.com/watch?v=b2F-DItXtZs">web scale</a>?</li>
+
+<li>2020s: can it live on a cloud? &nbsp;Or in a data lake?</li>
+</ul>
+
+<p class="wp-block-paragraph">The insatiable craving for RDBMSes was such that&nbsp;<em>nothing else mattered&nbsp;</em>as long as this was satisfied. The world needed RDBMSs that anyone could set up, manage, and scale. &nbsp;It ultimately didn’t matter that we were side-tracked by non-relational data models and systems, like&nbsp;<a href="http://leavcom.com/pdf/DBpdf.pdf">object-oriented databases</a>&nbsp;and XML. Or that we ceded web research to the information retrieval community. &nbsp;Or that we arrived late to web-scale distributed systems and&nbsp;<a href="https://scholar.google.com/scholar?hl=en&amp;q=A+Comparison+of+Approaches+to+Large-Scale+Data+Analysis">had to play catchup</a>. It didn’t matter because the beast was hungry, and only we could keep it fed.</p>
+
+<p class="wp-block-paragraph">Today, RDBMSes are used by everyone, run everywhere, and scale up to thousand-machine clusters and down to lightweight&nbsp;<a href="https://www.sqlite.org/">sensors</a>&nbsp;and&nbsp;<a href="https://duckdb.org/">browsers</a>. &nbsp;SQL is the&nbsp;<a href="https://survey.stackoverflow.co/2024/technology#most-popular-technologies-language-prof">second most popular programming language</a>. We have&nbsp;trained generations of database researchers who are now highly positioned in&nbsp;<a href="https://news.mit.edu/2024/sam-madden-named-faculty-head-computer-science-eecs-0904#:~:text=Photo%3A%20Jiin%20Kang-,Sam%20Madden%2C%20the%20College%20of%20Computing%20Distinguished%20Professor%20of%20Computing,1.">top</a>&nbsp;<a href="https://profiles.stanford.edu/jennifer-widom">univ</a>e<a href="https://www.cs.washington.edu/people/faculty/magda">rsities</a>&nbsp;and technology companies, and capable engineers who are building incredible database services. &nbsp;There are&nbsp;<a href="https://dbdb.io/">hundreds of data systems</a>&nbsp;today!</p>
+
+<p class="wp-block-paragraph">That is a lot to be proud of. For six decades, the world&nbsp;<em>needed</em>&nbsp;databases, and databases needed us to grow. &nbsp;We strove to make databases ubiquitous, and we delivered. &nbsp;We won.</p>
+
+<p class="wp-block-paragraph">What now?</p>
+
+<h3 class="wp-block-heading">The Law of Nature</h3>
+
+<p class="wp-block-paragraph">Well, as an individual researcher or research group within the database community, nothing changes. RDBMSs can be made easier to manage, more usable, cheaper, faster, and easier to construct. New hardware still requires system redesign. More applications can benefit from declarative thinking and abstractions. And there are so many ways to integrate machine learning into data systems.</p>
+
+<p class="wp-block-paragraph">Unfortunately, as an&nbsp;<strong><em>academic community</em></strong><em>,</em>&nbsp;I worry that these are increasingly marginal benefits to the world. &nbsp;While they are excellent database problems, internal validation doesn’t shield us from external competition against the capitalist marketplace and the industrial academic complex for resources: funding, students, and attention. &nbsp;If the world doesn’t look at a problem and think, “crap, we need a database academic,” then the resources will shift to a competitor (increasingly AI). &nbsp;</p>
+
+<p class="wp-block-paragraph">This means that “Contributing” isn’t good enough. &nbsp;“Novel” isn’t good enough. &nbsp;Patting ourselves on the back isn’t good enough. &nbsp;<strong>We need to own a problem space completely.</strong></p>
+
+<p class="wp-block-paragraph">We must keep asking:<strong>&nbsp;</strong><strong>“Does this problem matter to the world? &nbsp;And compared to all of industry and academia, is&nbsp;</strong><strong><em>academic database research</em></strong><strong>&nbsp;necessary to solve it?</strong>”</p>
+
+<h3 class="wp-block-heading">What About AI?</h3>
+
+<p class="wp-block-paragraph">Let me make this argument concrete by analyzing our competitive advantage. &nbsp;I hear the world has an insatiable appetite for AI. So much so that Larry Ellison and Elon Musk&nbsp;<a href="https://www.youtube.com/watch?v=Z5AXSD0gBnU">spent a dinner begging Jenson Huang</a>&nbsp;of NVIDIA to take more of their money.&nbsp;<a href="https://www.google.com/search?q=nvidia+market+cap&amp;sourceid=chrome&amp;ie=UTF-8">$2 trillion of cravings for GPUs</a>. &nbsp;</p>
+
+<p class="wp-block-paragraph">Let’s use a potential research direction in AI:&nbsp;<em>what if we could query anything and everything in the world using LLMs? &nbsp;</em>&nbsp;</p>
+
+<p class="wp-block-paragraph">This checks the first criteria because analyzing documents, reviews, legalese, contracts, and more is hard. &nbsp;There is also a lot to learn: what does query execution and optimization on LLMs look like? &nbsp;How can LLMs aid optimizers? &nbsp;What if LLMs were access methods? &nbsp;I like it, you like it, and many of us are working on related projects! &nbsp;</p>
+
+<p class="wp-block-paragraph">But, are&nbsp;we&nbsp;<em>uniquely positioned</em>&nbsp;to dominate this problem?</p>
+
+<p class="wp-block-paragraph">On the one hand, of course! &nbsp;Writing programs using LLMs is hard, optimization is painful and manual, and LLMs are unreliable in a way that makes me want to cry. &nbsp;Declarative is tried and true, and we are the experts in cost-based optimization and approximation guarantees, distributed data processing, and heterogeneous computing environments. &nbsp;They can do RAG but we can do it better.</p>
+
+<p class="wp-block-paragraph">On the other hand,&nbsp;<a href="https://www.cidrdb.org/cidr2024/papers/p67-parameswaran.pdf">LLMs are similar to people</a>, and crowdsourced databases weren’t exactly a hit. &nbsp;RDBMSes are designed for predictable hardware that co-evolves over decades, yet LLMs as a compute substrate evolve weekly, meaning that any optimization rules based on yesterday’s trade-offs are immediately slower, more expensive, or lower quality. &nbsp;They are&nbsp;<a href="https://arxiv.org/abs/2403.16795">impossible to reason about</a>&nbsp;because the responses change for no reason, their tunable parameter is “any text,” and there are no semantics to create correctness benchmarks,&nbsp;<a href="https://arxiv.org/abs/2401.03038">only vibes</a>. &nbsp;</p>
+
+<p class="wp-block-paragraph">To reiterate,&nbsp;<em>of course</em>&nbsp;academic researchers should work on this because it’s hard, fun, exciting, and might lead to new insights. &nbsp;However, startups, cloud database companies, open-source projects, LLM companies, and well-funded startups are all well-positioned to work on this too. &nbsp;So is academia: the NLP community is&nbsp;<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C33&amp;q=document+querying+llm+%28acl%7Cemnlp%7Cnaacl%29&amp;btnG=">for text</a>, and the CV community&nbsp;<a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C33&amp;q=video+query+%28llm%7Cnn%7Cneural%29+%28cvpr%7Ciclr%29&amp;btnG=">for video.</a></p>
+
+<p class="wp-block-paragraph">We can help. &nbsp;We can optimize. &nbsp;We can create frameworks. &nbsp;But which part of this problem is solely an academic data management problem? &nbsp;And is that part&nbsp;<em>the</em>&nbsp;lynchpin for AI?</p>
+
+<p class="wp-block-paragraph">Similar reasoning should be applied to data preprocessing for AI, video querying, provenance for AI, NL2SQL, ML training and serving, prompt engineering for data tasks, and everything else.</p>
+
+<h3 class="wp-block-heading">Moving Forward</h3>
+
+<p class="wp-block-paragraph">This argument regularly repeats itself in our community (see&nbsp;<a href="https://www.vldb.org/archives/website/1995/invited.htm">Dewitt’s 1995 keynote</a>,&nbsp;<a href="https://www.jfsowa.com/ikl/Stonebraker.pdf">Stonebraker’s 2018 Ten Fears talk</a>, or&nbsp;<a href="https://www.cidrdb.org/cidr2019/gongshow/abstracts/cidr2019_16.pdf">my own 2019 CIDR gong show talk</a>). &nbsp;But concerns should be paired with action, so let me offer three points along a continuum in decreasing levels of ambition, but all better than continuing to work on yesterday’s problems.<br></p>
+
+<h4 class="wp-block-heading">Direction 1: Find a North Star</h4>
+
+<p class="wp-block-paragraph">The first direction is to find our next north star. &nbsp;To do so, let’s keep asking:&nbsp;<strong><em>“Does this problem matter to the world? And compared to all of industry and academia, is academic database research necessary to solve it?</em></strong><em>” &nbsp;</em></p>
+
+<p class="wp-block-paragraph">We cannot be content with problems that do not transform&nbsp;<em>how the world works</em>. &nbsp;We cannot be content with problems where our expertise is nice to have or even competitive—we must be necessary.</p>
+
+<p class="wp-block-paragraph">I suggest that we make these questions a criterion for vision papers, dedicate a PC Chair with strong views and excellent taste to identify these papers, and explicitly reward such projects. &nbsp; Let’s host a series of panels across our major conferences to debate this issue.</p>
+
+<p class="wp-block-paragraph">And<strong>&nbsp;industry must actively participate</strong>&nbsp;because, while we provide high-quality training, a community cannot subsist through only training. &nbsp;Nor by working on near-term problems. &nbsp;It survives and thrives and gets the best students because there is a problem that is so large, so important, and so unique to data management that hundreds of future database researchers are drawn together for another half-century to tackle it.</p>
+
+<h4 class="wp-block-heading">Direction 2: Constellation of Capabilities</h4>
+
+<p class="wp-block-paragraph">A world-changing problem is a tall order. &nbsp;An alternative is to articulate&nbsp;<strong><em>Essential</em></strong>&nbsp;<strong><em>Capabilities</em></strong>&nbsp;that are missing today. &nbsp;An Essential Capability enables applications that simply does not and cannot otherwise exist. &nbsp;For instance, artificial general intelligence is one such capability in AI. &nbsp;We also need venues and events to debate and reason through this. &nbsp;</p>
+
+<p class="wp-block-paragraph">But let me throw out a few random examples. &nbsp;If two companies can combine their databases and their applications magically still work, what is made possible? &nbsp;If it is possible to cheaply monitor and manage&nbsp;<em>all</em>&nbsp;data flows throughout an organization, does it change the nature of security? &nbsp;Systems need to load their program state into the DBMS to enjoy its many features; can those features be compiled and run directly on the program state&nbsp;<em>without</em>&nbsp;running a DBMS?</p>
+
+<h4 class="wp-block-heading">Direction 3: A Sky Full of Stars</h4>
+
+<p class="wp-block-paragraph">The third direction is to accept that&nbsp;data&nbsp;management is akin to a state of mind like&nbsp;<a href="https://en.wikipedia.org/wiki/Design_thinking">design thinking</a>. &nbsp;That is where&nbsp;practitioners approach a new data problem by identifying a structured data model, a domain-specific language that describes the desired computation, and instantiating it using data processing primitives. &nbsp;The Human-Computer Interaction community embodies such a field, and conferences like the CHI (Conference on Human Factors in Computing Systems) are a cornucopia of diverse problems and methods drawn together by a shared belief. &nbsp;</p>
+
+<p class="wp-block-paragraph">If this is the case, then our community is tasked with becoming domain experts to evangelize declarative thinking to cultures throughout the world, of which AI is just one culture. &nbsp;We must clarify what data- (or declarative-? &nbsp;scalable-?) thinking means. &nbsp;We must broaden our conference programs to embrace any and all data problems; where biologists, sociologists, industrialists, and other domain experts want to publish with us. &nbsp;</p>
+
+<p class="wp-block-paragraph">It is inevitable that the community will evolve, but how we do so should be a choice and not an accident. &nbsp; Let’s do so while keeping in mind that academic research is an investment by society to study impractical problems today that might become new industries in the future. &nbsp;</p>
+
+<p class="wp-block-paragraph">I look forward to discussion and feedback. &nbsp;Please reply in the comments,&nbsp;<a href="https://x.com/sirrice">on Twitter,</a>&nbsp;in person, or over email.</p>
+
+<p class="wp-block-paragraph"><a href="https://forms.gle/EkpgHxPZe9zTHzMq6">Should we organize a SIGMOD 2025 panel? &nbsp;Share your opinion.</a></p>
+
+<h3 class="wp-block-heading">Blogger&#8217;s Bio</h3>
+
+<div class="wp-block-media-text is-stacked-on-mobile" style="grid-template-columns:37% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="575" height="575" src="../../../../wp-content/uploads/2024/10/me_headshot.png" alt="" class="wp-image-3803 size-full" /></figure><div class="wp-block-media-text__content">
+<p class="wp-block-paragraph">Eugene Wu is broadly interested in technologies that help users play with their data. His goal is for users at all technical levels to effectively and quickly make sense of their information. He is interested in solutions that ultimately improve the interface between users and data, and uses techniques borrowed from fields such as data management, systems, crowd-sourcing, visualization, and HCI. Eugene Wu received his Ph.D. from MIT, B.S. from Cal, and was a postdoc in the AMPLab. A profile, an obit.</p>
+
+<p class="wp-block-paragraph">Eugene Wu has received the VLDB 2018 10-year test of time award, best-of-conference citations at ICDE and VLDB, the SIGMOD 2016 best demo award, the NSF CAREER, and the Google, Adobe, and Amazon faculty awards.</p>
+</div></div>
+{% endraw %}

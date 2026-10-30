@@ -1,0 +1,109 @@
+---
+layout: post
+title: "Utilizing the Synergy between Query Refinement and View Recommendation for Visual Data Exploration"
+date: 2023-02-16 12:48:00
+last_modified_at: 2023-09-13 10:49:28
+author: "mohamedsharaf"
+categories: ["data exploration", "Databases", "Recommendations", "Visualization"]
+excerpt: "In this blog, we discuss the potential benefits of augmenting automated view recommendation solutions with query refinement techniques towards achieving insightful data exploration. Particularly, effective data exploration has been fueled by many approaches that rely on either view recommendation…"
+image: "/wp-content/uploads/2023/02/fig1-1024x282.png"
+wp_id: 3657
+permalink: "/2023/02/16/utilizing-the-synergy-between-query-refinement-and-view-recommendation-for-visual-data-exploration/"
+---
+{% raw %}
+<p class="wp-block-paragraph">In this blog, we discuss the potential benefits of augmenting automated view recommendation solutions with query refinement techniques towards achieving insightful data exploration. Particularly, effective data exploration has been fueled by many approaches that rely on either view recommendation or query refinement, as two separate and independent techniques for gaining valuable insights from data. In the following, we discuss the need for integrating those two techniques, as well as some of the challenges towards achieving that, together with some preliminary framework for realizing that integration.</p>
+
+<h4 class="wp-block-heading">Automated Visual Data Exploration: How to recommend interesting visualizations?</h4>
+
+<p class="wp-block-paragraph">Visual data exploration typically involves an analyst going through the following steps: 1) posing an exploratory query to select a subset of data, 2) generating different visualizations of that selected data, and 3) sifting through those visualizations for the ones which reveal interesting insights.</p>
+
+<p class="wp-block-paragraph">Based on the outcome of the last step, the analyst might have to manually “refine” their initial selection of data so that the new subset would show more interesting insights. This is clearly an iterative and time-consuming process, in which each selection of data (i.e., exploratory query) is a springboard to the next one.</p>
+
+<p class="wp-block-paragraph">Several solutions have been proposed towards automatically finding and recommending interesting data visualizations (i.e., steps 2 and 3 above) (e.g., [1, 2, 3, 4, 5]). The main idea underlying those solutions is to automatically generate all possible views of the explored data, and recommend the top-k interesting views, where the interestingness of a view is quantified according to some utility function.</p>
+
+<p class="wp-block-paragraph">However, the problem of assisting analysts in refining their exploratory queries (i.e., step 1) remains widely unaddressed. Aside from visual exploration, however, automated query refinement techniques have been studied extensively to automatically recommend queries satisfying cardinality and aggregate constraints (e.g. [9, 10], explaining outliers [11] and answering why not questions [12]. In this blog, we discuss the synergy between query refinement and view recommendation in the context of visual data exploration.</p>
+
+<h4 class="wp-block-heading">Problem: What if the recommended visualizations are not interesting enough?</h4>
+
+<p class="wp-block-paragraph">Existing solutions have been shown to be effective in recommending interesting views under the assumption that the analyst is “precise” in selecting their analyzed data. That is, the analyst is able to formulate a well-defined exploratory query, which selects a subset of data that contains interesting insights to be revealed by the recommended visualizations.</p>
+
+<p class="wp-block-paragraph">However, such assumption is clearly impractical and extremely limits the applicability of those solutions. In reality, it is typically a challenging task for an analyst to select a subset of data that has the potential of revealing interesting insights. Hence, it is a continuous process of trial and error, in which the analyst keeps refining their selection of data manually and iteratively until some interesting insights are revealed. Thus, in this blog, we argue that in addition to the existing solutions for automatically recommending interesting views, there is an equal need for solutions that can also automatically select subsets of data that would potentially provide such interesting views.</p>
+
+<p class="wp-block-paragraph">To illustrate the need for such solution, consider the following example. Consider an analyst wants to explore and find interesting insights in the U.S. Census income dataset [8], which is stored in table C. Her intuition is that analyzing the subset of data of those who have achieved a high level of education might reveal some interesting insights. Therefore, she selects that particular subset in which everyone has completed their 12th year of education (i.e., graduated high school) via the following query:</p>
+
+<p class="wp-block-paragraph"><strong>Q</strong>: SELECT * FROM C WHERE education ≥ 12</p>
+
+<p class="wp-block-paragraph">To find the top-k visualizations, she might use one of the existing approaches (e.g., [1, 5]). Such approaches adopt a deviation-based formulation of utility, which is able to provide analysts with interesting visualizations that highlight some of the particular trends of the analyzed datasets [1, 4, 5, 7]. In particular, the deviation-based metric measures the distance between the probability distribution of a visualization over the analyzed dataset (i.e., target view) and that same visualization when generated from a comparison dataset (i.e., comparison view), where the comparison dataset is typically the entire database. The underlying premise is that a visualizations that results in a higher deviation is expected to reveal insights that are very particular to the analyzed dataset. Figure 1 shows the top-k visualization recommended by such approaches.</p>
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="282" src="../../../../wp-content/uploads/2023/02/fig1-1024x282.png" alt="" class="wp-image-3658" /><figcaption><strong>Figure 1: Recommended view based on the analyst’s exploratory query without refinement</strong></figcaption></figure>
+
+<p class="wp-block-paragraph">Specifically, the figure shows that among all the attributes in the Census dataset, the recommended most interesting visualization is based on plotting the probability distribution of the Hours per week attribute of the dataset. That is, a histogram-like distribution of the number of hours worked per week for those who graduated high school (i.e., education ≥ 12) vs. the population. Such visualization is equivalent to plotting the probability distributions of the target view Vt and the comparison View Vc, which are expressed in SQL in Figure 1.&nbsp;</p>
+
+<p class="wp-block-paragraph">However, by carefully examining Figure 1, it is clear that there is not much difference between those who graduated high school and the population with respect to the Hours per week dimension. That is, the target and comparison views are almost the same, which is also reflected by the low-deviation value of 0.0459. Despite that, such visualization would still be recommended by existing approaches because it achieves the maximum deviation among all the views generated over the data subset selected by query Q, even though that maximum deviation value is inherently low!&nbsp;</p>
+
+<h4 class="wp-block-heading"><strong>Making the recommendations more interesting: Integrating query refinement with view recommendation</strong></h4>
+
+<p class="wp-block-paragraph">The previous example illustrates a clear need for a query refinement solution that is able to automatically modify the analyst’s initial input query and recommend a new query, which selects a subset of data that includes interesting insights. Those hidden insights are then easily revealed using existing solutions that are able to recommend interesting visualizations.&nbsp;</p>
+
+<p class="wp-block-paragraph">To that end, one straightforward and simple approach would involve generating all the possible subsets of data by automatically refining the predicates of the input query. In our example above, that would be equivalent to generating all refinements of the predicate WHERE education ≤ 12. Consequently, for each subset of data selected by each query refinement, generate all possible aggregate views (i.e., visualizations).&nbsp;</p>
+
+<p class="wp-block-paragraph">In addition to the obvious challenge of a prohibitively large search space of query refinements, that naive approach would also face two significant issues:&nbsp;</p>
+
+<ol class="wp-block-list"><li><em>Similarity-oblivious</em>: a blind automated refinement that is oblivious to the analyst’s preferences might result in a refined query that is significantly dissimilar from the input query.&nbsp;</li></ol>
+
+<ol class="wp-block-list" start="2"><li><em>Statistical insignificance</em>: the subset selected by the refined query can be too small and as a result the target views generated from that subset will miss a number of values for the dimension attribute. This leads to views with high deviation values but statistically insignificant.&nbsp;</li></ol>
+
+<p class="wp-block-paragraph">The issues mentioned above highlight the need for automatic refinement solutions that are guided by the user’s preference and statistical significance. One step towards accommodating those requirements is to expand on the current view recommendation approaches by adopting a multi-objective utility function. In particular, a hybrid multi-objective utility might be formulated as:&nbsp;</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/02/fig2-1024x145.png" alt="" class="wp-image-3659" width="378" height="53" /><figcaption><strong>Figure 2: A hybrid objective function for combining utility and refinement</strong><br></figcaption></figure>
+
+<p class="wp-block-paragraph">where S(Q, Q<sub>j</sub> ) is the similarity between input query Q and refined query Q<sub>j </sub>of the view V<sub>i,Qj</sub> , and D(V<sub>i,Qj</sub>) is the normalized deviation of view V<sub>i,Qj</sub> from the overall data. Parameters α<sub>S</sub> and α<sub>D</sub> specify the weights assigned to each objective in the hybrid utility function, such that α<sub>S</sub> + α<sub>D</sub> = 1.&nbsp;</p>
+
+<p class="wp-block-paragraph">In turn, the problem of Query Refinement for View Recommendation can be formulated as: Given a user-specified query Q on a database D, a multi-objective utility function U, a significance level α, and a positive integer k. Find k aggregate views that have the highest utility values, from all of the refined queries Q<sub>j</sub> ∈ Q such that pvalue(V<sub>i,Qj</sub> ) ≤ α.</p>
+
+<p class="wp-block-paragraph">In short, the premise is that a view is of high utility for the user, if it satisfies the specified constraints, shows high-deviation, and is based on a refined query that is highly similar to the user specified query.&nbsp;</p>
+
+<p class="wp-block-paragraph">Clearly, such formulation is challenged by the large number of possible refinements and the corresponding large number of visualizations generated per refinement. In [6], we take our first steps towards addressing that challenge based on our proposed QuRVe scheme. QuRVe is able to efficiently reduce the prohibitively large search space of possible views by utilizing some of the salientcharacteristics of our multi-objective optimization problem described above. Particularly, the key idea underlying the QuRVe is to calculate an upper bound on the maximum possible utility achieved by each view without actually executing the aggregate query that generates that view. Then only those promising views with expected high-utility are processed and the top-k are recommended.&nbsp;</p>
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="266" src="../../../../wp-content/uploads/2023/02/fig3-1024x266.png" alt="" class="wp-image-3660" /><figcaption><strong>Figure 3: Recommended view after refining the analyst&#8217;s exploratory query</strong><br></figcaption></figure>
+
+<p class="wp-block-paragraph">Figure 3 shows the top view recommended by QuRVe based on the input query Q provided in the example above. That view is generated based on automatically refining Q into the new modified and statistically significant query Q3, which is specified as:&nbsp;</p>
+
+<p class="wp-block-paragraph"><strong>Q2</strong>: SELECT * FROM C WHERE education ≥ 16.&nbsp;</p>
+
+<p class="wp-block-paragraph">Notice that instead of selecting the data for those who completed high school (i.e., education ≥ 12), the refined query Q2 selects those who completed a college degree (i.e., education ≥ 16). Equally important, the recommended view based on the refined Q2 shows a uniquely interesting insight. Specifically, as Figure 3 shows, highly educated people tend to work more hours than the rest of the population. More precisely, only 13% of the population work more than 50 hours a week, whereas for those who have completed college that percentage goes up to 30%!</p>
+
+<h4 class="wp-block-heading"><strong>Acknowledgments:&nbsp;</strong></h4>
+
+<p class="wp-block-paragraph">I would like to sincerely thank all my collaborators and co-authors for all their work and contributions.</p>
+
+<h4 class="wp-block-heading">Blogger&#8217;s Bio</h4>
+
+<p class="wp-block-paragraph">Mohamed Sharaf is an Associate Professor in Computer Science at the United Arab Emirates University (UAEU), which he joined in 2019. Prior to that, he held positions as a Senior Lecturer at the University of Queensland, and a Research Fellow at the University of Toronto. He received his Ph.D. in Computer Science from the University of Pittsburgh in 2007. His research interest lies in the general area of Data Science, with a special emphasize on large-scale big data analytics, interactive human-in-the-loop data exploration, and scalable data visualization.</p>
+
+<h4 class="wp-block-heading">References</h4>
+
+<p class="wp-block-paragraph">1] M. Vartak, S. Rahman, S. Madden, A. Parameswaran, and N. Polyzotis, ‘‘See DB: Efficient data-driven visualization recommendations to support visual analytics,’’ Proc. VLDB Endowment, vol. 8, no. 13, pp. 2182–2193, Sep. 2015.&nbsp;</p>
+
+<p class="wp-block-paragraph">[2] R. Ding, S. Han, Y. Xu, H. Zhang, and D. Zhang, ‘‘Quickinsights: Quick and automatic discovery of insights from multi-dimensional data,’’ in Proc. SIGMOD, 2019, pp. 317–322.&nbsp;</p>
+
+<p class="wp-block-paragraph">[3] Ç. Demiralp, P. J. Haas, S. Parthasarathy, and T. Pedapati, ‘‘Foresight: Recommending visual insights,’’ Proc. VLDB Endowment, vol. 10, no. 12, pp. 1937–1940, Aug. 2017.&nbsp;</p>
+
+<p class="wp-block-paragraph">[4] T. Sellam and M. Kersten, ‘‘Ziggy: Characterizing query results for data explorers,’’ Proc. VLDB Endowment, vol. 9, no. 13, pp. 1473–1476, Sep. 2016.&nbsp;</p>
+
+<p class="wp-block-paragraph">[5] H. Ehsan, M. A. Sharaf, and P. K. Chrysanthis, ‘‘Efficient recommendation of aggregate data visualizations,’’ IEEE Trans. Knowl. Data Eng., vol. 30, no. 2, pp. 263–277, 2018.</p>
+
+<p class="wp-block-paragraph">[6] Mohamed A. Sharaf and Humaira Ehsan, “Efficient Query Refinement for View Recommendation in Visual Data Exploration,” IEEE Access, vol 9, pp. 76461-76478, 2021.</p>
+
+<p class="wp-block-paragraph">[7] C. Wang and K. Chakrabarti, ‘‘Efficient attribute recommendation with probabilistic guarantee,’’ in KDD, 2018, pp. 2387–2396.&nbsp;</p>
+
+<p class="wp-block-paragraph">[8] Adult Data Set. Accessed: Jul. 2019. [Online]. Available: https://archive. ics.uci.edu/ml/datasets/adult&nbsp;</p>
+
+<p class="wp-block-paragraph">[9] C. Mishra and N. Koudas, ‘‘Interactive query refinement,’’ in EDBT, 2009, pp. 862–873.&nbsp;</p>
+
+<p class="wp-block-paragraph">[10] M. Vartak, V. Raghavan, A. Elke Rundensteiner, and S. Madden, ‘‘Refinement driven processing of aggregation constrained queries,’’ in Proc. EDBT, 2016, pp. 101–112.&nbsp;</p>
+
+<p class="wp-block-paragraph">[11] E. Wu and S. Madden, ‘‘Scorpion: Explaining away outliers in aggregate queries,’’ Proc. VLDB Endowment, vol. 6, no. 8, pp. 553–564, Jun. 2013.&nbsp;</p>
+
+<p class="wp-block-paragraph">[12] Q. T. Tran, ‘‘How to conquer why-not questions,’’ in Proc. SIGMOD, 2010, pp. 15–26.&nbsp;</p>
+{% endraw %}

@@ -1,0 +1,172 @@
+---
+layout: post
+title: "Simulating Infection Spread"
+date: 2020-04-21 07:29:31
+last_modified_at: 2020-06-26 08:03:27
+author: "vikrampudi"
+categories: ["Analytics", "Visualization"]
+excerpt: "It might seem obvious that reducing social movement will reduce the spread of infection. However, it is not obvious how much it will reduce. Will it be enough to stop the virus? Will it only slow it down? How long do we expect the virus to last in regions with differing population densities? While…"
+image: "/wp-content/uploads/2020/04/image.png"
+wp_id: 3100
+permalink: "/2020/04/21/simulating-infection-spread/"
+---
+{% raw %}
+<p class="wp-block-paragraph">It might seem obvious that reducing social movement will reduce the spread of infection. However, it is not obvious <em>how much</em> it will reduce. Will it be enough to stop the virus? Will it only slow it down? How long do we expect the virus to last in regions with differing population densities?</p>
+
+<p class="wp-block-paragraph">While there is a definite space for recent advances in AI and deep learning in tackling the current COVID-19 pandemic, such as in drug discovery, medical imaging and diagnosis, answering basic questions such as the above does not require a big hammer. It is important to be able to answer such questions with <em>repeatable certainty</em>, with <em>interpretable </em>tools that are <em>simple</em>, <em>accessible </em>and <em>clear </em>to the general public. In the age of information explosion, where the reliability of information is always questionable, and where it requires authority to convince, it would be pure and simple if the information presented can be directly tested by the viewer.</p>
+
+<p class="wp-block-paragraph">A simple simulation tool where end-users can
+change parameters and visualize the corresponding outcome fits this requirement
+perfectly. While simulations do not capture every detail of the real world, it
+is sufficient that they capture the essential aspects relevant to the questions
+we seek to answer.</p>
+
+<p class="wp-block-paragraph">Here, the end-users are not necessarily scientists or trained people. Otherwise, it would still require a time-consuming chain of authority to convince the general public of their strategies. <em>The end-users should be everyone. </em>The process of decision making should be such that everyone reaches the same consensus.</p>
+
+<p class="wp-block-paragraph">These criteria require the simulation tool
+to be accessible over the web, on both desktops and mobile phones, and be
+simple to use. This was the motivation to develop this “<a href="https://faculty.iiit.ac.in/~vikram/ViralSpread/">Viral Simulator</a>”.</p>
+
+<p class="wp-block-paragraph">Experimenting with this simulator reveals significant insights:</p>
+
+<p class="wp-block-paragraph">1. By reducing our movement (as in social distancing and lock-downs), we can <em>reduce infection spread significantly</em>.</p>
+
+<p class="wp-block-paragraph">2.  In most settings, the infection spread <em>stops in a few months</em>.</p>
+
+<p class="wp-block-paragraph">3.  In unrestricted settings, the infection spreads <em>exponentially</em>, especially in dense populations, before it stops.</p>
+
+<p class="wp-block-paragraph">4.  When we restrict movement, infection spread <em>stops sooner</em> and <em>does not spread widely</em>.</p>
+
+<p class="wp-block-paragraph">5.  Even if the virus has already spread, it can <em>still be contained</em> by restricting movement.</p>
+
+<p class="wp-block-paragraph">While some of these insights may seem obvious on hind-sight, visualizations are visceral and intuitive. They educate us and make us aware of phenomena that are hard to put in words. Like poems, they tell us stories and interpretations about our situations, which even the original author may not have intended.</p>
+
+<h3 class="wp-block-heading">Interface and Parameters</h3>
+
+<a href="https://faculty.iiit.ac.in/~vikram/ViralSpread/"><figure class="wp-block-image"><img loading="lazy" decoding="async" width="519" height="296" src="../../../../wp-content/uploads/2020/04/image.png" alt="" class="wp-image-3104" /></figure></a>
+
+<p class="wp-block-paragraph">The interface is as shown in the above figure. With the objective of simplicity, it is designed so that all parameters and controls are directly accessible on the same screen. Parameters that are unlikely to be set by the user are not presented to avoid clutter and complexity. The simulation window toggles full-screen on clicking / touching it.</p>
+
+<p class="wp-block-paragraph">The interface is as shown in the above figure. With the objective of simplicity, it is designed so that all parameters and controls are directly accessible on the same screen. Parameters that are unlikely to be set by the user are not presented to avoid clutter and complexity. The simulation window toggles full-screen on clicking / touching it.</p>
+
+<p class="wp-block-paragraph">As seen, the parameters that can be changed are:</p>
+
+<p class="wp-block-paragraph"><strong>Population Size:</strong> A default of 150 people represented as dots are uniformly distributed in the land-areas of the world. This does not represent the real-world distribution in any way. In this simulation, continents only represent regions that are somewhat cut off from each other requiring travel. Alternative models can used at the city, provincial, or national level.</p>
+
+<p class="wp-block-paragraph"><strong>Transmit Probability:</strong> The probability that infection is transmitted upon contact.</p>
+
+<p class="wp-block-paragraph"><strong>Transmit Distance:</strong> The contact distance within which infection is transmitted.</p>
+
+<p class="wp-block-paragraph"><strong>Travel Frequency:</strong> This represents a travel frequency multiplier. By default each person travels once in <em>k</em> months with an exponential distribution, where 1&lt;=<em>k</em>&lt;=6. The number of persons for each <em>k</em> is chosen so that the majority travel once in 6 months, and this reduces exponentially by a factor of 2 as <em>k</em> reduces. So, there will be a few frequent fliers who travel monthly.</p>
+
+<p class="wp-block-paragraph"><strong>Hover Distance:</strong> Normal radius of movement of people when they are not traveling.</p>
+
+<p class="wp-block-paragraph"><strong>Death Probability:</strong> After 15 days an infected person may become immune or not survive. Probability of death is set to a default of 5%.</p>
+
+<p class="wp-block-paragraph">The output parameters are shown at the
+bottom of the visualization and include the number of people who are healthy,
+infected, immune and expired and the number of days that have passed. The
+simulation speed can be varied or paused and the user can move frame by frame
+forwards.</p>
+
+<h3 class="wp-block-heading">Experimental Results</h3>
+
+<h4 class="wp-block-heading">High Population Experiment</h4>
+
+<p class="wp-block-paragraph">When population is high, infection can
+spread more easily. Playing with the tool shows that infection spreads
+exponentially, with not much chance of any slow-down, when population is high.</p>
+
+<p class="wp-block-paragraph">While there is nothing much that one can do to change the population of their neighborhood, this does give an indication of how the infection may spread in areas with different population densities. It tells us that we need to be much more careful and stricter with the interventions and policies we take when dealing with high population regions.</p>
+
+<h4 class="wp-block-heading">High Hover Distance</h4>
+
+<p class="wp-block-paragraph">When people hover (i.e. move) around quite a
+lot in their neighbourhoods then, the infection spreads much more easily. By
+doubling the hover-distance parameter in the tool, you will notice that an
+entire continent gets infected quite rapidly. Then, due to travellers, other continents
+also get infected.</p>
+
+<p class="wp-block-paragraph">This is perhaps the most important parameter among the studied parameters in the tool. While there is nothing much that one can do about the population of their neighbourhood, they can easily change how much they move around. Seeing how much this impacts the spread of infection, hopefully this will inspire everyone to restrict their movement.</p>
+
+<h4 class="wp-block-heading">High Travel Probability</h4>
+
+<p class="wp-block-paragraph">When people double their travel, we might
+expect the infection to spread a lot faster. When we try this in the tool, we
+can see this effect. However, it is not as dramatic as when we increase hover
+distance. One reason is that in the simulation, people travel in isolation, and
+so they are not affected and do not affect others during travel. This may not
+capture real-life very well.</p>
+
+<p class="wp-block-paragraph">However, in real life too, the number of people who travel at any point of time is much less than the number who do not travel. After the infection has reached a place, it is more important to restrict hover-distance than travel. Before infection has reached a place, it is much more meaningful to control travel.</p>
+
+<h4 class="wp-block-heading">Other Experiments</h4>
+
+<p class="wp-block-paragraph">In real-life, we do not have much control
+over other parameters like:</p>
+
+<p class="wp-block-paragraph" style="text-align:left">    <strong>Transmit probability:</strong> The probability that infection transmits upon contact.</p>
+
+<p class="wp-block-paragraph">   <strong>Transmit distance:</strong> The distance within which infection can transmit.</p>
+
+<p class="wp-block-paragraph">   <strong>Death probability:</strong> The probability that infection kills.</p>
+
+<p class="wp-block-paragraph">The values of these parameters are specific
+to the virus being simulated. The tool aims to be useful at simulating the
+spread of other communicable diseases by appropriately changing these
+parameters.</p>
+
+<h3 class="wp-block-heading">Related Work</h3>
+
+<p class="wp-block-paragraph">The current COVID-19 pandemic has spurred a plethora of activity in a short time on ways to control the pandemic. The excellent survey in [1] highlights the ways in which AI and machine learning are being used against COVID-19. Broadly, it describes the recent evolution of approaches for patient diagnosis, patient outcome prediction and drug development. The survey also describes machine-learning approaches [2][3] for epidemiology modeling that forecast the spread of infection based on the locations of confirmed cases.</p>
+
+<p class="wp-block-paragraph">A detailed model of infection transmission and the potential impact of interventions was studied in [4]. The focus of all these works is on accurate forecast of infection spread, and not on the visualization aspect.</p>
+
+<p class="wp-block-paragraph">For visualization, the inspiration for the current tool was the Washington Post article at [5]. However, the visualizations in the article are not configurable by the end-user. To our knowledge, the current tool is unique in offering a configurable online simulation tool for end-users to visualize viral spread.</p>
+
+<h3 class="wp-block-heading">Conclusions and Future Work</h3>
+
+<p class="wp-block-paragraph">The most important take away of the current
+experiments is that by reducing our movement, like in social distancing and
+lock-downs, we can <em>significantly reduce
+infection spread</em>. In most settings, the infection spread stops in a few
+months. These can be tested and visualized in the simulation tool that is
+designed to be highly available and easy to use.</p>
+
+<p class="wp-block-paragraph">When we reduce hover-distance to a quarter
+of its default value, we see that the virus does not spread much. There is a
+small chance that an infected person travels to a dense region and infects the
+people there. The chance that these infected people further move to other dense
+regions is small enough that the infection spread stops quite soon. One can
+also experiment by reducing the hover distance during simulation to see that
+further spread can be stopped even after the virus has already spread in the
+population.</p>
+
+<p class="wp-block-paragraph">Incorporating real data and maps in the tool can help estimate the number of infections, which can be extrapolated to determine the necessary capacity of hospital infrastructure in the region in terms of required number of beds, medicines and ventilators on different days. It is also worthwhile to study the impact of “micro” lock-downs – where lock-down and social-distancing are imposed only in a certain radius of known infections.</p>
+
+<h4 class="wp-block-heading">References</h4>
+
+<p class="has-small-font-size wp-block-paragraph">[1] J. Bullock , A. (S) Luccioni, et al.: Mapping the landscape of artificial intelligence applications against COVID-19. <a href="https://vectorinstitute.ai/wp-content/uploads/2020/03/arxiv-mappingai.pdf">https://vectorinstitute.ai/wp-content/uploads/2020/03/arxiv-mappingai.pdf</a>, Mar 2020</p>
+
+<p class="has-small-font-size wp-block-paragraph"> [2] Zixin Hu, Qiyang Ge, et al. Artificial intelligence forecasting of COVID-19 in China. arXiv preprint arXiv:2002.07112, 2020b</p>
+
+<p class="has-small-font-size wp-block-paragraph"> [3] M.A.A. Al-qaness, A.A. Ewees, et al. Optimization method for forecasting confirmed cases of COVID-19 in China.Journal of ClinicalMedicine, 9(3):674, Mar 2020.</p>
+
+<p class="has-small-font-size wp-block-paragraph"> [4] N.M. Ferguson, D. Laydon et al. Impact of non-pharmaceutical interventions (NPIs) to reduce COVID-19 mortality and healthcare demand. <a href="https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf">https://www.imperial.ac.uk/media/imperial-college/medicine/sph/ide/gida-fellowships/Imperial-College-COVID19-NPI-modelling-16-03-2020.pdf</a>, Mar 2020</p>
+
+<p class="has-small-font-size wp-block-paragraph">[5] H. Stevens: Why outbreaks like coronavirus spread exponentially, and how to &#8220;flatten the curve&#8221;, <a href="https://www.washingtonpost.com/graphics/2020/world/corona-simulator/?mod=article_inline">https://www.washingtonpost.com/graphics/2020/world/corona-simulator/?mod=article_inline</a>, Mar 2020</p>
+
+<h5 class="wp-block-heading">Blogger Profile</h5>
+
+<p class="wp-block-paragraph"><em>Vikram Pudi is an Associate Professor
+of Computer Science in the Data Science and Analytics Center at IIIT Hyderabad.
+His research focuses on learning interpretable models, interactive learning,
+recommendation systems and citation analysis. He has published extensively at
+leading venues such as ICDM, AAAI, IJCAI and PAKDD. He has served in the
+Organizing and Programme Committees for several editions of DASFAA, PAKDD, ICDE
+and COMAD. He holds a Ph.D. in computer science from Indian Institute of
+Science, Bangalore. He enjoys developing in python, javascript and C/C++.</em></p>
+
+<p class="wp-block-paragraph">Copyright @ 2020, Vikram Pudi, All rights
+reserved.</p>
+{% endraw %}

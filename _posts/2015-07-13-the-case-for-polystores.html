@@ -1,0 +1,93 @@
+---
+layout: post
+title: "The Case for Polystores"
+date: 2015-07-13 21:06:09
+last_modified_at: 2015-09-21 15:53:28
+author: "user-28"
+categories: ["Databases"]
+excerpt: "A Federated DBMS is a middleware offering that runs on top of (perhaps several) local DBMSs and presents a seamless interface to disparate systems with (perhaps) independently constructed DBMS schemas. Systems in this category include R*, Ingres*, Garlic, IBM’s Information Integrator, and several…"
+image: null
+wp_id: 1629
+permalink: "/2015/07/13/the-case-for-polystores/"
+---
+{% raw %}
+<div align="justify"> A <b>Federated DBMS</b> is a middleware offering that runs on top of (perhaps several) local DBMSs and presents a seamless interface to disparate systems with (perhaps) independently constructed DBMS schemas.  Systems in this category include R*, Ingres*, Garlic, IBM&#8217;s Information Integrator, and several others.  These offerings should be contrasted to <b>parallel DBMSs</b>, which are single DBMSs with partitioned and/or replicated tables and a single schema.  Parallel DBMSs are a multi-billion dollar market, while federated DBMSs are a zero billion dollar market.</p>
+<p>In this blog post, we consider the reasons for the previous failure of data federations, and then argue that a related construct, <b>polystores</b>, looks poised to have its &#8220;day in the sun&#8221;.  </p>
+</div>
+<div align="justify">In the 1990&#8217;s, enterprises started assembling customer-facing data from disparate data sources into a common data warehouse, and used Extract, Transform, and Load (ETL) tools to facilitate data conversion and loading. Sources typically required extensive data curation, prior to loading.  This included:</p>
+<p>&#8211; <i>Extract</i> (parse the source data structure)<br />
+&#8211; <i>Transform</i> (for example, euros to dollars)<br />
+&#8211; <i>Clean</i> (-99 often means null)<br />
+&#8211; <i>Integrate</i> (for example, your wages is my salary)<br />
+&#8211; <i>Deduplicate</i> (for example, I am M. Stonebraker in one data source and Michael R. Stonebraker in another)
+</div>
+<div align="justify">Data curation is clearly an expensive proposition, and the fact that almost all enterprise data is quite dirty just makes this process more costly.  By the time a skilled programmer had finished this task, he typically loaded the resulting data into a data warehouse.  It rarely made sense for him to return curated data to the original source, so that a federation system could perform cross-system queries at a later time.  After all, the curated data has been transformed and cleaned, so it is not compatible with the original source data.  Therefore, it would only muck up whatever production system is interacting with the original data.  </p>
+<p>As a result, the market for data warehouse products is huge and the market for federation products is near zero.  In my opinion, this is about to change.  Two factors are at work here.
+</p></div>
+<div align="justify"><span style="color:#151515"><b>1. increased interest in disparate data</b></span>.  In the 1990’s enterprises were singularly focused on structured data.  Today, there is interest in integrating structured data with text, web pages, semi-structured data, time series, etc.  A case in point is the Mimic II data set [1], which encompasses 26,000 patient days in the intensive care unit (ICU) of Beth Israel Hospital in Boston.  This data set includes: </div>
+<div align="justify">
+&#8211; real time data (time series from bedside monitoring devices)<br />
+&#8211; a historical archive of waveform data (from previous patients)<br />
+&#8211; patient metadata (typical structured data)<br />
+&#8211; doctor&#8217;s and nurse&#8217;s notes (text)<br />
+&#8211; prescription information (semi-structured data)
+</div>
+<div align="justify">
+<p>A small minority of this data is typical relational data; the rest is arrays, text, JSON, &#8230;   Although it is possible to curate this data and then load it into a data warehouse, this tactic is not likely to work well because of the second factor at work.</p>
+</div>
+<div align="justify">
+<p><span style="color:#151515;"><b>2. One size does not fit all</b></span>. There is no DBMS that offers high performance on all of the kinds of Mimic data.  In round numbers, an RDBMS does fine on structured data, but is an order of magnitude or more away from the performance leader on the rest of the Mimic data.  Similar statements can be made for other DBMS architectures.</p>
+</div>
+<div align="justify">
+Hence, it makes sense to load the curated data into <b>multiple</b> DBMSs, for example the structured data into an RDBMS, the real time data into a stream processing engine, the historical archive into an array engine, the text into Lucene, and the semi-structured data into a JSON system.
+</div>
+<div align="justify">
+<p>Obviously, one does not want a user to learn these disparate query languages, so a data federation seems like a good idea to lower the number of disparate APIs one has to learn.  We conjecture that as enterprises construct such broadly-scoped applications, they will realize the need for multiple kinds of DBMSs.  A data federation is an obvious tactic to lower application complexity.  We now continue with two tenets that such next generation federations should obey.</p>
+</p></div>
+<h4>Tenet 1:  There is no query language Esperanto</h4>
+<div align="justify"> Users performing complex analytics on waveform data are often wedded to array query notations, such as R or ArrayQL.  Text search users invariably want a keyword-oriented fuzzy matching system, and SQL is the preferred interface for structured data. </p>
+<p>Hence, a next-generation data federation must support multiple query notations.  This characteristic distinguishes them from previous federations, which were invariably based only on SQL.  Such a federation must support a user-facing abstraction which we call an <b>island of information</b>, consisting of a query language, a data model, and <b>shims</b> to translate &#8220;island utterances&#8221; into the local dialect supported by each storage system.  An island must produce the same answer to any given query, even though the data may reside in perhaps multiple local storage engines.  Such <b>location transparency</b> must be preserved by the middleware supporting any particular island. </p>
+<p>In summary, multiple location-transparent islands are required, each supporting a query language.  A local storage engine might belong to multiple islands.</p>
+</div>
+<h4>Tenet 2:  Complete functionality of underlying DBMSs is required</h4>
+<div align="justify">It is appealing to construct each island with &#8220;intersection semantics&#8221;.  In other words, construct an island query language with that set of utterances that can be successfully mapped into the underlying storage systems in a location transparent manner.  Unfortunately, this will result in islands with less functionality than their underlying constituent systems.  A second tenet of next generation federations is that one cannot give up local DBMS functionality.  Put differently, existing applications must continue to run, when a storage engine joins a federation.  This argues strongly for the inclusion of <b>degenerate</b> islands consisting of a single local engine and its query language.</p>
+<p>As a result of these two tenets, we expect future federations to have a multiplicity of location-transparent islands of information, with local storage engines in multiple islands.  We define <b>polystores</b> to be systems obeying tenets 1 and 2, to distinguish them from previous data federations.</p>
+<p>In the rest of this blog post, we briefly discuss research issues with polystores.  Our approach to some of these topics in the Intel-sponsored BigDAWG project [2] is discussed in [3]. </p></div>
+<h3>Research issues with polystores</h3>
+<div align="justify">
+<p><span style="color:#151515;"><b>Query optimization. </b></span> Previous federation work has assumed a cost-based model for a middleware optimizer.  However, this requires the optimizer to know the characteristics of each operation in each local DBMS.  This amount of required knowledge seems unreasonable, and requires the optimizer to change when a new engine joins an island.  A &#8220;black box&#8221; approach makes a lot more sense when coping with disparate underlying engines.</p>
+</p></div>
+<div align="justify">
+<p><span style="color:#151515;"><b>Automatic shim construction.</b></span>  A local engine needs a shim for each island in which it participates.  Work is required to make shim construction much less manual than it is today.</p>
+</div>
+<div align="justify">
+<p><span style="color:#151515;"><b>Automatic copy. </b></span> Obviously full replication of all data in every underlying engine is infeasible.  Hence, every engine in an island needs to be able to copy data to and from other engines in the island.  Moreover, every island needs to be able to exchange data with other islands.  Constructing high-speed copy systems semi-automatically is clearly desirable.</p>
+</div>
+<div align="justify">
+<p><span style="color:#151515;"><b>Distributed transactions. </b></span> Constructing distributed transactions across local engines that may not support the same local transaction model is required.  It is not clear how to do this.</p>
+</div>
+<div align="justify">
+<p><span style="color:#151515;"><b>Automatic load balancing and provisioning. </b></span> It must be possible to balance the load across the local engines in a polystore by judiciously replicating or moving data objects.  Obviously a monitoring system is required to support such a feature.</p>
+</div>
+<div align="justify">
+<p><span style="color:#151515;"><b>Novel user interfaces.</b></span>  The interactions with a polystore are not likely to conform to typical historical patterns.  For example, a frequent query to a polystore will be &#8220;tell me something interesting&#8221;.  Put differently, if I knew what query to ask, I would ask it, but I don&#8217;t.  Polystores would be well served by new data mining, visualization, and browsing user interfaces.</p>
+</div>
+<div align="justify">
+<p>In summary, we see a resurgence of interest in data federations, as applications get deployed on multiple local engines.  Based on the two tenets above, we expect polystores to be the successful model for federation middleware.  We also see a collection of challenging research issues with supporting polystores which obey tenets 1 and 2.</p>
+</div>
+<div align="justify">
+<p><b>References</b></p>
+</div>
+<p><span style="color:#151515;font-size:12px;">[1] Saeed, M., Villarroel, M., Reisner, A. T., Clifford, G., Lehman, L.-W., Moody, G., et al. (2011). Multiparameter Intelligent Monitoring in Intensive Care II (MIMIC-II): A public-access intensive care unit database. <i>Critical Care Medicine</i>, 39(5), 952–960. </span></p>
+<p><span style="color:#151515;font-size:12px;">[2] Elmore, A. J., Duggan, J., Stonebraker, M., Balazinska, M., Cetintemel, U., Gadepally, V., et al. (2015). A Demonstration of the BigDAWG Polystore System. <i>Proceedings of the VLDB Endowment</i>, 8(12).</span></p>
+<p><span style="color:#151515;font-size:12px;">[3] Duggan, J., Elmore, A. J., Stonebraker, M., Balazinska, M., Howe, B., Kepner, J., et al. (2015). The BigDAWG Polystore System. <i>ACM Sigmod Record</i>, 44(3).</span></p>
+<div align="justify">
+</div>
+<h4> Blogger Profile: </h4>
+<div align="justify">
+<p><i>Michael Stonebraker is an adjunct professor at MIT CSAIL.  He was the main architect of the INGRES relational DBMS; the object-relational DBMS, Postgres; and the federated data system, Mariposa; and has started nine start-up companies to commercialize these database technologies and, more recently, Big Data technologies (Vertica, VoltDB, Paradigm4, Tamr).  He is the author of scores of papers in this area. He was recently elected to the National Academy of Engineering and the American Academy of Arts and Sciences. He has won the Association for Computing Machinery&#8217;s (ACM) A.M. Turing Award, often referred to as &#8220;the Nobel Prize of computing.&#8221;</i></p>
+</div>
+<div>
+<p> Copyright @ 2015, Michael Stonebraker, All rights reserved.</p>
+</div>
+{% endraw %}

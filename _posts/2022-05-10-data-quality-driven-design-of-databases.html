@@ -1,0 +1,109 @@
+---
+layout: post
+title: "Data-quality Driven Design of Databases"
+date: 2022-05-10 06:39:50
+last_modified_at: 2022-08-03 19:10:57
+author: "sebastianlink"
+categories: ["Big Data", "Databases"]
+excerpt: "Financially, poor data quality costs organizations some ludicrous amounts of money. Worse, poor data quality is a strong inhibitor to the success of data science: No analytical method can create value from poor quality data. As a consequence, data science projects invest a majority of their…"
+image: "/wp-content/uploads/2022/05/Picture-1-1024x519.png"
+wp_id: 3458
+permalink: "/2022/05/10/data-quality-driven-design-of-databases/"
+---
+{% raw %}
+<p class="wp-block-paragraph">Financially, poor data quality costs organizations some ludicrous amounts of money. Worse, poor data quality is a strong inhibitor to the success of data science: No analytical method can create value from poor quality data. As a consequence, data science projects invest a majority of their resources on cleansing data. However, cleansing resists automation as it is typically based on knowledge about the underlying domain. This makes it challenging to develop universal methods that improve data quality sufficiently by automated means. Similar to discussions about the quality of education and the quality of healthcare, the database community has the duty to bring forward comprehensive methods that ensure high data quality.</p>
+
+<p class="wp-block-paragraph">Thought leaders on data quality have identified that “the problem of measuring and improving the quality of data has been dealt with in the literature as an activity to be performed <em>a posteriori</em>, instead of during the design of the data” [1]. Surprisingly, the design for data quality is still an unexplored area.</p>
+
+<p class="wp-block-paragraph">Data quality encompasses several dimensions, such as data accuracy, completeness, integrity or timeliness [2]. Remarkably, data integrity has been a central focus point of logical database design since the 1980s, aiming to minimize the effort required to maintain data integrity during updates. Data dependencies, such as functional, join and inclusion dependencies, can be utilized to declare data integrity requirements that ought to be satisfied by any database instance that complies with the business rules of the underlying application domain. Strong research efforts have resulted in several normal form proposals and normalization algorithms, including 3NF, Boyce-Codd Normal Form, 4NF, 5NF [3,4], or Inclusion Dependency Normal Form [5].</p>
+
+<p class="wp-block-paragraph">In an effort to address the design for data quality, our natural idea is to extend expressive classes of data dependencies by the ability to declare other data quality requirements, such as accuracy, completeness, or timeliness. The design for data quality would then aim at organizing data in a way such that the effort of maintaining data quality can be minimized. These ideas are summarized in Figure 1. Data is collected from various sources such as data markets, multimedia gadgets, data warehouses, social media, or the public. Raw data is then stored in a data lake. The data undergoes a cleansing process to get ready for use in applications. The outcome of this cleansing process consists of master data and data quality rules. Indeed, the rules are essential for the data-quality driven design framework we envision as they declare which data is fit for which applications. Our idea is then to tailor the design process to applications by considering only those data that meet the quality requirements of the application. In Figure 1, the checklist icons illustrate the different data quality requirements of the different applications. Each list of requirements drives the transformation of the master data schema into database schemata for any application with this list of requirements. Hence, the resulting application schema is fit for purpose by design, and data that meets the application requirements can be processed efficiently.</p>
+
+<p class="wp-block-paragraph"></p>
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="519" src="../../../../wp-content/uploads/2022/05/Picture-1-1024x519.png" alt="" class="wp-image-3459" /><figcaption>Figure 1: From Data Collection to Master Data to Data-quality Driven Design</figcaption></figure>
+
+<p class="wp-block-paragraph">Recently, we have taken first steps to provide proofs of concepts in various directions. This includes at least the following three areas of research.</p>
+
+<h3 class="wp-block-heading">Acquisition of data quality rules</h3>
+
+<p class="wp-block-paragraph">The acquisition of data quality rules relies on the discovery of rules from a given class from a given data set, traditionally known as dependency inference and more recently known as data profiling. However, the set of rules that hold on a given data set includes rules that hold accidentally (for example, because data is missing that would normally violate the rule) and may not include rules that should hold (for example, because dirty data is present that violates the rule). Hence, methods need to be devised that help us separate true from false positives (meaningful rules among all rules discovered), and false from positive negatives (meaningful rules among all rules not discovered), since the data quality rules we are interested in are made up of the true positives and false negatives in the output of data profiling algorithms. &nbsp;Techniques include various ways to rank the output, such as by the number of redundant data values caused by functional dependencies, and to represent all rules of the given class that do not hold on the given data set (namely by Armstrong databases [6,7]). Combined with human experts in the loop, these techniques can lead to higher precision and recall in the acquisition of data quality rules. </p>
+
+<p class="wp-block-paragraph">Without adding any data quality dimensions, these techniques have been used for the acquisition of functional dependencies [8]. In terms of data accuracy, the techniques have been combined with different models of uncertainty to quantify the degree of accuracy by which instances hold, such as probabilistic&nbsp; and possibilistic rules [9-11]. In terms of data completeness, one may resort to dedicated interpretations of null markers (such as not application, no information, unknown) to obtain classes such dependency sets [12] and possible and certain dependencies [13], or directly embed data completeness requirements within the definition of integrity constraints, such as embedded uniqueness constraints [14], functional dependencies [15], or inclusion dependencies [16]. Some of the methods are successfully used to automate data integration in data visualization tools, in particular when the mining of inclusion dependencies can inform choices how tables can be joined efficiently. More information can be found <a href="https://www.viadotto.tech">here</a>.</p>
+
+<h3 class="wp-block-heading">Data cleansing</h3>
+
+<p class="wp-block-paragraph">One idea to exhaust opportunities for data cleansing with respect to a class of data quality rules is to present human experts with (parts of) perfect data samples that satisfy the same set of rules as the entire data set. By definition, the perfect samples contain for each of the rules that do not hold on the data, some records of data that violates the rule. If the rule is meaningful, such violations become easily observable by the human experts, and appropriate actions can be taken. Iterative use of mining and perfect sampling thereby leads to the improvement of data quality, but also to the acquisition of meaningful data quality rules. </p>
+
+<p class="wp-block-paragraph">While the benefit of Armstrong databases to this regard has been known for some time [6,7,17], an actual combination of mining, sampling, and human inspection has only been proposed recently [18]. The accuracy dimension of data quality can actually be used to shift the invasive nature of cleansing data to cleaning the degree of accuracy associated with the data. This approach has been formalized, investigated, and experimentally validated in [19], where it turns out that associated decision problem is <em>NP</em>-hard but a minimal repair can be computed in time polynomial in the size of the output, and the more degrees of accuracy are present the faster the computation works. &nbsp;</p>
+
+<h3 class="wp-block-heading">Data-quality Driven Schema Design</h3>
+
+<p class="wp-block-paragraph">Once the data quality rules that apply to an application have been acquired, the quality-driven design for the database schema of the application can commence. The main idea is to tailor traditional schema design to the specific data quality needs of an application. Regarding data accuracy, one approach is to assign degrees of possibility to records of data, measuring the degree of accuracy we entrust in them. One can then assign degrees of certainty to traditional constraints expressing to which data they apply. Indeed, the higher the certainty degree of a constraint is, the lower may the degree of possibility be for data it applies to. In other words, an application may set a lower bound for the degree of possibility its data requires, which means that schema normalization only needs to consider data rules that hold with a degree of certainty that applies to such data. As a consequence, the normalization effort is tailored to the accuracy requirements of applications [20]. </p>
+
+<p class="wp-block-paragraph">Regarding data completeness, one approach is to tailor schema design to specific interpretations of null markers. Such approaches were recently investigated in [21]. Another approach is to embed data completeness requirements as part of the constraints. For example, an embedded functional dependency is an expression <em>E:X</em>→<em>Y</em> meaning that the subset of <em>E</em>-complete records (records with no missing data on any column in <em>E</em>) satisfy the functional dependency <em>X</em>→<em>Y</em>. Similar to the accuracy requirements, it is then possible to tailor the normalization effort to the completeness requirements of the application. For example, if an application requires records that are   <em>E</em>-complete, we can apply classical normalization techniques to the set of functional dependencies <em>X</em>→<em>Y</em> obtained from the given embedded functional dependencies <em>E’:X→Y</em> where <em>E’</em> contains <em>E</em>. </p>
+
+<p class="wp-block-paragraph">More recently [23], we have also proposed a new normal form that uses cardinality constraints to quantify the level of data redundancy caused by functional dependencies. Here, a schema is in <em>L</em>-Bounded Cardinality Normal Form if and only if it permits only those instances that prohibit any occurrences of data values that are <em>L</em>-redundant (that is, the redundant data value occurs <em>L</em> times). The minimum&nbsp;for which this is possible is at the same time the maximum level&nbsp;of join efficiency, meaning that any record from one relation can be matched with at most records from another relation. Hence, the use of cardinality constraints leads to schema design that quantifies the trade-off between update inefficiency and join efficiency. As a consequence, we can measure already at the logical level, which degrees of update inefficiency and join efficiency will be permitted in any future database instance. Classical schema design can only achieve this in the special case where a lossless, dependency-preserving decomposition into Boyce-Codd Normal Form exists, in which case the minimum level&nbsp;is 1. </p>
+
+<p class="wp-block-paragraph">For schemata that are in 3NF but not in Boyce-Codd Normal Form, and for schemata that are in Boyce-Codd Normal Form but where some functional dependency was lost, the levels of update inefficiency and join efficiency are <em>a priori</em> unlimited. We have also devised an algorithm that computes a schema in <em>L</em>-Bounded Cardinality Normal Form with the minimum level possible among all decompositions that preserve all functional dependencies. In terms of the data quality dimension of uniqueness, truly measures which level of duplication schema designs may need to permit in any of their instances.</p>
+
+<h3 class="wp-block-heading">Conclusion</h3>
+
+<p class="wp-block-paragraph">The database community needs to provide comprehensive methodologies that help organizations define and achieve the data quality standard they target. In addition to the existing plethora of work on cleansing already dirty data, it is important to prevent dirty data in the first place. The design for data quality will bring forward means to efficiently manage data that is fit for purpose by design, and therefore serve as an enabler for data science that turns high quality data into high quality insight.&nbsp;</p>
+
+<h3 class="wp-block-heading">Blogger Profile</h3>
+
+<div class="wp-block-image"><figure class="alignleft size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/05/Blogger.png" alt="" class="wp-image-3460" width="140" height="206" /></figure></div>
+
+<p class="wp-block-paragraph">Sebastian Link received a Doctor of Science degree from the University of Auckland in 2015, and a PhD in Information Systems from Massey University in 2005. He is Professor at the School of Computer Science at the University of Auckland, where he also serves as the Associate Dean International for the Faculty of Science, and the Programme Director of Data Science at the Home of <em>R</em>. His research interests include the modelling, mining, quality and sampling of data, database design, and applications of discrete mathematics to computer science. Sebastian received the Chris Wallace Award for Outstanding Research Contributions in 2013. He has published more than 150 articles and has served extensively as a reviewer in venues such as IEEE ICDE, ACM SIGMOD, VLDB, Information Systems, IEEE TKDE, ACM ToDS, and the VLDB Journal. He is also the Chief Science Officer for the company <em>DataViadotto</em>.</p>
+
+<h3 class="wp-block-heading">References</h3>
+
+<p class="wp-block-paragraph">[1] Carlo Batini, Andrea Maurino: <em>Design for Data Quality</em>. Encyclopedia of Database Systems (2nd ed.) 2018</p>
+
+<p class="wp-block-paragraph">[2] Shazia W. Sadiq: <em>Handbook of Data Quality, Research and Practice</em>. Springer 2013, ISBN 978-3-642-36256-9</p>
+
+<p class="wp-block-paragraph">[3] David Maier: <em>The Theory of Relational Databases</em>. Computer Science Press 1983, ISBN 0-914894-42-0</p>
+
+<p class="wp-block-paragraph">[4] Joachim Biskup: <em>Achievements of Relational Database Schema Design Theory Revisited</em>. Semantics in Databases 1995: 29-54</p>
+
+<p class="wp-block-paragraph">[5] Mark Levene, Millist W. Vincent: <em>Justification for Inclusion Dependency Normal Form</em>. IEEE Trans. Knowl. Data Eng. 12(2): 281-291 (2000)</p>
+
+<p class="wp-block-paragraph">[6] Ronald Fagin: <em>Horn clauses and database dependencies</em>. J. ACM 29(4): 952-985 (1982)</p>
+
+<p class="wp-block-paragraph">[7] Fabien De Marchi, Jean-Marc Petit: <em>Semantic sampling of existing databases through informative Armstrong databases</em>. Inf. Syst. 32(3): 446-457 (2007)</p>
+
+<p class="wp-block-paragraph">[8] Ziheng Wei, Sebastian Link: <em>Discovery and Ranking of Functional Dependencies</em>. ICDE 2019: 1526-1537</p>
+
+<p class="wp-block-paragraph">[9] Pieta Brown, Sebastian Link: <em>Probabilistic Keys</em>. IEEE Trans. Knowl. Data Eng. 29(3): 670-682 (2017)</p>
+
+<p class="wp-block-paragraph">[10] Nishita Balamuralikrishna, Yingnan Jiang, Henning Koehler, Uwe Leck, Sebastian Link, Henri Prade: <em>Possibilistic keys</em>. Fuzzy Sets Syst. 376: 1-36 (2019)</p>
+
+<p class="wp-block-paragraph">[11] Tania Roblot, Miika Hannula, Sebastian Link: <em>Probabilistic Cardinality Constraints &#8211; Validation, Reasoning, and Semantic Summaries</em>. VLDB J. 27(6): 771-795 (2018)</p>
+
+<p class="wp-block-paragraph">[12] Miika Hannula, Sebastian Link: <em>Automated Reasoning About Key Sets</em>. IJCAR 2018: 47-63</p>
+
+<p class="wp-block-paragraph">[13] Henning Köhler, Uwe Leck, Sebastian Link, Xiaofang Zhou: <em>Possible and certain keys for SQL</em>. VLDB J. 25(4): 571-596 (2016)</p>
+
+<p class="wp-block-paragraph">[14] Ziheng Wei, Uwe Leck, Sebastian Link: <em>Discovery and Ranking of Embedded Uniqueness Constraints</em>. Proc. VLDB Endow. 12(13): 2339-2352 (2019)</p>
+
+<p class="wp-block-paragraph">[15] Ziheng Wei, Sven Hartmann, Sebastian Link: <em>Algorithms for the discovery of embedded functional dependencies</em>. VLDB J. 30(6): 1069-1093 (2021)</p>
+
+<p class="wp-block-paragraph">[16] Henning Köhler, Sebastian Link: <em>Inclusion dependencies and their interaction with functional dependencies in SQL</em>. J. Comput. Syst. Sci. 85: 104-131 (2017)</p>
+
+<p class="wp-block-paragraph">[17] Warren-Dean Langeveldt, Sebastian Link: <em>Empirical evidence for the usefulness of Armstrong relations in the acquisition of meaningful functional dependencies</em>. Inf. Syst. 35(3): 352-374 (2010)</p>
+
+<p class="wp-block-paragraph">[18] Ziheng Wei, Sebastian Link: <em>DataProf: Semantic Profiling for Iterative Data Cleansing and Business Rule Acquisition</em>. SIGMOD Conference 2018: 1793-1796</p>
+
+<p class="wp-block-paragraph">[19] Henning Köhler, Sebastian Link: <em>Possibilistic Data Cleaning</em>, IEEE Trans. Knowl. Data Eng., doi: 10.1109/TKDE.2021.3062318.</p>
+
+<p class="wp-block-paragraph">[20] Sebastian Link, Henri Prade: <em>Relational database schema design for uncertain data</em>. Inf. Syst. 84: 88-110 (2019)</p>
+
+<p class="wp-block-paragraph">[21] Henning Köhler, Sebastian Link: <em>SQL Schema Design: Foundations, Normal Forms, and Normalization</em>. SIGMOD Conference 2016: 267-279</p>
+
+<p class="wp-block-paragraph">[22] Ziheng Wei, Sebastian Link: <em>Embedded Functional Dependencies and Data-completeness Tailored Database Design</em>. ACM Trans. Database Syst. 46(2): 7:1-7:46 (2021)</p>
+
+<p class="wp-block-paragraph">[23] Sebastian Link, Ziheng Wei: <em>Logical Schema Design that Quantifies Update Inefficiency and Join Efficiency</em>. SIGMOD Conference 2021: 1169-1181</p>
+
+<p class="wp-block-paragraph"><em>Copyright @ 2022, Sebastian Link, All rights reserved. </em></p>
+{% endraw %}

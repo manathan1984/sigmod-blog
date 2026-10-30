@@ -1,0 +1,133 @@
+---
+layout: post
+title: "Similarity Search for Scalable Data Science: The Past, Present and Exciting Road Ahead"
+date: 2022-12-29 12:43:10
+last_modified_at: 2023-02-02 17:47:07
+author: "karimaechihabi"
+categories: ["Data Science"]
+excerpt: "Similarity search is a fundamental building block for a myriad of critical data science applications involving large collections of high-dimensional objects, including data discovery, data cleaning, information retrieval, classification, outlier detection and clustering. Similarity search finds…"
+image: "/wp-content/uploads/2022/12/fig-1.png"
+wp_id: 3616
+permalink: "/2022/12/29/similarity-search-for-scalable-data-science-the-past-present-and-exciting-road-ahead/"
+---
+{% raw %}
+<p class="wp-block-paragraph">Similarity search is a fundamental building block for a myriad of critical data science applications involving large collections of high-dimensional objects, including data discovery, data cleaning, information retrieval, classification, outlier detection and clustering. Similarity search finds objects in a collection close to a given query according to some definition of sameness. This challenging problem has been studied extensively in the past three decades and will continue to attract attention with the proliferation of massive collections of high-dimensional objects in various scientific and business domains. Objects can be data series, text, multimedia, images, audio, video recordings, graphs, database tables, software code or deep network embeddings. In this post, we describe key data science applications that require efficient high-dimensional similarity search, we briefly survey existing works and discuss promising new research findings, and we pinpoint the challenges and open research problems in this area</p>
+
+<h3 class="wp-block-heading"><strong>Use Cases</strong></h3>
+
+<p class="wp-block-paragraph">Similarity search is the backbone of many important data science applications covering a variety of domains including finance, economics, agriculture, bioinformatics, medicine, and cybersecurity [7]. We list below examples of such applications.</p>
+
+<p class="wp-block-paragraph"><strong>[Data Integration] </strong>Several data integration tasks use similarity search as a core subroutine. It has been used over tuple embeddings to automate entity resolution and record linkage, over column embeddings and text-relation joined embeddings to impute missing values, and over schema embeddings to support data discovery.</p>
+
+<p class="wp-block-paragraph"><strong>[Information Retrieval] </strong>Information retrieval also relies on similarity search to identify multimedia objects similar to a user input, to detect copied content, and to avoid redundant information extraction.</p>
+
+<p class="wp-block-paragraph"><strong>[Recommender Systems]</strong> Recommender systems exploit similarity search to evaluate the interest of a user for a new item, based on the user’s past behavior and/or the collection of preferences expressed by many other users. Item embeddings are learned from user-item interactions, and new items are recommended to a user if they are similar to ones previously liked. Such systems are used to recommend movies, videos, news, and products in online shopping platforms.</p>
+
+<p class="wp-block-paragraph"><strong>[Outlier Detection]</strong> Similarity search has also been used to detect outliers in order to find errors or learn about inherent variations in the data, e.g., to detect top players in an NBA database or find land mines in satellite images.</p>
+
+<p class="wp-block-paragraph"><strong>[Classification]</strong> Similarity-based classification assigns a label to a new object based on the majority vote of its neighbors among the set of labeled training samples. It has been used in protein classification, object recognition, web page categorization and remote sensing.</p>
+
+<p class="wp-block-paragraph"><strong>[Clustering]</strong> Clustering techniques also rely on similarity search to group similar objects in a collection into clusters, by finding the k closest neighbors around a given object. It has been used to support interactive web search, market segmentation and drug discovery.</p>
+
+<p class="wp-block-paragraph"><strong>[Software Engineering]</strong> Similarity search has been used over code or API embeddings to predict I/O usage or automatically detect software dependencies and code clones and API mappings between different software frameworks.</p>
+
+<p class="wp-block-paragraph"><strong>[Cybersecurity]</strong> Similarity search has also supported some critical cybersecurity tasks such as network profiling, malware detection, and other forms of technology misuse.</p>
+
+<h3 class="wp-block-heading"><strong>Problem Statement</strong></h3>
+
+<p class="wp-block-paragraph">Similarity search is typically reduced to k-nearest neighbor search in high-dimensional space, where objects are represented as high-dimensional vectors and their (dis)similarity is evaluated using a distance measure such as the Euclidean distance. High-dimensional similarity search is hard, because objects often contain 100s-1000s of dimensions, and these dimensions need to be processed as a single entity not as individual values. Similarity search algorithms can either return exact or approximate answers. Exact methods are expensive while approximate methods sacrifice accuracy to achieve better efficiency. We call the methods that do not provide any guarantees on the results ng-approximate, and those that provide guarantees on the approximation error, δ-ϵ-approximate methods, where ϵ is the approximation error and δ, the probability that ϵ will not be exceeded. When δ = 1, a δ-ϵ-approximate method becomes ϵ-approximate, and when ϵ = 0, an ϵ-approximate method becomes exact. Figure 1 illustrates the different flavors of the similarity search problem.</p>
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="740" height="464" src="../../../../wp-content/uploads/2022/12/fig-1.png" alt="" class="wp-image-3617" /></figure>
+
+<h3 class="wp-block-heading"><strong>The Past &amp; Present</strong></h3>
+
+<p class="wp-block-paragraph">Similarity search has been studied in the past three decades by different communities often using diverse and conflicting terminology. We present a unified terminology and a taxonomy (Fig 2; non-exhaustive) for similarity search techniques that reconciles the terminology used in the literature [9,10].</p>
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="648" height="506" src="../../../../wp-content/uploads/2022/12/fig-2.png" alt="" class="wp-image-3618" /></figure>
+
+<p class="wp-block-paragraph"><strong>[Exact Similarity Search]</strong> Exact similarity search methods return correct results but are expensive both in time and space. Many exact methods were developed either for generic high-d vectors or for specific types of objects such as data series [9,22]. These methods are based either on scans or indexes. Scans compare each query object sequentially to all candidates in the dataset. However, indexes limit the number of these comparisons by filtering the results using a pre-built indexing data structure, and refining the answers to remove false positives. All indexing methods rely on the lower-bounding property to guard against false negatives [11]. The state-of-the-art in this class is Hercules [5] on-disk and MESSI [20] in-memory.</p>
+
+<p class="wp-block-paragraph"><strong>[Approximate Similarity Search with Guarantees]</strong> Approximate similarity search methods were proposed to improve query efficiency by sacrificing some accuracy. The key challenge is to identify the right trade-offs between accuracy, efficiency and footprint. The δ-ϵ-approximate methods support guarantees on query accuracy. The most popular methods belong to the LSH family [14]; solving the problem in sub-linear time, for δ &lt; 1. A δ-ϵ-approximate search algorithm was also proposed for the MTree [4] for δ &lt;= 1, but this idea has not been exploited by any other technique, until only recently [10], where extensions to exact data series techniques were proposed to enable them to support δ-ϵ-approximate search. Surprisingly, these extensions outperformed both the MTree and state-of-the-art LSH techniques across all popular datasets, in-memory and on-disk.</p>
+
+<p class="wp-block-paragraph"><strong>[Approximate Similarity Search without Guarantees]</strong> The similarity search methods with guarantees are considered slow for many use cases. This led the research community both in academia and industry to develop ng-approximate methods that provide no guarantees whatsoever but have excellent empirical accuracy and efficiency. The state-of-the-art in this class are based on neighborhood graphs and inverted indexes [3,12,15,16].</p>
+
+<p class="wp-block-paragraph"><strong>[Progressive Similarity Search]</strong> Despite the recent advances in exact and approximate similarity search, the query efficiency of the existing methods is still not satisfactory for interactive interactive exploration and fast decision making. A new body of work has proposed progressive algorithms that return intermediate results with probability guarantees for exact search [6,13], and early termination strategies within a target recall for approximate search [18].</p>
+
+<h3 class="wp-block-heading"><strong>The Exciting Road Ahead</strong></h3>
+
+<p class="wp-block-paragraph">Given the important practical applications that rely on similarity search, the topic continues to draw attention both from academia and industry. We identify below some promising research directions that we believe can truly push the frontier in this research field.</p>
+
+<p class="wp-block-paragraph"><strong>[Learning Data Representations]</strong> Similarity search methods leverage dimensionality reduction to achieve efficiency. Some works have proposed learned quantization techniques and hashed functions. A future direction would be to study how machine learning algorithms can improve dimensionality reduction techniques [25] and adapt them to data characteristics. To support search with guarantees, it would also be critical to develop lower-bounds for these learned representations.</p>
+
+<p class="wp-block-paragraph"><strong>[Designing Adaptive Algorithms and Data Structures]</strong> Machine learning has also been exploited to build indexing structures for similarity search [1] or improve search performance and accuracy [21]. Approximate similarity search methods proposed in [10] are practical because they build the index once and tune the desired accuracy/efficiency tradeoffs at query time, whereas other approaches such as LSH methods need to perform this tuning both during index building and query answering. Interesting research directions would be to exploit AI to learn better stopping criteria for these methods.</p>
+
+<p class="wp-block-paragraph"><strong>[Automating Tuning]</strong> Tuning most approximate similarity search techniques is manually intensive [10]. Therefore, it would be valuable to develop auto-tuning mechanisms to make the process less cumbersome.</p>
+
+<p class="wp-block-paragraph"><strong>[Supporting Modern Hardware and Distribution]</strong> A number of similarity search techniques have been proposed for modern hardware, focusing on SIMD, multi-socket architectures, the GPU and SSD storage as well as on distributed architectures [8]. Interesting directions include the development of methods for advanced technologies, such as FPGA and NVM and emerging high-dimensional computing platforms [17].</p>
+
+<p class="wp-block-paragraph"><strong>[Developing Native Systems]</strong> Most research developments have studied the problem of similarity search from an algorithmic perspective. A growing trend is to build end-to-end systems that provide native support for high-dimensional objects and similarity search [24].</p>
+
+<p class="wp-block-paragraph"><strong>[Extending Guarantees]</strong> Establishing guarantees on search results is important for several applications [19]. Techniques that offer guarantees, focus on two dimensions that relate to data quality: query accuracy and answering time. Interesting future directions in this area are extending new types of guarantees, e.g., on query performance or recall and MAP, and developing new cost models to establish a theoretical complexity analysis of the average query execution time, and enable query optimization and index parameter tuning.</p>
+
+<p class="wp-block-paragraph"><strong>[Building Benchmarks]</strong> Benchmarking is important because it allows a fair comparison of different solutions, helps foster reproducible research and can serve to identify gaps in the state-of-the-art, which in turn can spur future research developments. Currently, there exists no exhaustive benchmark for scalable similarity search. There are some notable efforts [2,23] in this direction; however, they either cover only small in-memory datasets or a subset of the popular similarity search approaches, performance metrics, datasets, or query workloads.</p>
+
+<h3 class="wp-block-heading"><strong>Acknowledgments</strong></h3>
+
+<p class="wp-block-paragraph">I would like to sincerely thank all my co-authors for their valuable contributions.</p>
+
+<p class="wp-block-paragraph"><strong>Blogger Profile</strong></p>
+
+<p class="wp-block-paragraph"><strong>Karima Echihabi</strong> is an Assistant Professor at the School of Computer Science at Mohammed VI University in Morocco. Her research interests lie in scalable data analytics. She has conducted the two most extensive experimental evaluations in the area of high-dimensional similarity search (published in PVLDB) and presented five tutorials on this topic at the top venues, including VLDB, ICDE and EDBT. Her work was also highlighted in Communications of the ACM. Prior to joining academia, she has founded a consulting company in data management and has worked as a software engineer in the Windows team at Microsoft Redmond, and the Query Optimizer team at the IBM Toronto Lab.</p>
+
+<h3 class="wp-block-heading"><strong>References</strong></h3>
+
+<p class="wp-block-paragraph">[1] A. Al-Mamun, H. Wu, and W. G. Aref. A tutorial on learned multi-dimensional indexes. SIGSPATIAL, page 1–4, 2020.</p>
+
+<p class="wp-block-paragraph">[2] M. Aumuller, E. Bernhardsson, and A. Faithfull. ANN-Benchmarks: A Benchmarking Tool for Approximate Nearest Neighbor Algorithms. In SISAP, 2017.</p>
+
+<p class="wp-block-paragraph">[3] A. Babenko and V. Lempitsky. The Inverted Multi-Index. TPAMI, 37(6), 2015.</p>
+
+<p class="wp-block-paragraph">[4] P. Ciaccia and M. Patella. PAC Nearest Neighbor Queries: Approximate and Controlled Search in High-Dimensional and Metric Spaces. In ICDE, 2000.</p>
+
+<p class="wp-block-paragraph">[5] K. Echihabi, P. Fatourou, K. Zoumpatianos, T. Palpanas, and H. Benbrahim. Hercules against data series similarity search. Proceedings of the VLDB Endowment, 15(10):2005–2018, 2022.</p>
+
+<p class="wp-block-paragraph">[6] K. Echihabi, T. Tsandilas, A. Gogolou, A. Bezerianos, and T. Palpanas. Pros: data series progressive k-nn similarity search and classification with probabilistic quality guarantees. The VLDB Journal, pages 1–27, 2022.</p>
+
+<p class="wp-block-paragraph">[7] K. Echihabi, K. Zoumpatianos, and T. Palpanas. High-dimensional similarity search for scalable data science. In ICDE, 2021.</p>
+
+<p class="wp-block-paragraph">[8] K. Echihabi, K. Zoumpatianos, and T. Palpanas. New trends in high-d vector similarity search: al-driven, progressive, and distributed. Proceedings of the VLDB Endowment, 14(12):3198–3201, 2021.</p>
+
+<p class="wp-block-paragraph">[9] K. Echihabi, K. Zoumpatianos, T. Palpanas, and H. Benbrahim. The Lernaean Hydra of Data Series Similarity Search: An Experimental Evaluation of the State of the Art. PVLDB, 12(2), 2018.</p>
+
+<p class="wp-block-paragraph">[10] K. Echihabi, K. Zoumpatianos, T. Palpanas, and H. Benbrahim. Return of the Lernaean Hydra: Experimental Evaluation of Data Series Approximate Similarity Search. PVLDB, 13(3), 2019.</p>
+
+<p class="wp-block-paragraph">[11] C. Faloutsos, M. Ranganathan, and Y. Manolopoulos. Fast subsequence matching in time-series databases. In SIGMOD, 1994.</p>
+
+<p class="wp-block-paragraph">[12] T. Ge, K. He, Q. Ke, and J. Sun. Optimized Product Quantization. TPAMI, 36(4), Apr. 2014.</p>
+
+<p class="wp-block-paragraph">[13] A. Gogolou, T. Tsandilas, K. Echihabi, T. Palpanas, and A. Bezerianos. Data Series Progressive Similarity Search with Probabilistic Quality Guarantees. In SIGMOD, 2020.</p>
+
+<p class="wp-block-paragraph">[14] P. Indyk and R. Motwani. Approximate Nearest Neighbors: Towards Removing the Curse of Dimensionality. STOC, 1998.</p>
+
+<p class="wp-block-paragraph">[15] S. Jayaram Subramanya, F. Devvrit, H. V. Simhadri, R. Krishnawamy, and R. Kadekodi. Rand-nsg: Fast accurate billion-point nearest neighbor search on a single node. In NeurIPS, 2019.</p>
+
+<p class="wp-block-paragraph">[16] H. Jegou, M. Douze, and C. Schmid. Product Quantization for Nearest Neighbor Search. TPAMI, 33(1), 2011.</p>
+
+<p class="wp-block-paragraph">[17] P. Kanerva. Computing with high-dimensional vectors. IEEE Design Test, 36(3), 2019.</p>
+
+<p class="wp-block-paragraph">[18] C. Li, M. Zhang, D. G. Andersen, and Y. He. Improving approximate nearest neighbor search through learned adaptive early termination. In SIGMOD, page 2539–2554, 2020.</p>
+
+<p class="wp-block-paragraph">[19] T. Palpanas and V. Beckmann. Report on the first and second interdisciplinary time series analysis workshop. SIGMOD Rec., 48(3), 2019.</p>
+
+<p class="wp-block-paragraph">[20] B. Peng, P. Fatourou, and T. Palpanas. Fast Data Series Indexing for In-Memory Data. VLDBJ, 2021.</p>
+
+<p class="wp-block-paragraph">[21] L. Prokhorenkova and A. Shekhovtsov. Graph-based nearest neighbor search: From practice to theory. In PMLR, 2020.</p>
+
+<p class="wp-block-paragraph">[22] H. Samet. Foundations of Multidimensional and Metric Data Structures. Morgan Kaufmann Publishers Inc., 2005.</p>
+
+<p class="wp-block-paragraph">[23] H. V. Simhadri, G. Williams, M. Aumuller, M. Douze, A. Babenko, D. Baranchuk, Q. Chen, L. Hosseini, R. Krishnaswamy, G. Srinivasa, et al. Results of the neurips’21 challenge on billion-scale approximate nearest neighbor search. arXiv preprint arXiv:2205.03763, 2022.</p>
+
+<p class="wp-block-paragraph">[24] J. Wang, X. Yi, R. Guo, H. Jin, P. Xu, S. Li, X. Wang, X. Guo, C. Li, X. Xu, K. Yu, Y. Yuan, Y. Zou, J. Long, Y. Cai, Z. Li, Z. Zhang, Y. Mo, J. Gu, R. Jiang, Y. Wei, and C. Xie. Milvus: A purpose-built vector data management system. In ACM SIGMOD, page 2614–2627, 2021.</p>
+
+<p class="wp-block-paragraph">[25] Q. Wang and T. Palpanas. Deep Learning Embeddings for Data Series Similarity Search. In SIGKDD, 2021.</p>
+{% endraw %}

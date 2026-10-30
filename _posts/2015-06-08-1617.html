@@ -1,0 +1,90 @@
+---
+layout: post
+title: "Data systems that are easy to design*"
+date: 2015-06-08 22:07:49
+last_modified_at: 2015-07-22 00:25:10
+author: "user-27"
+categories: ["Systems"]
+excerpt: "We keep designing new data systems over and over again. We ask two questions in this post: 1) Is this sustainable in the long term? 2) Can we make this process faster? The need for new data system designs “Big data” may be mostly a marketing term as opposed to a research one but it"
+image: null
+wp_id: 1617
+permalink: "/2015/06/08/1617/"
+---
+{% raw %}
+<div align="justify">
+<p>We keep designing new data systems over and over again. We ask two questions in this post: 1) Is this sustainable in the long term? 2) Can we make this process faster?</p>
+</div>
+<h4>The need for new data system designs</h4>
+<div align="justify">
+<p>&#8220;Big data&#8221; may be mostly a marketing term as opposed to a research one but it is starting to have a tremendous impact on what we do research on. Practically what the big data era brought is that more and more individuals as well as organizations realize the value of gathering, storing and analyzing data. The net effect is that the amount and kinds of applications we need to support grow continuously. At the same time, hardware keeps evolving at a strong pace with new technologies arriving every few years. New data types, new models, a varying balance of incoming data vs. incoming queries as well as new hardware properties, they all need a different system design to achieve great performance.</p>
+</div>
+<div align="justify">
+<p>We are quickly heading towards a future where numerous system designs will be necessary (sometimes even for a single application) and the need to spin off new designs will keep increasing with time as more domains embrace the value of doing business, science and everyday life management in a data-driven way. The question is whether we can keep creating and maintaining new data system designs at a pace that allows us to sustain this growth. </p>
+</div>
+<h4>Problem 1: Data system design is a lengthy and complex process</h4>
+<div align="justify">
+<p>Many would say that designing a data system is kind of an art. It is practically about balancing numerous tradeoffs and what is the best design can easily swing if one of the parameters changes. </p>
+</div>
+<div align="justify">
+<p>Some of the fundamental design points include decisions on how to physically store and access data, designing the data structures, algorithms and data flow models that make data ingestion and query processing efficient. Each decision has side effects that are not always easy to foresee given the complexity of multiple interconnected system components. For example, the way we physically store data defines what is the optimal way to access or update it. At the same time every design choice needs to be tailored to the underlying hardware properties.  </p>
+</div>
+<div align="justify">
+<p>Today design still happens manually and requires the collective expertise, talent and intuition of the whole db community to move forward. As a result, it is an expensive and lengthy process; a complete new design takes multiple years to get right.  </p>
+</div>
+<div align="justify">
+<p>As a recent example let&#8217;s consider column-stores. The very first papers for the alternative data organization as columns appeared in the 80’s. The first ideas on how to efficiently store and access columns appeared in the 90’s, while the first quite complete designs appeared another 10-15 years later. Still today there are numerous open topics and the community keeps pushing with numerous exciting results year after year. This is perhaps an oversimplified summary of column-store evolution but gives a hint that new designs do not &#8220;just happen&#8221; even if the basic ideas do have strong potential.  </p>
+</div>
+<h4>Problem 2: How much of it is it really new?</h4>
+<div align="justify">
+<p>For a data system designer there is nothing more fun than playing around with ideas, designs and implementations of data storage and access models. Trying to eliminate the last few cache misses, trying to get the CPU utilization to the maximum, trying to get a linear speed-up to the number of cores will always be thrilling. But how much of that is it really new concepts and drastically new solutions compared to past research and system designs? </p>
+</div>
+<div align="justify">
+<p>For example, how many fundamentally new concepts can we find if we examine carefully all the data structures and algorithms optimized for different levels of the memory hierarchy as hardware evolves over the years? When the balance between CPU and I/O shifts, we favor solutions that optimize for the one that is currently the main bottleneck, e.g., these days by performing more computation in favor of minimizing I/O. Similarly, when the balance between read and write performance shifts due to new hardware properties, we always adjust our algorithms around the new characteristics, e.g., by batching data accordingly for writes or by favoring sequential access even if that means reading more data in some cases. When designing a new data structure, we always balance among the fundamental read, write and space amplifications tradeoffs depending on the exact applications requirements and hardware environment.  </p>
+</div>
+<div align="justify">
+<p>New solutions certainly pop up all the time but at the same time much of what we do seems to be variations of past concepts to adapt to a new environment by manually trying to find the right balance. </p>
+</p></div>
+<h4>Making it easy to design new data systems</h4>
+<div align="justify">
+<p>Being an inherently hard process, navigating the data system design space requires a lot of time and expertise. Both of these are scarce resources that are unlikely to scale at the same pace with the demands of a data-driven world. The question we ask here is whether we can automate part of the design process by leveraging the fact that a significant part of it relies on repeating concepts and tradeoffs.  </p>
+</div>
+<div align="justify">
+<p>If we could navigate the design space faster by automating part of the process, then a) designing new systems would be faster and b) part of the process may require significantly less expertise. Both of these benefits have a number of positive side effects, mainly towards making efficient data systems accessible and affordable much more broadly than today. </p>
+</p></div>
+<div align="justify">
+<p>The goal is to automate as many parts of the process of data system design as possible. When we design manually, the process includes iterations of the following two steps: 1) hypothesizing that a solution X is an interesting one, 2) testing solution X. Step 1) requires creativity, intuition and experience, while Step 2) additionally requires modeling and engineering skills. Together with a talented PhD student at Harvard DASlab, Lukas Maas, we are pursuing a number of ideas on how to automate these two steps. One approach is by creating a pool of existing design options per system component and automatically testing multiple combinations of component designs until a “good” overall design is found. Iterating over multiple designs in an *evolutionary* way allows to test numerous design combinations, even ones that we might have otherwise missed if it is not easy to see that they are good candidates. For example, regarding physical data layouts, the system may iterate over known data organizations such as combinations of column-groups, array and tree-based storage options as well as versions of those tuned in multiple different ways. It can then pick the one that performs best for the given data, queries and hardware. Several challenges arise such as describing components and their variations in an abstract way, efficiently testing numerous solutions concurrently, allowing for injection of new design options, finding good starting points and heuristics to speed up the discovery of a good design, avoiding local minimum and many more.  </p>
+</div>
+<div align="justify">
+<p>The ideal result of such a research path would be a black box that we feed with data, queries and hardware specifications and spills out a system design and implementation. This may or may not be achievable in its entirety. However, even a more realistic intermediate state where only part of the process can be automated along with a group of expert system designers in the loop would have significant impact in shortening the process of system design to match new applications and hardware.  </p>
+</div>
+<h4>What can we learn from past research?</h4>
+<div align="justify">
+<p>A lot. Making a complex process automatic and abstract seems to be a natural step in the evolution of computer science problems. The database community has a long history of such breakthroughs starting of course with the relational model, embracing declarative approaches and generating numerous adaptive techniques. Making it easy to design data systems requires utilization of everything we know about data systems and there is already research that could potentially be utilized as is. </p>
+</p></div>
+<div align="justify">
+<p>For example, there is work on creating extensible database systems that consist of independent components that can be synthesized [<a href="#reference">1</a>]; having some form of composability and modularity is required in order to be able to automatically synthesize alternative design solutions. In addition, there is work on declaratively defining storage layouts [<a href="#reference">2</a>] or even complete systems [<a href="#reference">3</a>]; such functionality allows us to be able to easily program and extend these systems. Moreover, there is work on adaptive data systems that can automatically adjust base data [<a href="#reference">4</a>], indexing structures [<a href="#reference">5</a>] or even autonomously decide which data to load [<a href="#reference">6</a>] based on incoming data and queries; work on adaptive systems is important because it reduces the numbers of design choices needed. And of course there is work on auto-tuning advisors that help database administrators with the analysis of workloads, proposing good configurations of indexes and views [<a href="#reference">7</a>]; work in these lines is important as we could envision similar &#8220;design advisors&#8221; for the whole data system design. The above examples are just a glimpse of what is relevant from past work in the db community and there is more from other areas as well such as software engineering and machine learning. To these we should add that discussions about similar concepts can be found to early texts by some of the founders of computer science such as by Turing about systems that can autonomously learn [<a href="#reference">8</a>] and by Von Neumann about systems that can self-replicate [<a href="#reference">9</a>].  </p>
+</p></div>
+<h4>A challenge for the whole db community</h4>
+<div align="justify">
+<p>Achieving easy to design data systems will have a significant impact on how quickly we can build efficient systems. With a vast array of challenges to resolve, easy to design systems have something for everyone, requiring contributions from numerous areas of data management research and even beyond; there is room for innovation all the way from languages and user interfaces to physical layouts and optimization as well balancing potential tradeoffs between ease of design, time to deployment and efficiency.  </p>
+</p></div>
+<p>*The discussion in this post is based on research funded by an NSF Career Award on Self-designing Data Systems, Grant No. IIS-1452595.</p>
+<p><a id="reference">REFERENCES</a><br />
+<span style="color:#151515;font-size:12px;">[1] DS Batoory, JR Barnett, Jorge F Garza, Kenneth Paul Smith, K Tsukuda, BC Twichell, TE Wise. GENESIS: An extensible database management system. IEEE Transactions on Software Engineering, 1988</span></p>
+<p><span style="color:#151515;font-size:12px;">[2] Philippe Cudré-Mauroux, Eugene Wu, and Samuel Madden. The case for RodentStore: An adaptive, declarative storage system. In Proceedings of the biennial Conference on Innovative Data Systems Research (CIDR), 2009.</span></p>
+<p><span style="color:#151515;font-size:12px;">[3] Yannis Klonatos, Christoph Koch, Tiark Rompf, and Hassan Chafi. Building efficient query engines in a high-level language. Proceedings of the Very Large Data Bases Endowment (PVLDB), 7(10), 2014.</span></p>
+<p><span style="color:#151515;font-size:12px;">[4] Ioannis Alagiannis, Stratos Idreos, and Anastasia Ailamaki. H2O: A Hands-free Adaptive Store. In Proceedings of the ACM SIGMOD Conference on Management of Data, 2014.</span></p>
+<p><span style="color:#151515;font-size:12px;">[5] Stratos Idreos, Martin L. Kersten, and Stefan Manegold. Database cracking. In Proceedings of the biennial Conference on Innovative Data Systems Research (CIDR), 2007.</span></p>
+<p><span style="color:#151515;font-size:12px;">[6] Stratos Idreos, Ioannis Alagiannis, Ryan Johnson, and Anastasia Ailamaki. Here are my data files. Here are my queries. Where are my results? In Proceedings of the biennial Conference on Innovative Data Systems Research (CIDR), 2011.</span></p>
+<p><span style="color:#151515;font-size:12px;">[7] Surajit Chaudhuri and Vivek R. Narasayya. An efficient cost-driven index selection tool for microsoft sql server. In Proceedings of the International Conference on Very Large Data Bases (VLDB), 1997.</span></p>
+<p><span style="color:#151515;font-size:12px;">[8] A. M. Turing. Computing Machinery and Intelligence. Mind, 59:433–460, 1950.</span></p>
+<p><span style="color:#151515;font-size:12px;">[9] John Von Neumann. Theory of Self-Reproducing Automata. University of Illinois Press, 1966.</span></p>
+<h4> Blogger Profile: </h4>
+<div align="justify">
+<p><i><a href="http://stratos.seas.harvard.edu/" target=_blank>Stratos Idreos</a> is an assistant professor of Computer Science at Harvard University where he leads <a href="http://daslab.seas.harvard.edu/" target=_blank> DASlab</a>, the Data Systems Laboratory@Harvard SEAS. Stratos works on data systems architectures with emphasis on designing systems that are easy to use, easy to design and can stand the test of time. For his doctoral work on Database Cracking, Stratos won the 2011 ACM SIGMOD Jim Gray Doctoral Dissertation award and the 2011 ERCIM Cor Baayen award from the European Research Council on Informatics and Mathematics. In 2010 he was awarded the IBM zEnterpise System Recognition Award by IBM Research, and in 2011 he won the VLDB Challenges and Visions best paper award. In 2015 he received an NSF CAREER award for research on self-designing data systems and was awarded the 2015 IEEE TCDE Early Career Award from the IEEE Technical Committee on Data Engineering.<br />
+</i></p>
+</div>
+<div>
+<p> Copyright @ 2015, Stratos Idreos, All rights reserved.</p>
+</div>
+{% endraw %}

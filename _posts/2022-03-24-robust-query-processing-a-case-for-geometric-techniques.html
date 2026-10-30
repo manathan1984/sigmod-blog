@@ -1,0 +1,111 @@
+---
+layout: post
+title: "Robust Query Processing: A Case for Geometric Techniques"
+date: 2022-03-24 00:33:24
+last_modified_at: 2022-04-17 06:29:24
+author: "jayantharitsa"
+categories: ["Query Processing"]
+excerpt: "INTRODUCTION Over the last half-century, the design and implementation of declarative query processing techniques in relational database systems has been a foundational topic for both the academic and industrial database research communities. Despite this sustained study, the unfortunate reality is…"
+image: "/wp-content/uploads/2022/03/Picture-1.png"
+wp_id: 3403
+permalink: "/2022/03/24/robust-query-processing-a-case-for-geometric-techniques/"
+---
+{% raw %}
+<h3 class="wp-block-heading">INTRODUCTION</h3>
+
+<p class="wp-block-paragraph">Over the last half-century, the design and implementation of declarative query processing techniques in relational database systems has been a foundational topic for both the academic and industrial database research communities. Despite this sustained study, the unfortunate reality is that the resulting solutions have largely remained a “black art”. This is due to the well-documented complexities and challenges of database query processing [1, 2]. In fact, even as recently as 2014, a highly-respected industry veteran was provoked to lament in this blog series [10]: <em>The wonder isn’t “Why did the optimizer pick a bad plan?” Rather, the wonder is “Why would the optimizer ever pick a decent plan?”</em>!</p>
+
+<p class="wp-block-paragraph">This unsatisfactory situation is particularly problematic since the scale of performance degradation faced by database queries can be <em>huge </em>– often in <em>orders of magnitude </em>as compared to an oracular ideal that magically knows the correct inputs required for optimal query processing. As a case in point, when Query 19 of the TPC-DS benchmark is executed on PostgreSQL, the worst-case slowdown, relative to the hypothetical oracle, can exceed a <em>million</em>! [3]. Moreover, apart from the obvious negative impacts on user productivity and satisfaction, there are also financial implications of the performance degradation – the total cost of ownership is significantly increased due to over-provisioning, lost efficiency, and increased human administrative costs [11].</p>
+
+<p class="wp-block-paragraph">During the past decade, there have been attempts to completely rethink this chronic problem, instead of simply making incremental advances on the legacy strategies. In particular, the following two lines of inquiry have emerged: (<em>a</em>) The development of <em>learning </em>techniques for modeling and predicting query performance; and (<em>b</em>) The design of <em>geometric </em>search techniques that leverage plan cost trajectories in the parameter space. Not surprisingly, given the current viral passion for data-driven models, the learning techniques have occupied center-stage. However, in this post, we will try to make the case that it is geometric techniques, despite an apparent lack of sophistication, that offer a more effective solution for robust query processing.</p>
+
+<h3 class="wp-block-heading">Learning Techniques</h3>
+
+<p class="wp-block-paragraph">As enumerated in [6, 12], there has been a deluge of papers in the past few years advocating the use of machine learning-based techniques for the core query processing modules such as the cardinality and cost estimators. Most of them use deep neural networks, modeling the query optimization components as regression problems. <em>Both supervised query-conscious models and unsupervised data-conscious models, as well as thei</em>r hybrid combinations, have been proposed in this stream of work.</p>
+
+<p class="wp-block-paragraph">Learned models have been shown to be certainly more accurate in general than the traditional database estimation methods such as histograms. However, they still suffer a fundamental limitation of potentially being very brittle with no apriori limit on the prediction error. And the source of the brittleness is not in the technique, but <em>intrinsic </em>to the volatile nature of data processing operations, where even microscopic changes in the input tables can cause explosive changes in the operator outputs. To motivate this claim, consider the following table listing the ages of employees and their managers:</p>
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/03/Picture-1.png" alt="" class="wp-image-3404" width="351" height="176" /></figure>
+
+<p class="wp-block-paragraph">Here, given a selection predicate of <code>EmpAge = MgrAge</code>, the output cardinality would be zero. However, if were to reduce all the <code>MgrAge </code>values by 1, or alternatively modify the query predicate to <code>EmpAge = MgrAge - 1</code>, then the output would be the size of the <em>entire table</em>. Given that modeling techniques are, at their heart, an exercise in summarization, it is simply not feasible to capture and distinguish such microscopic changes in the data values or predicates.</p>
+
+<p class="wp-block-paragraph">While we readily admit that the above example is contrived, the point that we wish to emphasize is that learned estimations are subject to arbitrary errors. In a nutshell, these techniques are likely to improve the average case but may not be able to materially change the worst case. And the real problem in database query processing is that the worst case is not the exception, but unfortunately quite common, as highlighted in [10].</p>
+
+<h3 class="wp-block-heading">Geometric Techniques</h3>
+
+<p class="wp-block-paragraph">The geometric search approach is radically different to both the legacy and learning-based approaches since it completely <em>abandons </em>estimation as a lost cause. Instead, it opts for a carefully calibrated “trial-and-error” query processing mechanism that may execute <em>multiple </em>plans before query completion. The specific performance metric used here – <em>Maximum Sub-Optimality (MSO)</em> – addresses the worst-case scenario head-on. Specifically, it is defined as the worst-case slow-down, evaluated over the entire selectivity space, relative to an oracular ideal that magically knows the correct selectivities. It is crucial to note that unlike the learning methods, which have largely compared themselves relative to contemporary techniques, here the comparison is with the abstract optimal.</p>
+
+<h3 class="wp-block-heading">ROBUSTNESS VIA GEOMETRY</h3>
+
+<p class="wp-block-paragraph">In the rest of this post, we show how, through a series of geometric characterizations of plan cost trajectories, it is actually possible to provide surprisingly strong quantifiable guarantees on MSO performance. Moreover, these characterizations have been empirically found to hold true in most real-world environments. Interestingly, and as an aside, geometric approaches to database problems have had a rich tradition in Indian academia, with Prof. Sumit Ganguly’s group at IIT Kanpur, and Prof. S. Sudarshan’s group at IIT Bombay, having written several influential papers (e.g. [5, 7]), leveraging such techniques in the context of Parametric Query Optimization.</p>
+
+<h3 class="wp-block-heading">Plan Bouquet [3]</h3>
+
+<p class="wp-block-paragraph">Our first foray in this direction was called <em>PlanBouquet </em>to reflect the multiplicity of plans used to execute a query. The underlying geometric assumption in its construction is that of <em>monotonicity</em> &#8211; that is, the costs of plans increase monotonically with increasing predicate selectivity values. Equivalently, that “spatial domination implies cost domination”. This assumption generally holds for the plans generated by current database systems on decision support queries since an increase in selectivity value implies processing of a larger amount of input data. Apart from monotonicity, we also assume the cost functions to be <em>continuous </em>over the selectivity space, which is again to be expected since with adequate memory resources, a few more tuples in the output of each predicate do not abruptly change the processing overheads.</p>
+
+<p class="wp-block-paragraph">We first profile, through repeated calls to the query optimizer, the ideal cost surface over the entire predicate selectivity space. The next step, which is a distinctive feature of our approach, is to <em>discretize </em>the ideal surface by projecting a graded <em>geometric progression </em>of <em>isocost</em> (IC) contours onto the ideal surface. A 2D example of this discretization with a cost doubling from one contour to the next, is shown in Figure 1(a), for a TPCH database environment with two join predicates. Here, there are five hyperbolic isocost contours, 𝐼𝐶<sub>1</sub> through 𝐼𝐶<sub>5</sub>, with their costs ranging from 𝐶 to 16𝐶. Each contour has a set of optimal plans covering disjoint segments – for instance, contour 𝐼𝐶<sub>2</sub> is covered by plans 𝑃<sub>2</sub>, 𝑃<sub>3</sub> and 𝑃<sub>4</sub>. The union of the plans appearing on all the contours constitutes the “plan bouquet” for the query – accordingly, plans 𝑃<sub>1</sub> through 𝑃<sub>14</sub> form the bouquet in Figure 1(a).</p>
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="904" height="478" src="../../../../wp-content/uploads/2022/03/PlanBouquet.png" alt="" class="wp-image-3405" /><figcaption><strong>Figure 1</strong>: PlanBouquet <strong>and</strong> SpillBound</figcaption></figure>
+
+<p class="wp-block-paragraph">Subsequently, at run-time, the correct query selectivities are <em>implicitly </em>discovered through a sequence of cost-limited executions of the bouquet plans. Specifically, beginning with the cheapest isocost contour, the plans on each contour are sequentially executed with a time limit equal to the contour’s budget. If a plan fully completes its execution within the assigned time limit, then the results are returned to the user, and the algorithm finishes. Otherwise, as soon as the time limit of the ongoing execution expires, the plan is forcibly terminated and the partially computed results are discarded. It then moves on to the next plan in the contour and starts all over again. In the event that the entire set of plans in a contour have been tried out without any reaching completion, the algorithm jumps to the next contour and the cycle repeats. As a sample instance, consider the case where the query is located at 𝑞, in the intermediate region between contours 𝐼𝐶<sub>3</sub> and 𝐼𝐶<sub>4</sub>, as shown in Figure 1(a). To process this query, <em>PlanBouquet</em> would invoke the following budgeted execution sequence:</p>
+
+<pre class="wp-block-preformatted">𝑃1|𝐶,𝑃2|2𝐶,𝑃3|2𝐶,𝑃4|2𝐶,𝑃5|4𝐶,...,𝑃10|4𝐶,𝑃11|8𝐶,𝑃12|8𝐶</pre>
+
+<p class="wp-block-paragraph">with the execution of the final 𝑃<sub>12</sub> plan completing the query. The surprising observation here is that the overheads entailed by the above “trial-and-error” exercise can be bounded, <em>irrespective of the actual query location in the space</em>. In particular, MSO ≤ 4 ∗ 𝜌, where 𝜌 is the plan cardinality on the contour with the maximum number of plans (in Figure 1(a), IC<sub>3</sub> which features 6 plans). These robustness bounds are the first such guarantees to be presented in the database literature. Circling back to our Employee table example, the actual selectivity of <code>EmpAge = MgrAge</code> now ceases to be an issue since it is never  estimated in the first place!</p>
+
+<h3 class="wp-block-heading">Spill Bound [8]</h3>
+
+<p class="wp-block-paragraph">Despite its performance guarantees, the <em>PlanBouquet</em> formulation is problematic in that 𝜌 depends not only on the query, but the optimizer’s behavioral profile over the underlying database platform. Ideally speaking, we would prefer a “structural bound” rather than a “behavioral bound”.</p>
+
+<p class="wp-block-paragraph"><br>This objective was achieved through an improved version of <em>PlanBouquet</em>, called <em>SpillBound</em>, with geometry again coming to the rescue. Specifically, <em>PlanBouquet</em>’s hypograph-based pruning of the selectivity discovery space is extended to a much stronger half-space-based pruning. To make this notion concrete, consider Figure 1(b), which focuses on contour 𝐼𝐶<sub>3</sub> – here, the hypograph is the Region-1 marked with red dots, which is pruned by <em>PlanBouquet</em> through the (budget-limited) executions of 𝑃<sub>5</sub> through 𝑃<sub>10</sub>. In contrast, with <em>SpillBound</em>, the half-space corresponding to Region-2 is pruned by the execution of 𝑃<sub>8</sub>, while the half-space corresponding to Region-3 is pruned by the execution of 𝑃<sub>6</sub>. Note that Region-2 and Region-3 together subsume the entire Region-1.</p>
+
+<p class="wp-block-paragraph">The half-space pruning is achieved by leveraging the classical database notion of “spilling”, whereby operator pipelines are prematurely terminated at chosen locations in the plan tree. Further, the plans chosen for spill-mode execution are specifically those that provide the maximal selectivity movement along each dimension.</p>
+
+<p class="wp-block-paragraph"><em>SpillBound’s </em>MSO is bounded by (D<sub><sup>2</sup></sub> + 3D), where 𝐷 is simply the dimensionality of the underlying selectivity space. So, for instance, if 𝐷 = 3, the sub-optimality does not exceed 18, irrespective of the query’s location.</p>
+
+<h3 class="wp-block-heading">Frugal Spill Bound [9]</h3>
+
+<p class="wp-block-paragraph">While SpillBound delivers the desired structural bound, its guarantees are predicated on an <em>offline </em>characterization of the plan cost behavior over the selectivity space. Therefore it is suitable only for canned queries that are invoked repeatedly.</p>
+
+<p class="wp-block-paragraph">Yet again, this limitation can be addressed through recourse to geometry. Specifically, that plan cost functions typically exhibit <em>concave-down behavior </em>with regard to predicate selectivities – that is, they have monotonically non-increasing slopes. This fact is leveraged to design <em>FrugalSpillBound</em>, which achieves extremely attractive tradeoffs between the performance guarantees and the compilation overheads. For instance, relaxing the performance guarantee by a factor of two typically results in three orders of magnitude reduction in the overheads. And as a practical instance, even a 5D query which would have taken a few days of preprocessing can now be made ready for execution within a few minutes. Therefore, <em>FrugalSpillBound </em>extends robust query processing to work- loads with ad-hoc queries.</p>
+
+<h3 class="wp-block-heading">SUMMARY</h3>
+
+<p class="wp-block-paragraph">Robust support for declarative query processing has been a long-standing concern for the database community. <em>The moral of our story is that geometric techniques offer a surprisingly potent approach to delivering strong performance guarantees</em>. In fact, one could potentially provide even stronger guarantees by assuming not just concavity, but also an upper bound on the slope of the ideal cost function – such ideas have previously been leveraged in [4] to achieve bounded suboptimalities for Parametric Query Optimization.</p>
+
+<p class="wp-block-paragraph"><em>In closing</em>, it is our fond hope that this post may encourage nascent PhD students looking for challenging research topics to cast their net beyond the middleware topics occupying center-stage today, and include engine design issues in their ambit – this is particularly important since the benefits of new engine technologies are automatically bestowed on all applications.</p>
+
+<h4 class="wp-block-heading">Blogger Profile</h4>
+
+<p class="wp-block-paragraph"><a rel="noreferrer noopener" href="https://dsl.cds.iisc.ac.in/~haritsa/" target="_blank">Jayant Haritsa </a>is on the computer science faculty at the Indian Institute of Science, Bangalore, since 1993. He received his undergraduate degree from IIT Madras, and the PhD degree from UW Madison. He is a Fellow of ACM and IEEE for contributions to the design and implementation of database engines.</p>
+
+<h4 class="wp-block-heading">REFERENCES</h4>
+
+<p class="wp-block-paragraph">[1] &nbsp;S. Chaudhuri. An Overview of Query Optimization in Relational Systems. <em>PODS</em>, 1998.</p>
+
+<p class="wp-block-paragraph">[2] &nbsp;S. Chaudhuri. Query Optimizers: Time to rethink the contract? <em>SIGMOD</em>, 2009.</p>
+
+<p class="wp-block-paragraph">[3] &nbsp;A. Dutt and J. Haritsa. Plan Bouquets: A Fragrant Approach to Robust QueryProcessing. <em>ACM TODS</em>, 41(2): 11:1–11:37, 2016.</p>
+
+<p class="wp-block-paragraph">[4] &nbsp;A. Dutt, V. Narasayya and S. Chaudhuri. Leveraging re-costing for online optimization of parameterized queries with guarantees. <em>SIGMOD</em>, 2017.</p>
+
+<p class="wp-block-paragraph">[5] &nbsp;S. Ganguly. Design and Analysis of Parametric Query Optimization Algorithms. <em>VLDB</em>, 1998.</p>
+
+<p class="wp-block-paragraph">[6] &nbsp;J. Haritsa. Robust Query Processing: Mission Possible. <em>PVLDB</em>, 13(12):3425-3428, 2020.</p>
+
+<p class="wp-block-paragraph">[7] &nbsp;A. Hulgeri and S. Sudarshan. Parametric Query Optimization for Linear and Piecewise Linear Cost Functions. <em>VLDB</em>, 2002.</p>
+
+<p class="wp-block-paragraph">[8] &nbsp;S. Karthik, J. Haritsa, S. Kenkre, V. Pandit and L. Krishnan. Platform-independent Robust Query Processing. <em>IEEE TKDE</em>, 31(1):17–31, 2019.</p>
+
+<p class="wp-block-paragraph">[9] &nbsp;S. Karthik, J. Haritsa, S. Kenkre and V. Pandit. A Concave Path to Low-overhead Robust Query Processing. <em>PVLDB</em>, 11(13):2183-2195, 2018.</p>
+
+<p class="wp-block-paragraph">[10] &nbsp;G. Lohman. Is Query Optimization a “Solved” Problem? <em>ACM Sigmod Blog</em>, 2014.  wp.sigmod.org/?p=1075.</p>
+
+<p class="wp-block-paragraph">[11] &nbsp;J. Wiener, H. Kuno and G. Graefe. Benchmarking Query Execution Robustness. <em>TPCTC</em>, 2009.</p>
+
+<p class="wp-block-paragraph">[12] &nbsp;X. Zhou, C. Chai, G. Li and J. Sun. Database meets Artificial Intelligence: A survey. <em>IEEE TKDE</em>, 2020.</p>
+
+<p class="wp-block-paragraph"></p>
+
+<p class="wp-block-paragraph"><em>Copyright @ 2022, Jayant Haritsa, All rights reserved. </em></p>
+{% endraw %}

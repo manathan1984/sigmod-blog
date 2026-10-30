@@ -23,9 +23,26 @@ It is idempotent (files are keyed by WordPress ID) and:
 - records authors in `_data/authors.yml` and all WordPress categories in
   `_data/categories.yml`, and creates `category/<slug>` and `author/<slug>` pages;
 - rewrites links between imported posts to their new URLs (re-run `--all` at the
-  end so every cross-link is resolved).
+  end so every cross-link is resolved), and resolves `?attachment_id=` / `?cat=`
+  links and Google Docs redirect links;
+- keeps local copies of images pasted from Google Docs (`wp-content/uploads/external/`);
+- cleans up old-WordPress markup: one-column layout tables, unclosed `<div>`s,
+  `http://` embeds.
 
-Comments are not migrated; each post links back to its original page.
+Files with `keep_local_edits: true` in their front matter (e.g. the About page) are
+never overwritten by a re-import unless `--force` is given.
+
+Comments are not migrated yet; each post links back to its original page.
+
+### Checking an import
+
+```bash
+python3 tools/audit_posts.py   # writes IMPORT_REVIEW.md
+```
+
+flags posts whose content may not have survived the move (embeds, math, external
+or missing images, broken layout, unresolved old links) and lists, separately,
+the ones still needing a human decision. See [IMPORT_REVIEW.md](IMPORT_REVIEW.md).
 
 ## URLs
 

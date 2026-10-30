@@ -1,0 +1,107 @@
+---
+layout: post
+title: "A Leap from Model-Centric to Data Centric AI"
+date: 2022-04-17 06:21:07
+last_modified_at: 2022-05-11 16:43:21
+author: "mahsabaktashhelen"
+categories: ["Data Science", "Machine Learning"]
+excerpt: "Data as a major component of a deep learning solution is often undervalued in the ML projects, which results in a lower-than-expected accuracy, requiring hours and hours of model tuning. According to Andrew Ng, 99% of the recent publications are model-centric with only 1% being data-centric. He…"
+image: "/wp-content/uploads/2022/04/image.png"
+wp_id: 3423
+permalink: "/2022/04/17/a-leap-from-model-centric-to-data-centric-ai/"
+---
+{% raw %}
+<p class="has-text-align-left wp-block-paragraph">Data as a major component of a deep learning solution is often undervalued in the ML projects, which results in a lower-than-expected accuracy, requiring hours and hours of model tuning. According to Andrew Ng, 99% of the recent publications are model-centric with only 1% being data-centric. He argues that there should be a balance between a model-centric perspective &#8211; <em>to find the right model and training procedure </em>&#8211; vs a data-centric view &#8211; <em>to iteratively improve the data quality with the model fixed</em>, with a higher stake of value remaining on the data side.</p>
+
+<p class="wp-block-paragraph">Due to the scarcity of a reliable data pipeline, Deep Learning (DL) techniques &#8211; as the best performing ML algorithms &#8211; are at high risk of bias when deployed in real-world environments, and this discourages high-risk industries to adopt them in their workflows.</p>
+
+<p class="wp-block-paragraph">While a promising alternative to tackle the scarcity of quality data is to generate synthetic data, the distribution shift between real and synthetic data impairs the ability of learning models trained on one data to generalise well on the other. To overcome this limitation, it is vital to create an unbiased and representative dataset on which the accuracy of the models can be validated. Therefore, it is important to generate synthetic data with minimum distribution distance to the real data. The combination of real and synthetic data can be used to train the domain transfer models which can be applied in the new conditions without retraining.</p>
+
+<h3 class="wp-block-heading">Data Science Discipline, The University of Queensland (UQ)</h3>
+
+<p class="wp-block-paragraph">The Data Science Discipline of the School of Information Technology and Electrical Engineering, UQ consists of 16 academics, in different levels, and ~ 60 PhD students. The team conducts multi-disciplinary research on large-scale, unstructured, multi-modal, and complex data, to find innovative and practical solutions for creating value from big data in business, scientific and social applications.</p>
+
+<p class="wp-block-paragraph">With a focus on Data-Centric AI, the Data Science Discipline is leading The Australian Research Council (ARC) Industrial Transformation Training Centre for Information Resilience, which aims to lift the sociotechnical barriers to data driven transformation and drive a co-innovation agenda with Australian organisations through game-changing data science solutions and future leaders in technology. The Centre is tackling major challenges to Australian organisations and contributes to value creation by increasing the supply of qualified data scientists in Australia, mitigating the drain on productivity due to poor data quality and data access issues, improving trust in analytical results for unexplainable data pipelines, and delivering benefits across the entire data stakeholder value chain.</p>
+
+<p class="wp-block-paragraph">More specifically, in human-in-the-loop AI systems where the goal is to leverage the ability of computing machines to scale over large amounts of data as well as the ability of human intelligence to understand content, the current research of the team looks at issues related to the <em>quality of training data and bias in such hybrid systems</em>.</p>
+
+<p class="wp-block-paragraph">Another line of research in the team focuses on <em>developing effective and efficient solutions for managing, integrating, and analysing massive complex data</em> (e.g., text data, time series data, trajectory data, etc.), to enable a better support for data-driven intelligence-based applications and services. The aim is to combine the power of artificial intelligence and big data technologies. The team pioneered the work of scalable noise-aware information extraction and is also a world-leading group in the field of spatiotemporal data management.</p>
+
+<p class="wp-block-paragraph">The team is also working on <em>developing energy-efficient, privacy-preserving, robust, explainable and fair data mining and machine learning techniques</em> to better discover actionable patterns and intelligence from large-scale, heterogeneous, networked, dynamic and sparse human data. They explore the underlying data semantics and distil high level knowledge for decision making.</p>
+
+<p class="wp-block-paragraph">In summary, the <strong>UQ</strong> <strong>Data Science Discipline </strong>is currently working on a number of challenging research topics, one of which is to build transferability and responsibility into DL models by generating quality synthetic data and enable the optimal deployment of AI techniques in real practices. Here, we will discuss the team’s research on data-centric approaches.</p>
+
+<h3 class="wp-block-heading">Data Generation to Enhance Transferability of ML Models</h3>
+
+<h4 class="wp-block-heading">Learning to Generate the Unknowns [9]</h4>
+
+<p class="wp-block-paragraph"><em>Open-set domain shift</em> is a fundamental problem with many real-world applications such as visual recognition. To tackle this problem, domain adaptation (DA) methods have been proposed to transfer knowledge from a labelled source domain to an unlabelled target domain, which might contain additional classes not present in the source data.</p>
+
+<p class="wp-block-paragraph">We address the challenging problem of open-set synthetic-to-real generalization. As an example, when training a model for self-driving cars to recognize objects in the street, one should still expect to see new objects, unobserved in the synthetic data, when deploying the model in the real world. While one should not expect the model to recognize the specific class of such objects, it would nonetheless be beneficial to identify these objects as “new object” instead of misclassifying them. Therefore, we propose to complement the source data by generating source samples depicting the unknown target classes to reduce the negative transfer entailed by these classes. This is achieved by incorporating a generator that produces unknown source samples into a DA model. To encourage the generated samples to truly encode unknown target classes, we align the distributions of the target and augmented source data, while training the final multi-class classifier to account for an unknown class, so that the generated samples differ from those containing known classes.</p>
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/04/image.png" alt="" class="wp-image-3424" width="998" height="213" /><figcaption>Figure 1. Given source samples from known classes and target samples from both known and unknown classes (a) existing open-set DA methods (b) aim to adjust the decision boundaries to identify the unknowns. By contrast, our approach (c) generates unknown source samples to turn the open-set DA into a closed-set one.</figcaption></figure>
+
+<p class="wp-block-paragraph"></p>
+
+<h4 class="wp-block-heading">Data Generation for Single Domain Generalization (DG) [3]</h4>
+
+<p class="wp-block-paragraph">This research focuses on a more challenging yet realistic setting, namely single domain generalization. In Single-DG, the network is trained on a single source domain, while it is evaluated on multiple unseen domains. A popular direction in solving DG problem is data augmentation, which generally aims to improve out-of-domain generalization ability of a model [1, 2], and adopting trainable image augmentation network [4]. More recent DG methods take the advantage of image style transfer, which exploits the intermediate CNN feature statistic of different source domain images to broaden the training set [5].</p>
+
+<p class="wp-block-paragraph">Gradient-based image augmentation is an effective strategy for Single-DG which encourages semantic consistency between the augmented and source images in the latent space via an auxiliary Wasserstein autoencoder. Another approach to tackle this problem tries to maximise the entropy in the adversarial training framework to generate challenging perturbations of the source samples. However, in the aforementioned approaches, the visual differences between the source and generated images are mostly depicted in the colour and texture of the augmented samples. Different from existing Single-DG methods, the research proposed by Huang’s team [3] aims to generate diverse samples with novel style/texture/appearance having a larger shift from the source distribution, and thus can be considered as complementary to the source data distribution.</p>
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="902" height="380" src="../../../../wp-content/uploads/2022/04/image-1.png" alt="" class="wp-image-3425" /><figcaption>Figure 2. The overall framework alternatively trains the style-complement module and the task model and minimizes the mutual information (MI) between the source and generated images and maximises it among samples belonging to the same category. This, in turn, enhances the generalization power of the task model in an adversarial min-max manner.</figcaption></figure>
+
+<p class="wp-block-paragraph"></p>
+
+<h4 class="wp-block-heading">Data Generation for Generalized Zero-Shot Learning [6,8]</h4>
+
+<p class="wp-block-paragraph">Generalized Zero-Shot Learning is the task of leveraging semantic information (e.g., attributes) to recognize the seen and unseen samples, where unseen classes are not observable during training. It is natural to derive generative models and hallucinate training samples for unseen classes based on the knowledge learned from the samples seen. However, most of these models suffer from the generation shifts, where the synthesized samples may drift from the real distribution of unseen data. In this research, we proposed a novel Generation Shifts Mitigating Flow framework, which comprises multiple conditional affine coupling layers for learning unseen data synthesis efficiently and effectively. In particular, we identify three potential problems that trigger the generation shifts, i.e., semantic inconsistency, variance decay, and structural permutation and address them respectively. First, to reinforce the correlations between the generated samples and the respective attributes, we explicitly embed the semantic information into the transformations in each of the coupling layers. Second, to recover the intrinsic variance of the synthesized unseen features, we introduce a visual perturbation strategy to diversify the intra-class variance of generated data and hereby help adjust the decision boundary of the classifier. Third, to avoid structural permutation in the semantic space, we propose a relative positioning strategy to manipulate the attribute embeddings, guiding which to fully preserve the inter-class geometric structure.</p>
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/04/image-2.png" alt="" class="wp-image-3426" width="862" height="253" /><figcaption>Figure 3. The conditional generative flow is comprised of a series of conditional affine coupling layers. Particularly, the perturbation is injected into the original visual features to complement the potential patterns and the global semantics are computed with relative positioning to semantic anchors. For inference, a latent variable 𝒛 is inferred from the visual features of an image sample 𝒙 conditioned on a global semantic vector 𝒂<sup>𝑔</sup> . Inversely, given 𝒛 drawn from a prior distribution and a global semantic vector 𝒂<sup>𝑔</sup> , GSMFlow can generate a visual sample accordingly.</figcaption></figure>
+
+<p class="wp-block-paragraph"></p>
+
+<h3 class="wp-block-heading">Data-centric Proactive Privacy-preserving for Retrieval</h3>
+
+<p class="wp-block-paragraph">Recently, a wide range of studies have revealed the fragile nature of deep models to the existence of adversarial examples. By slightly modifying clean data, one can craft visually plausible adversarial data but mislead target models towards wrong predictive results with high probability. Such an intriguing property provides inspiration for privacy protection against malevolent ends, i.e., using adversarial data. In real world situations, it is very common that data owners are usually unaware of when and how an invasion takes place. Based on this observation, it is natural to proactively act on the raw data before releasing them for a precaution, reducing the chance of being invaded.</p>
+
+<p class="wp-block-paragraph">This research [7] proposes a data-centric Proactive Privacy-preserving Learning (PPL) algorithm for hashing-based retrieval, which achieves the protection purpose by employing a generator to transfer the original data into the adversarial data with quasi-imperceptible perturbations before releasing them. When the data source is infiltrated, the adversarial data can confuse menacing retrieval models to make erroneous predictions. Given that the prior knowledge of malicious models is not available, a surrogate retrieval model is instead introduced acting as a fooling target. The framework is trained by a two-player game conducted between the generator and the surrogate model. More specifically, the generator is updated to enlarge the gap between the adversarial data and the original data, aiming to lower the search accuracy of the surrogate model. On the contrary, the surrogate model is trained with the opposing objective that is to maintain the search performance. As a result, an effective and robust adversarial generator is encouraged. Furthermore, to facilitate an effective optimization, a Gradient Reversal Layer (GRL) module is inserted to connect two models, enabling the two-player game in a one-step learning.</p>
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="606" height="458" src="../../../../wp-content/uploads/2022/04/image-3.png" alt="" class="wp-image-3427" /><figcaption>Figure 4. The protection mechanism is implemented before the data release, when the raw data is transferred into the adversarial data with imperceptible adjustments. When the data source is penetrated, the modified can successfully fail the malicious users in both (a) searching with existing models (b) constructing new models.</figcaption></figure>
+
+<h3 class="wp-block-heading">Blogger Profile</h3>
+
+<div class="wp-block-media-text alignwide is-stacked-on-mobile" style="grid-template-columns:25% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="108" height="108" src="../../../../wp-content/uploads/2022/04/Mahsa-Baktash-2.jpg" alt="" class="wp-image-3438 size-full" /></figure><div class="wp-block-media-text__content">
+<p class="wp-block-paragraph" style="font-size:12px">Dr. Mahsa Baktash is Senior Lecturer in Data Analytics in the Data Science Discipline, School of ITEE, The University of Queensland. She has published around 50 articles in major computer vision and machine learning conferences and journals. Her expertise and contributions in the machine learning field, especially in the areas of domain adaptation and stationarity analysis have been internationally recognized as evidenced by her track record of high-impact publications.</p>
+</div></div>
+
+<div class="wp-block-media-text alignwide is-stacked-on-mobile" style="grid-template-columns:25% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="323" height="339" src="../../../../wp-content/uploads/2022/04/Zi-Huang-1.jpg" alt="" class="wp-image-3439 size-full" /></figure><div class="wp-block-media-text__content">
+<p class="wp-block-paragraph" style="font-size:12px">Dr. Zi (Helen) Huang is a Professor and ARC Future Fellow in School of ITEE, The University of Queensland. Her research interests mainly include multimedia indexing and search, social data analysis and knowledge discovery. She has served as an Associate Editor of The VLDB Journal, ACM Transactions on Information Systems (TOIS), Pattern Recognition Journal, etc and a member of the VLDB Endowment Board of Trustees. Helen is currently the Discipline Lead for Data Science, School of ITEE, UQ</p>
+</div></div>
+
+<p class="wp-block-paragraph"></p>
+
+<h4 class="wp-block-heading">References</h4>
+
+<p class="wp-block-paragraph">[1] Shiv Shankar, Vihari Piratla, Soumen Chakrabarti, Siddhartha Chaudhuri, Preethi Jyothi, and Sunita Sarawagi. Generalizing across domains via cross-gradient training. In ICLR, 2018.</p>
+
+<p class="wp-block-paragraph">[2] Riccardo Volpi, Hongseok Namkoong, Ozan Sener, John C. Duchi, Vittorio Murino, and Silvio Savarese. Generalizing to unseen domains via adversarial data augmentation. In NeurIPS, 2018.</p>
+
+<p class="wp-block-paragraph">[3] Zijian Wang, Yadan Luo, Ruihong Qiu, Zi Huang, and Mahsa Baktashmotlagh. Learning to diversify for single domain generalization. In ICCV, 2021.</p>
+
+<p class="wp-block-paragraph">[4] Kaiyang Zhou, Yongxin Yang, Timothy M. Hospedales, and Tao Xiang. Deep domain-adversarial image generation for domain generalisation. In AAAI, 2020.</p>
+
+<p class="wp-block-paragraph">[5] Kaiyang Zhou, Yongxin Yang, Yu Qiao, and Tao Xiang. Domain generalization with mixstyle. In ICLR, 2021.</p>
+
+<p class="wp-block-paragraph">[6] Zhi Chen , Yadan Luo , Sen Wang , Ruihong Qiu , Jingjing Li , Zi Huang. Mitigating Generation Shifts for Generalized Zero-Shot Learning. In ACM’MM, 2021.</p>
+
+<p class="wp-block-paragraph">[7] Peng-Fei Zhang, Zi Huang, Xin-Shun Xu. Privacy-preserving Learning for Retrieval. In AAAI, 2021.</p>
+
+<p class="wp-block-paragraph">[8] Zhi Chen , Sen Wang , Jingjing Li , Zi Huang. Rethinking Generative Zero-Shot Learning: An Ensemble Learning Perspective for Recognising Visual Patches. In ACM’MM, 2020.</p>
+
+<p class="wp-block-paragraph">[9] Mahsa Baktashmotlagh, Tianle Chen, Mathieu Salzmann. Learning to Generate the Unknowns as a Remedy to the Open-Set Domain Shift. In WACV, 2021.</p>
+
+<p class="wp-block-paragraph">[10] Amartya Sanyal and Varun Kanade and Philip H.S. Torr. Intriguing Properties of Learned Representations. arXiv:1804.07090, 2018.</p>
+
+<p class="wp-block-paragraph"><em>Copyright @ 2022, Mahsa Baktash and Zi (Helen) Huang, All rights reserved. </em></p>
+{% endraw %}

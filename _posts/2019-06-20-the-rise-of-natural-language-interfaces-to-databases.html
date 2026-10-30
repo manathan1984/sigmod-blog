@@ -1,0 +1,295 @@
+---
+layout: post
+title: "The Rise of Natural Language Interfaces to Databases"
+date: 2019-06-20 15:42:36
+last_modified_at: 2019-09-23 12:47:28
+author: "user-67"
+categories: ["data exploration", "Databases", "Search"]
+excerpt: "The vision of natural language interfaces to databases (NLIDBs) is to make data stores more accessible for a wide range of non-tech savvy end users with the ultimate goal to talk to a database (almost) like to a human. While initially the database community focused on relational databases, there is…"
+image: "/wp-content/uploads/2019/06/Figure1-1024x576.png"
+wp_id: 2897
+permalink: "/2019/06/20/the-rise-of-natural-language-interfaces-to-databases/"
+---
+{% raw %}
+<p class="wp-block-paragraph" style="text-align:left">The
+vision of natural language interfaces to databases (NLIDBs) is to make data
+stores more accessible for a wide range of non-tech savvy end users with the
+ultimate goal to talk to a database (almost) like to a human. While initially
+the database community focused on relational databases, there is currently a
+renaissance of building natural language interfaces for RDF-triple stores with
+DBPedia as the major playground. In particular, the semantic web as well as the
+natural language processing communities are very active in this field. The
+trend of building NLIDBs is triggered mainly by the recent success stories of artificial
+intelligence and in particular deep learning. The main idea is to consider the
+design of natural language interfaces as a machine translation problem using a
+supervised machine learning approach. This trend has the benefit that suddenly
+the database community has a challenging problem to solve that attracts
+researchers who are interested in artificial intelligence and deep learning. As
+a consequence, the database community gets a new refreshing influx of ideas &#8211; as
+we discuss throughout this blog post.</p>
+
+<p class="wp-block-paragraph">In this blog post, we will first provide two challenging real-world case studies that motivated us to work on NLIDBs. Afterwards we give an overview of the major design choices for NLIDBs and sketch some of the major open research challenges at the intersection of database research, natural language processing and artificial intelligence. The aim of this blog post is not to provide an exhaustive overview on NLIDB research but to highlight the major challenges, how these challenges are currently solved and to sketch some of the open research challenges to stimulate further research in this area. </p>
+
+<h3 class="wp-block-heading"><strong>Case Studies </strong></h3>
+
+<h4 class="wp-block-heading"> Relational Database Technology in Banking</h4>
+
+<p class="wp-block-paragraph">Major
+global banks typically store their most critical data in large data warehouses
+often in combination with data lakes (Jossen et al., 2012). These data
+warehouses are fed by thousands of source systems and have tens of thousands of
+attributes. The data sets are analyzed by tens to hundreds of different
+business units. However, typically business users have no technical knowledge
+about the underlying database or data lake structure nor sufficient knowledge
+of SQL to perform complex analytics tasks by themselves without considerable
+support by highly skilled IT professionals or data scientists. One of the
+critical use cases became apparent&nbsp;
+during the financial crisis that culminated in 2008 when business users
+needed to find all customers with exposure to Lehman Brothers above a certain
+limit. Solving this use case was very hard for the business users since data
+was spread across databases and data warehouses. Moreover, financial products
+such as derivatives are highly complex with often non-trivial hierarchical
+structures which require deep SQL know-how to fully analyze.</p>
+
+<p class="wp-block-paragraph">It is these types of business users that need to be empowered by NLIDBs. One approach to bridge the gap between the business and IT personal is SODA (Search Over Data Warehouse, Blunschi et al., 2012). SODA showed very promising results for keyword queries. However, one of open challenges in SODA is how to design a visual data exploration interface where users are guided by the system, which summarizes the most important data items and suggests what queries to ask.</p>
+
+<h4 class="wp-block-heading"> Semantic Web Technology in Biology</h4>
+
+<p class="wp-block-paragraph">Studying biological phenomena is a very complex problem. Moreover, data stores are even more heterogeneous than traditional business data warehouses. Some data is stored in relational databases while the majority is stored in RDF-triple stores (Sima et al. 2019). Other bioinformatics databases use proprietary data formats. This heterogeneity makes it non-trivial to query across databases which is of importance in biology. Even though there are many biological ontologies and world-wide efforts to standardize such ontologies, data is inherently ambiguous and there is no single truth of data models or ontologies. Unlike in chemistry, where the periodic table consists of 118 uniquely identified chemical elements, there is no common agreement on the naming of genes. Currently there are about 20,000 different genes in a human with conflicting names. Hence, executing queries means resolving ambiguities interactively and suggesting potential correlations that the end user was not even aware of. We are currently building Bio-SODA (Sima et al. 2019) as a joint research effort between two universities and a major bioinformatics institute, namely the Swiss Institute of Bioinformatics (SIB) &#8211; the creator of one of the most widely used gene sequence databases called SwissProtKB.</p>
+
+<p class="wp-block-paragraph">One of the major open issues is how to disambiguate user queries by designing a query dialog that intelligently ranks the query results and interacts with the users without being intrusive. </p>
+
+<h3 class="wp-block-heading"><strong>Major Design&nbsp; Choices </strong></h3>
+
+<p class="wp-block-paragraph">We
+will now discuss the main design choices of different approaches for NLIDBs and
+reference some of the major papers in that area. Note that the list of papers
+is not meant to be exhaustive but rather serves as starting point for people
+who want to get into the field of NLIDBs.</p>
+
+<p class="wp-block-paragraph">According to a recent survey (Affolter et al., 2019) we can distinguish between the following five different approaches of designing NLIDBs: (a) Keyword-based, (b) Pattern-based, (c) Parsing-based, (d) Grammar-based, and (e) Neural machine translation-based.</p>
+
+<h4 class="wp-block-heading">Keyword-Based</h4>
+
+<p class="wp-block-paragraph">Rather than supporting full natural language queries, these systems typically&nbsp; only allow keyword-based queries. The basic idea of this type of NLIDBs is to build an inverted index on the base data and on the meta data, i.e. the database schema. Given a keyword query, the systems try to match the keywords against the inverted index. The inverted index is used to identify which tables contain the requested data. In case a query contains several keywords, the result could be several matching tables.  <br></p>
+
+<p class="wp-block-paragraph">Consider the following simplified entity-relationship diagram of a database about movies: </p>
+
+<figure class="wp-block-image"><img loading="lazy" decoding="async" width="1024" height="576" src="../../../../wp-content/uploads/2019/06/Figure1-1024x576.png" alt="" class="wp-image-2908" /><figcaption>Figure 1: Simplified ER diagram of a movie database</figcaption></figure>
+
+<p class="wp-block-paragraph">Consider
+the following keyword query: “Actor in Beautiful Mind”. In order to answer this
+query, the first step is to design a query parser that identifies which
+keywords of the query are contained in the database. </p>
+
+<p class="wp-block-paragraph">Assume
+that in this example “Actor” is identified as a table. “Beautiful
+Mind” is identified as the name of a movie since table “Movie” has a column
+called “name” that contains “Beautiful Mind”. The basic idea is to build two
+different inverted indexes that help to solve this problem.</p>
+
+<p class="wp-block-paragraph">One
+inverted index is built on the base data that describes in which table and
+column a specific keyword is contained. The following table shows a few
+examples of how the index could look like:</p>
+
+<table class="wp-block-table has-fixed-layout is-style-regular"><tbody><tr><td><strong>KEYWORD</strong></td><td><strong>TABLENAME</strong></td><td><strong>COLUMNNAME</strong></td></tr><tr><td>Beautiful Mind</td><td>Movie</td><td>Name</td></tr><tr><td>Arnold</td><td>Actor</td><td>FirstName</td></tr><tr><td>Zurich</td><td>Address</td><td>City</td></tr></tbody></table>
+
+<p class="wp-block-paragraph">The second inverted index is built on the database schema. In our example above, “Actor” is identified as a table, since there exists a table called “Actor”. On the other hand, the keyword “name” could be identified as the column of the table “Movie” or of the table “Actor” (see example index below). </p>
+
+<table class="wp-block-table has-fixed-layout"><tbody><tr><td><strong>KEYWORD</strong></td><td><strong>TABLENAME</strong></td><td><strong>COLUMNNAME</strong></td></tr><tr><td>Actor</td><td>Actor</td><td></td></tr><tr><td>Name</td><td>Movie</td><td>Name</td></tr><tr><td>Name</td><td>Actor</td><td>Name</td></tr></tbody></table>
+
+<p class="wp-block-paragraph">In the next step, the relationships between these tables (primary key/foreign key relationships) are analyzed to identify how these tables can be joined. A common approach is to join these tables such that the distance between these tables is minimized. After the minimal join paths are identified, the SQL statement can be generated.</p>
+
+<p class="wp-block-paragraph">Assume that the query parser identifies the tables “Actor” and “Movie”. How can these tables be joined automatically? In this case we can take advantage of the entity-relationship diagram that shows that “Actor” and “Movie” can be joined via the relationship “plays”. In the database, there exists a primary/foreign key relationship between the tables “Actor” and “plays” as well as between the tables “Movie” and “plays”. By “chasing” the primary key/foreign key relationships, we can identify that the tables “Actor” and “Movie” can be joined via table “plays”.  </p>
+
+<p class="wp-block-paragraph">There are several strategies to improve this basic approach:</p>
+
+<p class="wp-block-paragraph">(a) Use natural language processing techniques such as stemming and stop word removal to process the input query.</p>
+
+<p class="wp-block-paragraph">(b) Use synonyms or ontologies to enable semantic queries rather than only direct match queries.</p>
+
+<p class="wp-block-paragraph">(c) Use different ranking algorithms that, for instance, take into account the “importance” of tables and relationship to solve ambiguity problems when a query results in multiple possible answers</p>
+
+<p class="wp-block-paragraph">Examples of keyword-based system are Precis (Simitsis et al., 2008), SODA (Blunschi et al., 2012) and Aqqu (Bast and Haussmann, 2015). </p>
+
+<h4 class="wp-block-heading"> Pattern-Based</h4>
+
+<p class="wp-block-paragraph">Pattern-based
+NLIDBs are extensions of keyword-based systems to enable answering more complex
+queries in natural language rather than only keywords. The basic idea is to be
+able to handle <em>certain language patterns</em>
+to identify, for instance, <em>aggregation</em>
+queries. Consider the following query “Show the number of movies by actor”.
+In this case, the trigger word “by” specifies the aggregation pattern. The difficulty,
+however, is that aggregations could also be formulated with the trigger word
+“for each”. Consider the following reformulation of the same question: “Show
+the number of movies for each actor”.</p>
+
+<p class="wp-block-paragraph">Other patterns
+could, for instance, be certain domain-specific <em>concepts</em>, such as “great movies” or “expensive productions”. In
+both cases, these patterns require a certain definition, for instance, a great
+movie has a rating of 5 out of 5. </p>
+
+<p class="wp-block-paragraph">The
+challenge is how to handle these language patterns and how to properly deal
+with ambiguities of the queries. One possible solution is to interact with the
+user and design the system in such a way that the user interactions are
+minimized.</p>
+
+<p class="wp-block-paragraph">Examples of pattern-based systems are QuestIO (Damljanovic et al., 2008) and NLQ/A (Zheng et al., 2017). </p>
+
+<h4 class="wp-block-heading">Parsing-based</h4>
+
+<p class="wp-block-paragraph">These
+systems are&nbsp; a further extension of
+pattern-based systems. The basic idea is to use a natural language parser to
+analyze the input query and to reason about the grammatical structure of the
+query. The grammatical structure can then be used to better understand the
+dependencies between tokens of the query.</p>
+
+<p class="wp-block-paragraph">Figure 2 shows parts of speech tags (PoS) and the dependency tree for the query “Who is the director of Inglorious Basterds” using Stanford CoreNLP. For instance, WP refers to a “wh-pronoun” such as “who”. “VBZ” refers to a verb in third person singular and “NN” refers to a noun. </p>
+
+<figure class="wp-block-image"><img loading="lazy" decoding="async" width="397" height="78" src="../../../../wp-content/uploads/2019/06/Figure2.png" alt="" class="wp-image-2912" /><figcaption>Figure 2: Dependency Tree for the query  “Who is the director of Inglorious Basterds”  </figcaption></figure>
+
+<p class="wp-block-paragraph">Consider
+the following queries: “Show the number of movies by actor”. “Movies by
+Schwarzenegger”. Both queries contain the trigger word “by”. However, the first
+question is an aggregation while the second one is not. The basic idea of
+parsing-based systems is to analyze the grammatical structure and deduce matching
+patterns and such disambiguate queries.</p>
+
+<p class="wp-block-paragraph">Examples of pattern-based systems are NaLIR (Li and Jagadish, 2014) and ATHENA (Saha et al., 2016). </p>
+
+<h4 class="wp-block-heading">Grammar-Based</h4>
+
+<p class="wp-block-paragraph">The
+basic idea is to use a set of rules, i.e. a grammar, to define how questions
+can be built, understood and answered by the system. These rules can then be
+used to assist the users in typing their queries via autocompletion.</p>
+
+<p class="wp-block-paragraph">Consider, for example, the following simple grammar:<br></p>
+
+<p class="has-small-font-size wp-block-paragraph"><strong>Sentence</strong> &#8211;&gt; NounPhrase VerbPhrase</p>
+
+<p class="has-small-font-size wp-block-paragraph"><strong>NounPhrase</strong> &#8211;&gt; Noun Determiner</p>
+
+<p class="has-small-font-size wp-block-paragraph"><strong>Noun</strong> &#8211;&gt; “Person” “Movie” “Inglorious Basterds” “The Girl with the Dragon Tattoo” “Zurich”</p>
+
+<p class="has-small-font-size wp-block-paragraph"><strong>Determiner</strong> &#8211;&gt; “Who” “Which” “What”</p>
+
+<p class="has-small-font-size wp-block-paragraph"><strong>VerbPhrase</strong> &#8211;&gt; Verb Noun</p>
+
+<p class="has-small-font-size wp-block-paragraph"><strong>Verb</strong> &#8211;&gt; “directs” “plays” “is filmed” </p>
+
+<p class="wp-block-paragraph">The above grammar says that a sentence (S) consists of a noun phrase (NP) followed by a verb phrase (VP). A noun phrase consists of a noun (N) and a determiner (Det), etc. The grammar can then be used to identify the syntactic structure of a sentence, e.g. “Which movie is filmed in Zurich” (see Figure 3). Finally, SQL or SPARQL can be generated by traversing the syntax tree. </p>
+
+<figure class="wp-block-image"><img loading="lazy" decoding="async" width="1024" height="523" src="../../../../wp-content/uploads/2019/06/Figure3-1024x523.png" alt="" class="wp-image-2915" /><figcaption>Figure 3 shows the syntax tree for the sentence “Which movie is filmed in Zurich” based on a simple grammar.</figcaption></figure>
+
+<p class="wp-block-paragraph">Examples of grammar-based systems are TR Discover (Song et al., 2015), and SPARKLIS (Ferre, 2017). </p>
+
+<h4 class="wp-block-heading"> Neural Machine Translation-Based</h4>
+
+<p class="wp-block-paragraph">The
+newest approach of tackling NLIDBs is to use a neural machine translation
+approach. The basic idea is to apply supervised machine learning techniques on
+set of question/answer pairs where the questions are the natural language
+queries and the answers are the respective SQL or SPARQL statements. For
+translating from natural language to SQL or SPARQL the same techniques can be
+applied as for natural language translation, e.g. from English to French or
+Spanish.</p>
+
+<p class="wp-block-paragraph">One of the most commonly used methods is a certain recurrent neural network (RNN) called a Long Short-Term Memory (LSTM by Hochreiter &amp; Schmidhuber, 1997). In order to apply these neural networks for translating from a natural language to SQL or SPARQL, the questions and answers need to be transformed into a vector by applying word embedding techniques. These vectors are then used by a bi-directional neural network consisting of an encoder and decoder. Figure 4 sketches the basic ideas. </p>
+
+<figure class="wp-block-image"><img loading="lazy" decoding="async" width="1024" height="576" src="../../../../wp-content/uploads/2019/06/Figure4-1024x576.png" alt="" class="wp-image-2917" /><figcaption>Figure 4: Recurrent neural network architecture based on Long Short-Term Memory to translate a natural language question to SQL via sequence learning. The left part shows the encoder, while the right part shows the decoder.</figcaption></figure>
+
+<p class="wp-block-paragraph">Examples of neural machine translation-based systems are introduced by (Iyer et al., 2017), (Basik et al., 2018) and (Yavuz et al., 2018). First results are very promising. However, the major disadvantage of these types of supervised machine learning solutions is that they typically require a large number of training data sets which are often not available. Hence, some approaches tackle this problem by generating training data. The idea is to use existing questions and reformulate them to introduce additional linguistic variations and to increase the potential training data sets. </p>
+
+<h3 class="wp-block-heading"><strong>Conclusions </strong></h3>
+
+<p class="wp-block-paragraph">We
+have studied several approaches of designing NLIDBs. Currently the most
+effective systems are those based on a parsing or grammar approach according to
+a recent survey (Affolter et al., 2019). However, neural machine translation
+approaches show very promising results even though are “not enterprise ready
+for real database systems” yet.</p>
+
+<p class="wp-block-paragraph">The technique based on neural machine translation are currently very popular – not only in the database community but also in the semantic web, natural language processing and artificial intelligence community. On the one hand, these techniques open up exciting new perspectives to make core data management problems visible in other communities. On the other hand, the database community can also attract bright researchers from artificial intelligence and deep learning – two fields that are among the most popular now both in academia and industry. In summary, studying NLIDBs is not only an interesting research challenge, but also an excellent way of attracting new talent to tackle one of the open research challenges namely to how talk to databases (almost) like to humans. </p>
+
+<h4 class="wp-block-heading">References</h4>
+
+<p class="wp-block-paragraph"> Affolter, K., Stockinger, K., &amp; Bernstein, A., A Comparative Survey of Recent Natural Language Interfaces for Databases, VLDB Journal 2019, <a href="https://doi.org/10.1007/s00778-019-00567-8">https://doi.org/10.1007/s00778-019-00567-8</a></p>
+
+<p class="wp-block-paragraph">Basik, F., Hättasch, B., Ilkhechi, A., Usta, A., Ramaswamy, S., Utama, P.,  &amp; Cetintemel, U. (2018, May). DBPal: A Learned NL-Interface for Databases. In <em>Proceedings of the 2018 International Conference on Management of Data</em> (pp. 1765-1768). ACM.</p>
+
+<p class="wp-block-paragraph">Bast, H., &amp; Haussmann, E. (2015,
+October). More accurate question answering on freebase. In <em>Proceedings of
+the 24th ACM International on Conference on Information and Knowledge
+Management</em> (pp. 1431-1440). ACM.</p>
+
+<p class="wp-block-paragraph">Blunschi,
+L., Jossen, C., Kossmann, D., Mori, M., &amp; Stockinger, K. (2012). Soda: Generating sql for business users. <em>Proceedings of
+the VLDB Endowment</em>, <em>5</em>(10), 932-943.</p>
+
+<p class="wp-block-paragraph">Damljanovic, D., Agatonovic, M.,
+&amp; Cunningham, H. (2010, May). Natural language interfaces to ontologies:
+Combining syntactic analysis and ontology-based lookup through the user interaction.
+In <em>Extended Semantic Web Conference</em> (pp. 106-120). Springer, Berlin,
+Heidelberg.</p>
+
+<p class="wp-block-paragraph">Ferré, S. (2017). Sparklis: an
+expressive query builder for SPARQL endpoints with guidance in natural
+language. <em>Semantic Web</em>, <em>8</em>(3), 405-418.</p>
+
+<p class="wp-block-paragraph">Hochreiter, S., &amp; Schmidhuber,
+J. (1997). Long short-term memory. <em>Neural computation</em>, <em>9</em>(8),
+1735-1780.</p>
+
+<p class="wp-block-paragraph">Iyer, S., Konstas, I., Cheung, A., Krishnamurthy,
+J., &amp; Zettlemoyer, L. (2017, April). Learning a Neural Semantic Parser from
+User Feedback. In <em>55th Annual Meeting of the Association for Computational
+Linguistics</em>.</p>
+
+<p class="wp-block-paragraph">Jossen, C.,
+Blunschi, L., Mori, M., Kossmann, D., &amp; Stockinger, K. (2012, April). The credit suisse meta-data warehouse. In <em>2012 IEEE 28th
+International Conference on Data Engineering</em> (pp. 1382-1393). IEEE.</p>
+
+<p class="wp-block-paragraph">Kaufmann, E., Bernstein, A., &amp;
+Fischer, L. (2007, June). NLP-Reduce: A naive but domainindependent natural
+language interface for querying ontologies. In <em>4th European Semantic Web
+Conference ESWC</em> (pp. 1-2).</p>
+
+<p class="wp-block-paragraph">Li, F., &amp; Jagadish, H. V.
+(2014). Constructing an interactive natural language interface for relational
+databases. <em>Proceedings of the VLDB Endowment</em>, <em>8</em>(1), 73-84.</p>
+
+<p class="wp-block-paragraph">Saha, D., Floratou, A.,
+Sankaranarayanan, K., Minhas, U. F., Mittal, A. R., &amp; Özcan, F. (2016).
+ATHENA: an ontology-driven system for natural language querying over relational
+data stores. <em>Proceedings of the VLDB Endowment</em>, <em>9</em>(12), 1209-1220.</p>
+
+<p class="wp-block-paragraph">Sima, A. C., Stockinger, K., de
+Farias, T. M., &amp; Gil, M., Semantic Integration and Enrichment of
+Heterogeneous Biological Databases, To appear in <em>Evolutionary Genomics: Statistical and Computational Methods</em>, 2nd Edition,
+Springer</p>
+
+<p class="wp-block-paragraph">Simitsis, A., Koutrika, G., &amp;
+Ioannidis, Y. (2008). Précis: from unstructured keywords as queries to
+structured databases as answers. <em>The VLDB Journal—The International Journal
+on Very Large Data Bases</em>, <em>17</em>(1), 117-149.</p>
+
+<p class="wp-block-paragraph">Song, D.,
+Schilder, F., Smiley, C., Brew, C., Zielund, T., Bretz, H., &#8230; &amp; Harrison, J. (2015, October). TR discover: A natural
+language interface for querying and analyzing interlinked datasets. In <em>International
+Semantic Web Conference</em> (pp. 21-37). Springer, Cham.</p>
+
+<p class="wp-block-paragraph">Zheng, W., Cheng, H., Zou, L., Yu, J. X., &amp; Zhao, K. (2017, November). Natural language question/answering: let users talk with the knowledge graph. In <em>Proceedings of the 2017 ACM on Conference on Information and Knowledge Management</em> (pp. 217-226). ACM.</p>
+
+<h4 class="wp-block-heading">Blogger Profile</h4>
+
+<p class="wp-block-paragraph"><em>Prof. Dr. </em><a href="http://www.zhaw.ch/en/about-us/person/stog"><em>Kurt Stockinger </em></a><em>is Professor of Computer Science, Director of Studies in Data Science at Zurich University of Applied Sciences (ZHAW) and Deputy Head of the </em><a href="http://www.zhaw.ch/datalab"><em>ZHAW Datalab</em></a><em>. His research focuses on Data Science with emphasis on Big Data, data warehousing, business intelligences, advanced analytics and natural language query processing on knowledge bases. He is also on the Advisory Board of Callista Group AG.</em></p>
+
+<p class="wp-block-paragraph"><em>Previously Kurt Stockinger worked at Credit Suisse in Zurich, Switzerland, at Lawrence Berkeley National Laboratory in Berkeley, California, at California Institute of Technology, California as well as at CERN in Geneva, Switzerland. He holds a Ph.D. in computer science from CERN / University of Vienna.</em></p>
+
+<p class="wp-block-paragraph"> Copyright @ 2019, Kurt Stockinger, All rights reserved. </p>
+{% endraw %}

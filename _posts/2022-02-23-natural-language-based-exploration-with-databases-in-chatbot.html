@@ -1,0 +1,111 @@
+---
+layout: post
+title: "Natural Language-Based Exploration with Databases in Chatbot"
+date: 2022-02-23 04:10:13
+last_modified_at: 2022-02-24 12:00:37
+author: "christostsapelas"
+categories: ["Databots"]
+excerpt: "We expect virtually every database to be on Cloud shortly. All database vendors strive to survive in this competing market. In the era of cloud computing, databases will become easily accessible, and thus even non-technical users want to use such databases like their TVs. In this situation, we need…"
+image: "/wp-content/uploads/2022/02/SQLbot.png"
+wp_id: 3386
+permalink: "/2022/02/23/natural-language-based-exploration-with-databases-in-chatbot/"
+---
+{% raw %}
+<p class="wp-block-paragraph">We expect virtually every database to be on Cloud shortly. All database vendors strive to survive in this competing market. In the era of cloud computing, databases will become easily accessible, and thus even non-technical users want to use such databases like their TVs. In this situation, we need to interact with databases through accessible interfaces rather than using formal query languages such as SQL. The natural language (NL) based interface is the most intuitive and easiest way to compose queries, which has recently attracted attention. The natural language (NL) based interface is the most intuitive and easiest way to compose queries, which has recently attracted attention.</p>
+
+<p class="wp-block-paragraph">This blog post explains what NL-based exploration in a chatbot is. I also review the state-of-the-art methods related to this problem. I then explain what kind of challenges we need to address in a few years. Note that this post is based on my mini-keynote speech in SIGMOD 2021.</p>
+
+<h3 class="wp-block-heading" id="data-exploration-chatbot">Data Exploration Chatbot</h3>
+
+<p class="wp-block-paragraph">Chatbots are the most popular ways to interact with people. A chatbot is essentially a robot we can chat or interact with online via text or text-to-speech. There are diverse chatbots in many domains. Examples include Google Assistant (a more general-purpose chatbot), HEEK, a website creation chatbot, and Amtrack, a rail passage service chatbot.</p>
+
+<p class="wp-block-paragraph">Data exploration with ordinary people could be possible with special chatbots. In our group, we have been developing SQLBot [1], a special chatbot for enabling exploration with relational databases. Figure 1 shows the screenshot of SQLBot. The left pane shows a database schema, while users can type an NL question in the chatbox of the right pane. SQLBot shows query results in various visual formats (table, pie chart, histogram, etc.). The SQLBot computes a confidence score for the translated SQL query for a given NL question.</p>
+
+<p class="wp-block-paragraph"></p>
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="512" height="260" src="../../../../wp-content/uploads/2022/02/SQLbot.png" alt="" class="wp-image-3388" /><figcaption>Figure 1: A screenshot of SQLBot.</figcaption></figure>
+
+<p class="wp-block-paragraph">I think the data exploration chatbots need to support the following three functionalities. The first and foremost part is the accurate translation of NL to SQL (NL2SQL). The second part is to visualize query results effectively. This part is rule-based since the output schema of an SQL query and its query results can determine visual formats. Alternatively, one can give NL instructions on visualizing the query results (NL2VIS) [2].&nbsp;The last part is how to simulate human conversation in the context of data exploration with relational databases. Here, we should consider a dialogue history. Looking at the dialogue in Figure 1, SQLBot automatically recognizes the dialogue action type [3] of the current NL question. Here, “inform_sql” displayed below an NL question means an SQL query can answer the user question. When user questions are ambiguous or unrelated, they are classified as “ambiguous” or “cannot_answer,” respectively.</p>
+
+<h3 class="wp-block-heading" id="history-of-nl2sql">History of NL2SQL</h3>
+
+<p class="wp-block-paragraph">NL2SQL finds an SQL statement to answer an NL question on a given relational database. More formally, given a relational database D and an NL question q<sub>nl</sub> to D, NL2SQL executes a translated SQL statement q<sub>sql</sub> to answer q<sub>nl.</sub> [4]. The translated query q<sub>sql</sub> must be <em>semantically</em> <em>equivalent</em> to a gold query q<sub>gold</sub>. Given two SQL queries q<sub>sql</sub> and q<sub>gold</sub>, they are semantically equivalent if and only if they always return the same results on any input database instance.&nbsp;</p>
+
+<p class="wp-block-paragraph">Chat-80 is one of the first relational chatbots developed by Pereira and Warren in 1982 [5] (Please see the history of NL2SQL (Figure 2)). This bot can answer questions on a specific domain, geography, and they use a manually-built lexicon and grammar.</p>
+
+<div class="wp-block-image"><figure class="aligncenter size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/02/history-of-NL-interfaces.png" alt="" class="wp-image-3389" width="816" height="94" /><figcaption>Figure 2: A brief history of NL interface to relational databases.</figcaption></figure></div>
+
+<h3 class="wp-block-heading" id="modern-nl2sql-systems">Modern NL2SQL systems</h3>
+
+<p class="wp-block-paragraph">Modern NL2SQL systems encode two sequences using a transformer-based encoder: an NL query and a schema (mainly in a linearized form of schema information). The question encoder encodes a series of NL tokens into their deep representations (a sequence of vectors), while the schema encoder encodes a graph-structured schema into the corresponding deep representations. Unlike sentences, we must consider complex relationships between nodes in the schema graph. One could use a single transformer to encode both sequences. Alternatively, we can use separate encoders for encoding individual sequences.</p>
+
+<p class="wp-block-paragraph">When encoding the two sequences, modern NL2SQL systems exploit schema/value linking, enabling the model to align column/table references to the corresponding columns/tables. This information captures latent linking between question and table or columns. Typically, three types of linkings are considered: a question token to a column name; a question token to a table name; and a value token to a column name.</p>
+
+<p class="wp-block-paragraph">Figure 3 shows three different linkings between the given natural language question and the schema.&nbsp;</p>
+
+<p class="wp-block-paragraph">The word <em>stadium</em> in the query is linked to the table <em>stadium</em> (question-to-table linking) and the column <em>stadium_ID</em> (question-to-column linking) using exact and partial matching, respectively. The token <em>Super bootcamp </em>is linked to the column <em>concert_Name </em>(question-to-value linking),<em> </em>since the value “Super bootcamp” is contained in the <em>concert_Name </em>column.</p>
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/02/schema-linking.png" alt="" class="wp-image-3390" width="769" height="315" /><figcaption>Figure 3: An example of schema/value linking.</figcaption></figure>
+
+<p class="wp-block-paragraph">Once schema/value linking is complete, modern NL2SQL systems perform relation-aware self-attention [6] to effectively bias the transformer toward pre-defined relations such as QUESTION-COLUMN and QUESTION-TABLE. For each input token, self-attention computes an output vector as a contextualized representation for all input tokens (input vectors) using weighted sums of input vectors. Here, a weight learned during training represents the relative similarity between two input vectors.<br>Figure 4 describes the attention weights of the token&nbsp;<em>stadium</em>&nbsp;using relation-aware self-attention. The token&nbsp;<em>stadium</em>&nbsp;in the NL question has a strong attention weight to the column name, <em>stadium_ID</em>,<em> </em>since the schema linking module captures their relation.&nbsp;The token, <em>stadium</em>, is also strongly linked to the table name, <em>stadium</em>, while a significantly lower attention weight is allocated to the pair of the tokens, (<em>stadium</em>, <em>concert</em>).&nbsp;</p>
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/02/example-of-attention-weights-in-relation-aware-self-attention.png" alt="" class="wp-image-3391" width="702" height="297" /><figcaption>Figure 4: An example of attention weights in relation-aware self-attention. The highlight on each token represents its attention weight.</figcaption></figure>
+
+<h3 class="wp-block-heading" id="enabling-conversation">Enabling conversation</h3>
+
+<p class="wp-block-paragraph">In conversational NL2SQL, capturing context during dialogue is the most crucial issue to address. For example, consider the first two questions, “How many dorms have a TV Lounge” and “what is the total capacity of these dorms. Here, we need to understand what these dorms refer to, which is essential in a translation.</p>
+
+<p class="wp-block-paragraph">Given an NL2SQL system, one can extend it to support dialogue-based NL2SQL by considering dialogue history. For example, a state-of-the-art system, SCoRe [7], extends RatSQL [8] in two aspects. 1) SCoRe pretrains a language model for NL2SQL using additional loss functions, injecting context-related inductive bias into the language model. 2) The extended RatSQL additionally takes a dialog history to understand the context of the dialogue. To consider the multi-turn dynamics of conversation, SCoRe extensively uses synthetically generated data in the pretraining. SCoRe first extracts templates of question-SQL query pairs from the dialogues in the training data of existing benchmarks such as SParC. It then generates synthetic data by applying those templates to web tables.</p>
+
+<h3 class="wp-block-heading" id="can-the-modern-nl2sql-systems-support-queries-in-chat-80">Can the modern NL2SQL systems support queries in Chat-80?</h3>
+
+<p class="wp-block-paragraph">The state-of-the-art NL2SQL systems archive about 75% accuracy in the Spider leader board [9]. Despite their high accuracy, one may wonder whether the state-of-the-art NL2SQL system can accurately translate queries in Chat-80. We tested six queries from the VLDB 81 paper [5]. For experiments, we chose RatSQL, which is one of the state-of-the-arts.</p>
+
+<p class="wp-block-paragraph">Q1) Which employees aged over 40 on the first floor earn more than their managers?</p>
+
+<p class="wp-block-paragraph">Q2) Which countries bordering the Mediterranean border Asian countries?</p>
+
+<p class="wp-block-paragraph">Q3) Which is the ocean that borders African countries and (that borders) Asian countries?</p>
+
+<p class="wp-block-paragraph">Q4) What are the countries bordering the Soviet Union whose population exceeds the population of the United Kingdom?</p>
+
+<p class="wp-block-paragraph">Q5) Which American countries do not border the Pacific?</p>
+
+<p class="wp-block-paragraph">Q6) Which countries border exactly two seas?</p>
+
+<p class="wp-block-paragraph">Although some queries (e.g., Q1, Q5, and Q6) seem easy to translate, surprisingly, the state-of-the-art NL2SQL system does not correctly predict any query used in VLDB 1981. The modern NL2SQL system does not accurately handle complex join conditions and (correlated) nested queries. Translating NL questions involving group by/having clauses is also challenging due to the limited scope of the NL2SQL system.</p>
+
+<p class="wp-block-paragraph">Consider Q1. The following table shows the gold query and the translated query for Q1. As we see here, RatSQL fails to isolate independent parts of a complex NL question. Here, employee tables are referenced twice within a nested query.&nbsp;</p>
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="274" src="../../../../wp-content/uploads/2022/02/Screenshot-2022-02-23-at-5.58.55-AM-1024x274.png" alt="" class="wp-image-3392" /></figure>
+
+<h3 class="wp-block-heading" id="conclusion">Conclusion</h3>
+
+<p class="wp-block-paragraph">NL-based data exploration has a high potential due to the advance of deep learning techniques. I explained three functionalities in the NL-based exploration chatbot. I then explained how the state-of-the-art NL2SQL system (i.e., the most core part in NL-based exploration chatbot) translates NL questions into SQL queries. Based on a simple experiment using a set of queries used in Chat-80, I listed some critical issues that hinder the deployment of data exploration chatbots in real-world relational databases. I believe that improving NL2SQL systems requires real-world databases/workloads which are much more complex than existing benchmark queries based on toy databases. I encourage more people in our database community as domain experts to work in this area. </p>
+
+<h4 class="wp-block-heading">Blogger Profile</h4>
+
+<p class="wp-block-paragraph">Wook-Shin Han leads the database group at POSTECH. He is currently the Vice President for the Office of Academic Information Affairs, a team leader for the Brain Korea 21 Program for Leading Universities &amp; Students (BK 21) project for AI, and a Full Professor in the Department of Computer Science and Engineering at POSTECH. He has obtained his Ph.D degree from KAIST in 2001. His primary research efforts have been devoted to developing new techniques in DBMS &#8220;engine research.&#8221; His group recently developed three systems called TurboGraph++ (SIGMOD2018), iTurboGraph (SIGMOD2021) and TurboFlux (SIGMOD2018) for trillion-scale, incremental graph analytics. He regularly serves as a PC member for SIGMOD, VLDB, and ICDE. He also serves/served as an associate editor of several international journals including the VLDB Journal, IEEE TKDE, and SIGMOD Record.</p>
+
+<h4 class="wp-block-heading" id="references">References</h4>
+
+<p class="wp-block-paragraph">1. <a href="http://www.sqlbot.co.kr/"><em>http://www.sqlbot.co.kr</em></a>.</p>
+
+<p class="wp-block-paragraph">2. Luo, Y., et al. <em>Synthesizing natural language to visualization (NL2VIS) benchmarks from NL2SQL benchmarks</em>. in <em>SIGMOD</em>. 2021.</p>
+
+<p class="wp-block-paragraph">3. Yu, T., et al. <em>CoSQL: A conversational text-to-SQL challenge towards cross-domain natural language interfaces to databases</em>. in <em>EMNLP</em>. 2019.</p>
+
+<p class="wp-block-paragraph">4. Kim, H., et al., <em>Natural language to SQL: where are we today?</em> Proceedings of the VLDB Endowment, 2020. <strong>13</strong>(10): p. 1737-1750.</p>
+
+<p class="wp-block-paragraph">5. Warren, D.H. <em>Efficient processing of interactive relational database queries expressed in logic</em>. in <em>VLDB</em>. 1981.</p>
+
+<p class="wp-block-paragraph">6. Shaw, P., J. Uszkoreit, and A. Vaswani. <em>Self-attention with relative position representations</em>. in <em>ACL</em>. 2018.</p>
+
+<p class="wp-block-paragraph">7. Yu, T., et al. <em>SCoRe: Pre-training for context representation in conversational semantic parsing</em>. in <em>ICLR</em>. 2020.</p>
+
+<p class="wp-block-paragraph">8. Wang, B., et al. <em>Rat-sql: Relation-aware schema encoding and linking for text-to-sql parsers</em>. in <em>ACL</em>. 2020.</p>
+
+<p class="wp-block-paragraph">9. <a href="https://yale-lily.github.io/spider"><em>https://yale-lily.github.io/spider</em></a>.</p>
+
+<p class="wp-block-paragraph">Copyright @ 2022, Wook-Shin Han, All rights reserved. </p>
+{% endraw %}

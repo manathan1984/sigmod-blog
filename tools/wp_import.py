@@ -21,6 +21,7 @@ What it writes:
 """
 
 import argparse
+import hashlib
 import html
 import json
 import os
@@ -37,6 +38,13 @@ UA = "sigmod-blog-importer/1.0 (+https://github.com/manathan1984/sigmod-blog)"
 
 UPLOAD_RE = re.compile(r"https?://wp\.sigmod\.org(/wp-content/uploads/[^\s\"'<>)]+)")
 INTERNAL_RE = re.compile(r"https?://wp\.sigmod\.org/?\?(p|page_id)=(\d+)[^\s\"'<>]*")
+ATTACHMENT_RE = re.compile(r"https?://wp\.sigmod\.org/?\?attachment_id=(\d+)")
+CAT_RE = re.compile(r"https?://wp\.sigmod\.org/?\?cat=(\d+)")
+# Images pasted from Google Docs are served from expiring googleusercontent URLs.
+EXTERNAL_IMG_RE = re.compile(r"(<img[^>]+src=\")(https://lh\d(?:-[a-z]+)?\.googleusercontent\.com/[^\"]+)\"")
+
+# Filled in by main(): WordPress category id -> {"name", "slug"}.
+CATEGORIES = {}
 
 
 # --------------------------------------------------------------------------- HTTP
@@ -75,6 +83,60 @@ def download(path):
     except Exception as e:  # noqa: BLE001
         print(f"  ! could not download {url}: {e}", file=sys.stderr)
         return False
+
+
+def mirror_external(url):
+    """Save an externally hosted image under /wp-content/uploads/external/; returns its path."""
+    url = html.unescape(url)
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            data, ctype = r.read(), r.headers.get("Content-Type", "")
+    except Exception as e:  # noqa: BLE001
+        print(f"  ! could not download {url[:80]}: {e}", file=sys.stderr)
+        return None
+    ext = {"image/png": ".png", "image/jpeg": ".jpg", "image/gif": ".gif", "image/webp": ".webp"}.get(ctype.split(";")[0], ".img")
+    path = f"/wp-content/uploads/external/{hashlib.sha1(url.encode()).hexdigest()[:16]}{ext}"
+    dest = os.path.join(ROOT, path.lstrip("/"))
+    if not os.path.exists(dest):
+        os.makedirs(os.path.dirname(dest), exist_ok=True)
+        open(dest, "wb").write(data)
+        print(f"  image {url[:60]}… -> {path}")
+    return path
+
+
+def attachment_path(media_id):
+    """Resolve ?attachment_id=N to the uploaded file's path."""
+    try:
+        media, _ = fetch(f"/wp/v2/media/{media_id}", {"_fields": "source_url"})
+    except Exception:  # noqa: BLE001
+        return None
+    m = UPLOAD_RE.match(media.get("source_url", ""))
+    return m.group(1) if m and download(m.group(1)) else None
+
+
+def unwrap_layout_tables(content):
+    """Old posts wrap the whole text in a one-column <table> for layout; keep only the cell contents."""
+    def unwrap(m):
+        t = m.group(0)
+        rows = len(re.findall(r"<tr\b", t))
+        cells = re.findall(r"<td\b[^>]*>(.*?)</td>", t, re.S)
+        if "<th" in t or not cells or len(cells) != rows or "<table" in t[6:]:
+            return t
+        return "\n".join(c.strip() for c in cells)
+
+    return re.sub(r"<table\b.*?</table>", unwrap, content, flags=re.S)
+
+
+def balance_divs(content):
+    """WordPress tolerates unclosed <div>s; here they would swallow the sidebar."""
+    opens, closes = len(re.findall(r"<div\b", content)), len(re.findall(r"</div>", content))
+    if opens > closes:
+        content += "\n" + "</div>" * (opens - closes)
+    for _ in range(closes - opens):
+        i = content.rfind("</div>")
+        content = content[:i] + content[i + len("</div>"):]
+    return content
 
 
 # --------------------------------------------------------------------------- YAML
@@ -126,6 +188,18 @@ def clean_html(content, depth, id_map):
     # srcset/sizes point at resized variants we don't mirror; src is enough.
     content = re.sub(r'\s(srcset|sizes)="[^"]*"', "", content)
 
+    # Links pasted from Google Docs are wrapped (sometimes twice) in google.com/url?q=… redirects.
+    def unwrap_google(m):
+        url = html.unescape(m.group(1))
+        while url.startswith("https://www.google.com/url?"):
+            q = urllib.parse.parse_qs(urllib.parse.urlparse(url).query).get("q")
+            if not q:
+                break
+            url = urllib.parse.unquote(q[0]) if "%3D" in q[0] or "%253D" in q[0] else q[0]
+        return 'href="' + html.escape(url, quote=True) + '"'
+
+    content = re.sub(r'href="(https://www\.google\.com/url\?[^"]+)"', unwrap_google, content)
+
     def upload(m):
         download(m.group(1))
         return up + m.group(1).lstrip("/")
@@ -138,6 +212,31 @@ def clean_html(content, depth, id_map):
         return up + target.strip("/") + "/" if target else m.group(0)
 
     content = INTERNAL_RE.sub(internal, content)
+
+    def attachment(m):
+        path = attachment_path(m.group(1))
+        return up + path.lstrip("/") if path else m.group(0)
+
+    content = ATTACHMENT_RE.sub(attachment, content)
+
+    def category(m):
+        c = CATEGORIES.get(int(m.group(1)))
+        if not c:
+            return m.group(0)
+        write_listing("category", c["slug"], c["name"])
+        return f"{up}category/{c['slug']}/"
+
+    content = CAT_RE.sub(category, content)
+
+    def external(m):
+        path = mirror_external(m.group(2))
+        return f'{m.group(1)}{up}{path.lstrip("/")}"' if path else m.group(0)
+
+    content = EXTERNAL_IMG_RE.sub(external, content)
+    # Embeds over http are blocked as mixed content on an https site.
+    content = re.sub(r'(<iframe[^>]+src=")http://', r"\1https://", content)
+    content = unwrap_layout_tables(content)
+    content = balance_divs(content)
     content = re.sub(r"\n{3,}", "\n\n", content).strip()
     # Protect any literal {{ }} / {% %} in the body from Liquid.
     return "{% raw %}\n" + content + "\n{% endraw %}\n"
@@ -175,9 +274,16 @@ def existing_id_map():
     return ids
 
 
+def clean_slug(slug):
+    """WordPress slugs can carry percent-encoded junk (e.g. %ef%bf%bc from pasted titles)."""
+    slug = urllib.parse.unquote(slug).lower()
+    slug = re.sub(r"[^a-z0-9-]+", "", slug)
+    return re.sub(r"-{2,}", "-", slug).strip("-") or "post"
+
+
 def post_permalink(p):
     d = p["date"][:10].split("-")
-    return f"/{d[0]}/{d[1]}/{d[2]}/{p['slug']}/"
+    return f"/{d[0]}/{d[1]}/{d[2]}/{clean_slug(p['slug'])}/"
 
 
 def write_listing(kind, slug, name):
@@ -189,12 +295,16 @@ def write_listing(kind, slug, name):
                 f"permalink: /{kind}/{slug}/\n---\n")
 
 
-def import_posts(posts, authors, categories, id_map):
+def import_posts(posts, authors, categories, id_map, force=False):
     for p in posts:
         id_map[p["id"]] = post_permalink(p)
     for p in posts:
         title = html.unescape(p["title"]["rendered"])
         link = post_permalink(p)
+        fn = os.path.join(ROOT, "_posts", f"{p['date'][:10]}-{clean_slug(p['slug'])[:120]}.html")
+        if has_local_edits(fn) and not force:
+            print(f"post {p['id']}: {title}  (skipped: keep_local_edits)")
+            continue
         print(f"post {p['id']}: {title}  ->  {link}")
         emb = p.get("_embedded", {})
         author = (emb.get("author") or [{}])[0]
@@ -238,7 +348,6 @@ def import_posts(posts, authors, categories, id_map):
             f"permalink: {yq(link)}",
             "---",
         ]
-        fn = os.path.join(ROOT, "_posts", f"{p['date'][:10]}-{p['slug'][:120]}.html")
         os.makedirs(os.path.dirname(fn), exist_ok=True)
         # Drop a stale file if the slug/date changed upstream.
         for old in os.listdir(os.path.dirname(fn)):
@@ -249,14 +358,23 @@ def import_posts(posts, authors, categories, id_map):
             f.write("\n".join(fm) + "\n" + body)
 
 
-def import_pages(pages, id_map):
+def has_local_edits(fn):
+    """Files marked `keep_local_edits: true` were hand-edited after import."""
+    return os.path.exists(fn) and re.search(
+        r"^keep_local_edits:\s*true\s*$", open(fn, encoding="utf-8").read(4000), re.M)
+
+
+def import_pages(pages, id_map, force=False):
     for p in pages:
         id_map[p["id"]] = f"/{p['slug']}/"
     for p in pages:
         title = html.unescape(p["title"]["rendered"])
         link = f"/{p['slug']}/"
-        print(f"page {p['id']}: {title}  ->  {link}")
         fn = os.path.join(ROOT, "_pages", p["slug"] + ".html")
+        if has_local_edits(fn) and not force:
+            print(f"page {p['id']}: {title}  (skipped: keep_local_edits)")
+            continue
+        print(f"page {p['id']}: {title}  ->  {link}")
         os.makedirs(os.path.dirname(fn), exist_ok=True)
         with open(fn, "w", encoding="utf-8") as f:
             f.write("\n".join([
@@ -271,12 +389,13 @@ def main():
     g.add_argument("--all", action="store_true", help="import every published post")
     g.add_argument("--post", type=int, nargs="+", metavar="ID", help="import posts by WordPress ID")
     ap.add_argument("--page", type=int, nargs="+", metavar="ID", default=[], help="also import pages by ID")
+    ap.add_argument("--force", action="store_true", help="overwrite files marked keep_local_edits: true")
     args = ap.parse_args()
     if not (args.latest or args.all or args.post or args.page):
         ap.error("nothing to import")
 
     # Category table: every category, so legacy ?cat=N links can be resolved.
-    categories, page = {}, 1
+    categories, page = CATEGORIES, 1
     while True:
         batch, hdr = fetch("/wp/v2/categories", {"per_page": 100, "page": page})
         for c in batch:
@@ -308,8 +427,8 @@ def main():
     authors_path = os.path.join(ROOT, "_data", "authors.yml")
     authors = load_yaml_map(authors_path)
     id_map = existing_id_map()
-    import_pages(pages, id_map)
-    import_posts(posts, authors, categories, id_map)
+    import_pages(pages, id_map, args.force)
+    import_posts(posts, authors, categories, id_map, args.force)
     dump_yaml_map(authors_path, authors,
                   "# Generated by tools/wp_import.py; safe to hand-edit (re-imports update name/url/avatar).\n")
     print(f"done: {len(posts)} post(s), {len(pages)} page(s)")

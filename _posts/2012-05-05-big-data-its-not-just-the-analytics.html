@@ -1,0 +1,76 @@
+---
+layout: post
+title: "Big Data: It’s Not Just the Analytics"
+date: 2012-05-05 01:31:39
+last_modified_at: 2015-07-22 01:10:01
+author: "user-8"
+categories: ["Analytics", "Big Data"]
+excerpt: "I was recently approached by an entrepreneur who had an interesting way to correlate short term performance of a stock with news reports about the stock. Needless to say, there are many places from which one can get the news, and what results one gets from this sort of analysis does depend on the…"
+image: null
+wp_id: 430
+permalink: "/2012/05/05/big-data-its-not-just-the-analytics/"
+---
+{% raw %}
+<p>
+I was recently approached by an entrepreneur who had an interesting way to correlate short term performance of a stock with news reports about the stock. Needless to say, there are many places from which one can get the news, and what results one gets from this sort of analysis does depend on the input news sources. Surprisingly, within two minutes the conversation had drifted from characteristics of news sources to the challenges of running SVM on Hadoop. The reason for this is not that Hadoop is the right infrastructure for this problem. But rather that the problem can legitimately be considered a Big Data problem. In consequence, in the minds of many, it must be addressed by running analytics in the cloud.
+</p>
+<p>
+I have nothing against cloud services. In fact, I think they are an important part of the computational eco-system, permitting organizations to out-source selected aspects of their computational needs, and to provision peak capacity for load bursts. The map-reduce paradigm is a fantastic abstraction with which to handle tasks that are “embarrassingly parallelizable.” In short, there are many circumstances in which cloud services are called for. However, they are not always the solution, and are rarely the complete solution. For the stock price data analysis problem, based solely on the brief outline I’ve given you, one cannot say whether they are appropriate.
+</p>
+<p>
+I have nothing against Support Vector Machines, or other machine learning techniques. They can be immensely useful, and I have used them myself in many situations. Scaling up these techniques for large data sets can be an issue, and certainly is a Big Data challenge. But for the problem at hand, I would be much more concerned about how it was modeled than how the model was scaled. What should the features be? Do we worry about duplicates in news appearances? Into how many categories should we classify news mentions? These are by far the more important questions to answer, because how we answer them can change what results we get: scaling better will only change how fast we get them.
+</p>
+<p>
+It is hard to avoid mention of Big Data anywhere we turn today. There is broad recognition of the value of data, and products obtained through analyzing it. Industry is abuzz with the promise of big data. Government agencies have recently announced significant programs towards addressing challenges of big data. Yet, many have a very narrow interpretation of what that means, and we lose track of the fact that there are multiple steps to the data analysis pipeline, whether the data are big or small. At each step, there is work to be done, and there are challenges with Big Data.
+</p>
+<p>
+The first step is data acquisition. Some data sources, such as sensor networks, can produce staggering amounts of raw data. Much of this data is of no interest, and it can be filtered and compressed by orders of magnitude. One challenge is to define these filters in such a way that they do not discard useful information. For example, in considering news reports, is it enough to retain only those that mention the name of a company of interest? Do we need the full report, or just a snippet around the mentioned name? The second big challenge is to automatically generate the right metadata to describe what data is recorded and how it is recorded and measured. This metadata is likely to be crucial to downstream analysis. For example, we may need to know the source for each report if we wish to examine duplicates.
+</p>
+<p>
+Frequently, the information collected will not be in a format ready for analysis. The second step is an information extraction process that pulls out the required information from the underlying sources and expresses it in a structured form suitable for analysis. A news report will get reduced to a concrete structure, such as a set of tuples, or even a single class label, to facilitate analysis. Furthermore, we are used to thinking of Big Data as always telling us the truth, but this is actually far from reality. We have to deal with erroneous data: some news reports are inaccurate.
+</p>
+<p>
+Data analysis is considerably more challenging than simply locating, identifying, understanding, and citing data. For effective large-scale analysis all of this has to happen in a completely automated manner. This requires differences in data structure and semantics to be expressed in forms that are computer understandable, and then “robotically” resolvable. Even for simpler analyses that depend on only one data set, there remains an important question of suitable database design. Usually, there will be many alternative ways in which to store the same information. Certain designs will have advantages over others for certain purposes, and possibly drawbacks for other purposes.
+</p>
+<p>
+Mining requires integrated, cleaned, trustworthy, and efficiently accessible data, declarative query and mining interfaces, scalable mining algorithms, and big-data computing environments. A problem with current Big Data analysis is the lack of coordination between database systems, which host the data and provide SQL querying, with analytics packages that perform various forms of non-SQL processing, such as data mining and statistical analyses. Today’s analysts are impeded by a tedious process of exporting data from the database, performing a non-SQL process and bringing the data back.
+</p>
+<p>
+Having the ability to analyze Big Data is of limited value if users cannot understand the analysis. Ultimately, a decision-maker, provided with the result of analysis, has to interpret these results. Usually, this involves examining all the assumptions made and retracing the analysis. Furthermore, as we saw above, there are many possible sources of error: computer systems can have bugs, models almost always have assumptions, and results can be based on erroneous data. For all of these reasons, users will try to understand, and verify, the results produced by the computer. The computer system must make it easy for her to do so by providing supplementary information that explains how each result was derived, and based upon precisely what inputs.
+</p>
+<p>
+In short, there is a multi-step pipeline required to extract value from data. Heterogeneity, incompleteness, scale, timeliness, privacy and process complexity give rise to challenges at all phases of the pipeline. Furthermore, this pipeline isn’t a simple linear flow – rather there are frequent loops back as downstream steps suggest changes to upstream steps. There is more than enough here that we in the database research community can work on.
+</p>
+<p>
+To highlight this fact, several of us got together electronically last winter, and wrote a white paper, available  at <a href="http://cra.org/ccc/docs/init/bigdatawhitepaper.pdf" target="_blank"> http://cra.org/ccc/docs/init/bigdatawhitepaper.pdf </a>. Please read it, and say what you think. The database community came very late to much of the web. We should make sure not to miss the boat on Big Data.
+</p>
+<p>
+My post is loosely based on an extract from this white paper, which was created through a distributed conversation among many prominent researchers listed below.
+</p>
+<p>Divyakant Agrawal, UC Santa Barbara<br />
+Philip Bernstein, Microsoft<br />
+Elisa Bertino, Purdue Univ.<br />
+Susan Davidson, Univ. of Pennsylvania<br />
+Umeshwar Dayal, HP<br />
+Michael Franklin, UC Berkeley<br />
+Johannes Gehrke, Cornell Univ.<br />
+Laura Haas, IBM<br />
+Alon Halevy, Google<br />
+Jiawei Han, UIUC<br />
+H. V. Jagadish, Univ. of Michigan (Coordinator)<br />
+Alexandros Labrinidis, Univ. of Pittsburgh<br />
+Sam Madden, MIT<br />
+Yannis Papakonstantinou, UC San Diego<br />
+Jignesh M. Patel, Univ. of Wisconsin<br />
+Raghu Ramakrishnan, Yahoo!<br />
+Kenneth Ross, Columbia Univ.<br />
+Cyrus Shahabi, Univ. of Southern California<br />
+Dan Suciu, Univ. of Washington<br />
+Shiv Vaithyanathan, IBM<br />
+Jennifer Widom, Stanford Univ.</p>
+<h4> Blogger&#8217;s Profile: </h4>
+<p><a href="http://www.eecs.umich.edu/~jag" target="_blank"> H. V. Jagadish </a>  is Bernard A Galler Collegiate Professor of Electrical Engineering and Computer Science and Director of the Software Systems Research Laboratory at the <a href="http://www.eecs.umich.edu/db" target="_blank"> University of Michigan </a>, Ann Arbor.  He is well-known for his broad-ranging research on information management, and particularly its use in biology, medicine, telecommunications, finance, engineering, and the web.   He is an <a href="http://fellows.acm.org/fellow_citation.cfm?id=5073184&#038;srt=alpha&#038;alpha=J" target="_blank"> ACM Fellow </a> and founding Editor in Chief of <a href="http://vldb.org/pvldb/" target="_blank"> PVLDB</a>.  He serves on the board of the <a href="http://www.cra.org/" target="_blank"> Computing Research Association</a>. </p>
+<div>
+<p> Copyright @ 2012,  H. V. Jagadish, All rights reserved.</p>
+</div>
+{% endraw %}

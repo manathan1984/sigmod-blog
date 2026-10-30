@@ -1,0 +1,48 @@
+---
+layout: post
+title: "Entrepreneurship in Data Management Research"
+date: 2012-11-04 21:24:58
+last_modified_at: 2015-07-22 01:02:41
+author: "user-11"
+categories: ["Research Commercialization", "Search", "Startups"]
+excerpt: "As data is becoming increasingly more important in our society, there are many successful companies doing data-related businesses. This field grows so fast that many new startups are launched with the goal to become the “next Google.” This trend also provides a lot of entrepreneurship opportunities…"
+image: null
+wp_id: 636
+permalink: "/2012/11/04/entrepreneurship-in-data-management-research/"
+---
+{% raw %}
+<p>
+As data is becoming increasingly more important in our society, there are many successful companies doing data-related businesses. This field grows so fast that many new startups are launched with the goal to become the “next Google.” This trend also provides a lot of entrepreneurship opportunities for our community working on data management research. This blog describes my experiences of doing a startup (called SRCH2, <a href="http://www.srch2.com" target=_blank> http://www.srch2.com/</a>) that commercializes university research. It also shares my own perspective on entrepreneurship in data management research.</p>
+<p>This blog is based on the talk that I gave at the DBRank workshop at VLDB 2012 and the talk slides are available on my homepage.
+</p>
+<h3>SRCH2: Commercializing Data Management Research</h3>
+<hr />
+<p>
+One of the research topics I work on at UC Irvine is related to powerful search. It started when I talked to people at the UCI Medical School and asked the question: “What are your data management problems?”. One of the challenges they were facing was record linkage, i.e., identifying that two records from different data sources represent the same real-world entity. An important problem in this context is approximate string search, which is supporting queries with fuzzy matching predicates, such as finding records with keywords similar to the former California “Terminator” governor. While looking into the details, I realized that the problem was not solved on large data sets, so I started leading a research team to work on it. After several years, we developed several novel techniques, and released an open-source C++ package called Flamingo (<a href="http://flamingo.ics.uci.edu/" target=_blank>http://flamingo.ics.uci.edu/</a>), which received a lot of attention from academia and industry. I also took a leave from UCI to work as a visiting scientist at Google, and this experience was very beneficial. It not only showed me how large companies manage data management projects and solve challenging problems, but also taught me how to manage a research team in a university setting.
+</p>
+<p>
+In 2008, when pushing our research to the UCI community, we identified one “killer app” domain: people search. We developed a system prototype called PSearch (<a href="http://psearch.ics.uci.edu/" target=_blank>http://psearch.ics.uci.edu/</a>) that supports instant and error-tolerant search. The system gradually became popular on the campus and many people began using it on a daily basis. Many of them told me their personal stories in which they were able to find people quickly, despite their vague recall of names. Meanwhile, collaborating with colleagues at Tsinghua University, we were able to scale the techniques to larger data sets and developed another system called iPubmed (<a href="http://ipubmed.ics.uci.edu" target=_blank>http://ipubmed.ics.uci.edu</a>), which enabled the same features on 21 million MEDLINE publications. We also developed techniques in other domains, such as geo search.
+</p>
+<p>
+As our systems became more and more popular, very often I got requests from users asking: “Can I run your engine on my own data sets?” As a former PhD from the Stanford Database Group, the home of many successful companies such as Junglee, Google, and Aster Data, I always had the dream of doing my own startup. Then the answer became very natural: “Why don’t we commercialize the results?”.  So I incorporated a company in 2008, which was initially called “Bimaple,” and recently renamed to SRCH2 to better describe its search-related business. SRCH2 has developed a search engine (built from the ground up in C++) targeting enterprises that want to enable a Google-like search interface for their customers. It offers a solution similar to Lucene and Sphinx Search, but with more powerful features such as instant search, error correction, geo support, real-time updates, and customizable ranking. Currently its first products are developed and it has paying customers.</p>
+<h3>(Good) Lessons Learned</h3>
+<hr />
+<p>
+In the four years of doing the company so far, I have learned many things that are beyond my imagination. Here are some of the (good) lessons learned so far.</p>
+<p><b>First Jump: from Technology to Products.</b><br />
+To turn novel techniques to a successful business, we need to jump over two challenging gaps. The first one is between the techniques and products. In the research phase (especially at universities) we tend to focus on new ideas and prototyping as a proof of concept. However, the fact “it works!” doesn’t mean “it’s a product.” A significant amount of effort needs to be put into product development to make sure it is reliable and easy to use, and can meet customers’ needs. Talking to customers is very eye opening, and very often they mention new features that are indeed very challenging from a research perspective, such as concurrency control and real-time updates, to name a few.</p>
+<p><b>Second Jump: from Products to Business.</b><br />
+Good products don’t necessarily mean a successful business. A lot of effort is needed in non-technical areas, such as marketing, sales, fund raising, accounting, and legal paperwork. With a technical background, many researchers (including myself) are not “built” to be good at everything, thus we need to find good partners to develop the company in these directions. Therefore, finding the right partners to work with is extremely important, and I am very happy that SRCH2 has a strong team of members with complementary backgrounds.</p>
+<p><b>Gaining Hands-On Experiences.</b><br />
+As a researcher, I have always tried to be hands on in projects, and it’s one of the reasons for the success of the Flamingo project. A startup needs this skill even more, and product development needs good software engineering. This experience and training benefit my research as well, since I can give students a lot of low-level suggestions on their research.</p>
+<p><b>Better Balancing skills.</b><br />
+It’s challenging to balance between a faculty job and a startup, since both are very demanding, not to mention we have a family :-). This situation requires stronger skills to manage time, work efficiently, and communicate well with people.</p>
+<p>
+In summary, my entrepreneurship experiences have been challenging but enjoyable and educational. I hope more of you take the adventure and commercialize your research. It can help you “think different.”
+</p>
+<h4> Blogger&#8217;s Profile: </h4>
+<p>Chen Li is a professor in the Department of Computer Science at the University of California, Irvine. He received his Ph.D.degree in Computer Science from Stanford University in 2001, and his M.S. and B.S. in Computer Science from Tsinghua University, China, in 1996 and 1994, respectively. He received a National Science Foundation CAREER Award in 2003 and many other NSF grants and industry gifts. He was once a part-time Visiting Research Scientist at Google. His research interests are in the fields of data management and information search, including text search and data-intensive computing. He was a recipient of the SIGMOD 2012 Test-of-Time award. He is the founder of SRCH2, a company providing powerful search solutions for enterprises and developers.</p>
+<div>
+<p> Copyright @ 2012, Chen Li, All rights reserved.</p>
+</div>
+{% endraw %}

@@ -1,0 +1,187 @@
+---
+layout: post
+title: "Returning Top-K : Preference Aggregation or Sortition, or is there a Better Middle Ground?"
+date: 2022-10-26 14:51:54
+last_modified_at: 2022-12-29 13:39:43
+author: "senjutibasuroy"
+categories: ["Recommendations"]
+excerpt: "Given a large number of users’ preferences (numerical or ordinal scores, ranked order) over a large number of objects, returning top-k results entails selecting a small list/set containing exactly k objects that are most “appropriate “. In this article, I will investigate two alternatives for…"
+image: "/wp-content/uploads/2022/10/Screenshot-2022-10-28-at-1.57.12-AM-705x1024.png"
+wp_id: 3564
+permalink: "/2022/10/26/returning-top-k-preference-aggregation-or-sortition-or-is-there-a-better-middle-ground/"
+---
+{% raw %}
+<p class="wp-block-paragraph">Given a large number of users’ preferences (numerical or ordinal scores, ranked order) over a large number of objects,&nbsp; returning top-k results entails selecting a small list/set containing exactly k objects that are most &#8220;appropriate &#8220;. In this article,&nbsp; I will investigate two alternatives for selecting a top-k list/set that consumes such preference based inputs. First, the so-called <strong><em>preference aggregation</em></strong><em> </em><strong><em>models </em></strong><em>(</em><strong><em>selection by election)</em></strong><em> that combine individual preferences and aggregate them to select the final top-k.&nbsp; </em>I will revisit a rich body of existing quantitative models adopted from the social choice theory that are designed to represent <em>democratic ideals </em>in the selected top-k. Then, I will present the <strong><em>Sortition process</em></strong><em>,</em>&nbsp; or <strong>election by lot</strong>, a method practiced by Ancient Athens for choosing public officials in some ancient Greek city-states, which selects top-k objects as a random sample from a larger pool of candidates. Obviously, compared to the existing preference aggregation models, the qualitative properties of the Sortition process is Iess investigated mathematically &#8211; albeit there exists anecdotal evidence in favor of it. I intend to compare these two alternatives from several dimensions as well as investigate their computational implications. I will conclude the article by laying out a middle ground which perhaps is the best of both worlds.</p>
+
+<h2 class="wp-block-heading">The problem</h2>
+
+<p class="wp-block-paragraph">Imagine the world of inputs consisting of a large number of objects having complete or partial preference information of different kinds from even a larger pool of users.&nbsp; A simple user preference could be elicited as follows:</p>
+
+<p class="has-text-align-center wp-block-paragraph">John: Choc &gt; Vanilla &gt; Strawberry…….</p>
+
+<p class="has-text-align-center wp-block-paragraph">&nbsp; Amy: Strawberry &gt; Vanilla &gt; Choc……..</p>
+
+<p class="has-text-align-center wp-block-paragraph">&nbsp;……………………………………….</p>
+
+<p class="wp-block-paragraph">It is not a stretch to extend this example over several thousands or even a million of objects (products, songs, tweets), where the preference is&nbsp; given by millions of users. This&nbsp; brings in the challenge of scale to the problem. Other representations of preference could be elicited via score (rating on the products), or in an ordinal scale (excellent, good, average, etc). We intend to study all the alternatives in the context of aggregation types.&nbsp;</p>
+
+<h3 class="wp-block-heading">Use cases</h3>
+
+<p class="wp-block-paragraph">This operation is a building block in many database and information retrieval applications,&nbsp; and is widely used in&nbsp; web search for aggregating results from different search engines, recommender systems, electoral processes, or in&nbsp; general allocating scarce resources among many candidates, such as, in hiring or admission.&nbsp;</p>
+
+<h3 class="wp-block-heading">Output</h3>
+
+<p class="wp-block-paragraph">The end goal is to retrieve a small number of k objects from the given set of objects that are <strong><em>representative</em></strong> of the users’ preferences. The output could be&nbsp; a list or permutation having a strict order, or a set, where any two objects in the returned result set are equivalent.</p>
+
+<h3 class="wp-block-heading">Process</h3>
+
+<p class="wp-block-paragraph"><em><strong>Preference aggregation</strong></em><strong> </strong>is a form of <strong><em>selection by election, </em></strong>and is the most widely used mechanism practiced in the computing community to aggregate individual preferences to decide the final top-k. Depending on the underlying preference models (score based vs. ordinal vs.&nbsp; rank based), there exists a large body of existing quantitative models&nbsp; primarily adopted from social choice theory that claim to satisfy population preferences in the selected top-k. At the other extreme, there exists <strong><em>Sortition</em></strong>, which selects k random samples from a larger pool of candidates as results. The data centric computing community, such as the database and information retrieval researchers are mostly aware of some of the most popular models and their computational implications (such as, Kemeny optimization is NP-hard for 4 or more lists) [12] or perhaps on their <em>social welfare propositions (s</em>uch as, average relevance is utilitarian, whereas, least misery is egalitarian).&nbsp;</p>
+
+<p class="wp-block-paragraph">I intend to write this blog with three primary goals. (<strong>A</strong>) Investigate a wide range of preference aggregation models both computationally and in the realm of <em>democratic ideals</em> and highlight the point that there does not exist a model that is even close to be called <em>ideal.</em>&nbsp; Moreover,&nbsp; most of these models are computationally demanding. (<strong>B</strong>) Highlight the <em>strengths </em>&nbsp;as well as <em>weaknesses </em>of <strong>Sortition</strong>, which is incredibly computationally lightweight, by demonstrating some important use cases. (<strong>C</strong>) Lay out a plan that takes the best of both worlds.</p>
+
+<h2 class="wp-block-heading"><strong>Preference Aggregation</strong></h2>
+
+<p class="wp-block-paragraph">Preference aggregation is the process of selection by election and is grounded on the principle of voting theory, which intends to represent democratic ideals (some of the key properties are described in Table 1) in the selected top-k results. From now onwards, users and voters would be used interchangeably.</p>
+
+<h3 class="wp-block-heading">Properties</h3>
+
+<p class="wp-block-paragraph">The paradox of voting was discovered over 200 years ago by M. Condorcet, a French mathematician, philosopher, economist, and social scientist. However, the importance of the voting paradox was not fully realized until several years after Kenneth Arrow published <em>Social Choice and Individual Values</em> in 1951, which contained his celebrated General Possibility Theorem. The essence of this theorem is that there is no method of aggregating individual preferences over 3 or more objects that satisfies several conditions of democratic ideals and produce logical results.</p>
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow">
+<div class="wp-block-image"><figure class="aligncenter size-large"><img loading="lazy" decoding="async" width="705" height="1024" src="../../../../wp-content/uploads/2022/10/Screenshot-2022-10-28-at-1.57.12-AM-705x1024.png" alt="" class="wp-image-3612" /><figcaption>Table 1: Key Properties of Preference Aggregation</figcaption></figure></div>
+</div></div>
+
+<p class="wp-block-paragraph">These properties have different implications:</p>
+
+<p class="wp-block-paragraph">(a) <em>Diversity/Fairness </em>&#8211; The first 10 properties promote the notion of diverse/fair of different kinds that has received attention from both data management and information retrieval community. As an example, the proportionality criterion preserves minority representation, the so-called <em>demographic parity</em> that is well understood in&nbsp; algorithmic fairness. Properties, such as, Non dictatorship, pareto efficiency, independence of irrelevant alternatives, unrestricted domain, condorcet property, anti plurality, solid coalitions attempt to represent preference of the voters in the selected/elected top-k. </p>
+
+<p class="wp-block-paragraph">(b) <em>Robustness</em>&#8211; Although there does not exist a single universally accepted definition, robustness intuitively denotes the degree to which an underlying process is vulnerable to small changes, formalized using Quasi-chaotic properties by Dummet considering monotonicity, Independence of Irrelevant Alternatives, and Transitivity. </p>
+
+<p class="wp-block-paragraph">(c) <em>Computational Implications</em> &#8211; There are types of computational problems that are relevant, namely: (i) Computing required to produce top-k given multiple voters’ preferences. (ii) Computing required to satisfy additional properties, to satisfy diversity/fairness/both. A well studied problem in this context is computing&nbsp; <em>the margin of victory (MOV) that demonstrates manipulability of the underlying method,</em> which is to figure out the minimal changes required in the user preference to change the original winner/ top-k. As it turns out, this latter problem ends up being computationally intractable even for simple aggregation models.</p>
+
+<h3 class="wp-block-heading">Types</h3>
+
+<p class="wp-block-paragraph">According to social choice theory, there exists 4 primary kinds&nbsp; of preference aggregation models. These models also encapsulate different forms of preference representation of the users, such as, score-based, ordinal, or rank-based.&nbsp;</p>
+
+<div style="height:11px" aria-hidden="true" class="wp-block-spacer"></div>
+
+<p class="wp-block-paragraph"><strong><em>1.Majoritarian</em></strong>&#8211; Majority rule is the simplest of non-dictatorial preference aggregation. When two alternatives are under consideration, the one preferred by the most voters is selected.</p>
+
+<p class="wp-block-paragraph"><strong>2. Positional Methods</strong>&#8211; Unlike majoritarian methods, which use only information from binary comparisons between candidates, positional methods take into account information about individuals&#8217; preference orderings. However, these methods do not necessarily take into account a voter&#8217;s entire preference ordering. <em>Plurality voting</em> &#8211; which uses only information about each voter&#8217;s most preferred alternative  &#8211; <em>approval voting</em> &#8211; which uses information about a varying number of top alternatives for each voter- and <em>the Borda count</em>, which uses information about each voter&#8217;s entire preference ordering, are part of this type.&nbsp;</p>
+
+<p class="wp-block-paragraph"><strong><em>3. Multi-Stage Methods</em></strong> &#8211;&nbsp; Multi-stage procedures use either different choice functions at different stages of the procedure, or one choice function iteratively on diminishing sets of alternatives. <em>Runoff Election Procedures, Single Transferable Votes (STV</em>) are part of this type.</p>
+
+<p class="wp-block-paragraph"><strong><em>4. Utilitarian Methods</em></strong> &#8211; Utilitarian preference aggregation requires voters to assign <em>utility</em> values to each alternative. Utility values can be thought of as measures of expected happiness with each alternative on some finite scale.</p>
+
+<div style="height:15px" aria-hidden="true" class="wp-block-spacer"></div>
+
+<p class="wp-block-paragraph">I refer to Table-1 that enlists several (not complete though) popular aggregation methods and describes their properties and types<sup>1</sup> . These methods are quantitative and a mathematical model exists for each.</p>
+
+<p class="wp-block-paragraph"><sup>1</sup><a href="http://​​https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/" data-type="URL" data-id="​​https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/">​​https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/</a></p>
+
+<h3 class="wp-block-heading">Computational Implications</h3>
+
+<p class="wp-block-paragraph">As mentioned above,&nbsp; there are two types of computational implications that may be interesting to the data-centric computing community; (i) <em>Compute top-k</em> : produce top-k objects&nbsp; (ranked or set) for a given aggregation method, by consuming a large number of user preferences. (ii) <em>Compute margin</em>: change the original outcome minimally to satisfy additional criteria, (e.g., proportional representation, MOV) for a given aggregation method. The latter one is mostly studied as a constraint optimization problem, where these additional criteria are imposed as constraints.</p>
+
+<div class="wp-block-image"><figure class="aligncenter size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/10/Screenshot-2022-10-24-at-12.26.30-PM-993x1024.png" alt="" class="wp-image-3588" width="878" height="905" /><figcaption><strong><em>Table 2: Preference Aggregation Models</em></strong></figcaption></figure></div>
+
+<h4 class="wp-block-heading">1. Compute top-k</h4>
+
+<p class="wp-block-paragraph">Producing top-k based on some of these aforementioned models is an interesting technical problem in its own merit. Several of these models are computable in polynomial time, however, several of these are not, as listed down in Table-2.</p>
+
+<div class="wp-block-image"><figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="819" height="213" src="../../../../wp-content/uploads/2022/10/Screenshot-2022-10-24-at-12.12.53-PM.png" alt="" class="wp-image-3585" /><figcaption><em><strong>Table 3: Computationally Intractable Models for Producing top-k</strong></em></figcaption></figure></div>
+
+<h4 class="wp-block-heading">2. Compute Margin</h4>
+
+<p class="wp-block-paragraph">The goal here is to change the original user preference <em>minimally, i.e., compute margin, given an underlying aggregation method,</em> <em>such that </em>&#8211; (a) the produced top-k objects satisfy additional properties, such as, proportional representation; (b) computing MOV which ensures that the produced top-k is different from the original top-k. These latter problems are designed to study robustness of the underlying aggregation method, i.e. how hard it is to manipulate the original top-k.&nbsp;</p>
+
+<div class="wp-block-image"><figure class="aligncenter size-full"><img loading="lazy" decoding="async" width="637" height="285" src="../../../../wp-content/uploads/2022/10/Screenshot-2022-10-24-at-12.14.00-PM.png" alt="" class="wp-image-3586" /><figcaption><strong><em>Table 4: Computationally Intractable Models for Computing MOV</em></strong></figcaption></figure></div>
+
+<p class="wp-block-paragraph">As it turns out, producing MOV is much harder computationally. As an example, even though producing top-k based using Borda is polynomial time computable, producing MOV for Borda is NP-hard. In fact, changing the original top-k turns out to be NP-hard even for very simple aggregation models, such as, average score, and least misery [4].&nbsp;</p>
+
+<p class="wp-block-paragraph">In voting theory, the concept of margin of victory (MOV) is designed to measure electoral competitiveness of the candidates, that we formalize in recent works [6, 7] considering kemeny optimization and plurality voting as the underlying aggregation methods. We study margin as the smallest number of single ballot substitutions under plurality voting to promote a given set of k candidates as the top-k and present a set of computational results. It is needless to say that for the models that are computationally intractable (such as, CC, STV, STV-Borda), computing MOV involving those models are also NP-hard.</p>
+
+<p class="wp-block-paragraph">The key takeaway is the following: e<em>ven though there exists a large number of preference aggregation methods,&nbsp; Arrow’s theorem points out their ineffectiveness in more than one account . <em>Second, these models are computationally intensive to calculate. FInally, even when certain properties are claimed to be theoretically present in a model, the underlying data itself may be </em><strong>unrepresentative</strong><em> &#8211; because those who have the time, money, and influence are over represented in the data, and the selected top-k tends to represent those preferences.</em></em></p>
+
+<h2 class="wp-block-heading">Sortition</h2>
+
+<p class="wp-block-paragraph">The other alternative is an incredibly computationally lightweight mechanism, namely Sortition, which is the process of selecting the top-k via lottery. As unrealistic as it may sound, the ancient Athenians chose only ten percent of their officials by election, selecting the rest by <em>sortition—</em>a lottery, which randomly selected citizens to serve as legislators, jurors, magistrates and administrators. The <em>Kleroterion (Figure-1) </em>was a device used to choose the names of those who would serve. It was a slab of stone incised with rows of slots and with an attached tube. Citizens&#8217; tokens were&nbsp; placed randomly in the slots so that every member of each of the tribes of Athens had their tokens placed in the same column. There was a pipe attached to the stone which could then be fed dice that were colored differently (assumed to be black and white) and could be released individually. When a die was released, a complete row of tokens (so, one citizen from each of the tribes of Athens) was either selected if the die was colored one color, or discarded if the color was different. This process continued until the requisite number of citizens was selected. Clearly, the aforementioned process simulates uniform random sampling to select top-k.</p>
+
+<p class="wp-block-paragraph">&nbsp;Sortition&nbsp; has become largely antiquated in the modern world, except for selecting jurors in the US randomly from their tax rolls. Computing communities have resorted to Sorition processes to promote individual fairness [13] to ensure objects of similar &#8220;worth” (utility) have a similar probability of being returned to the end user.</p>
+
+<p class="has-text-align-center wp-block-paragraph"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/external/28363588fee9d507.png" width="376" height="225"></p>
+
+<p class="has-text-align-center wp-block-paragraph"><strong>Figure 1: Device Kleroterion, used by Ancient Athenians for Sortition</strong></p>
+
+<p class="wp-block-paragraph"><strong><em>The key question however is,&nbsp; sortition, which is&nbsp; clearly computationally lightweight, is it representative of the underlying users’ preferences?</em></strong></p>
+
+<p class="wp-block-paragraph">As an immediate case study,&nbsp; I would like to resort to the following statistics, published in a recent work [18]: “ If the US Senate were to change overnight to a sortition house, then the number of males would go from 79% down to 49%, while the number of females would go up from 21% to 51%; the number of whites would go down from 90% to 77%, and the number of Blacks and Hispanics. would go up from 3% and 4% to 13% and 18%, respectively. Sortition members would be significantly younger (the average Senator is 62 years old), and less educated (76% of senators have more than a bachelor’s degree)”&#8230;&#8230;.</p>
+
+<p class="wp-block-paragraph">These statistics also allude to the weaknesses of preference aggregation methods. &nbsp; I tend to agree with this school of thought and argue that preference aggregation&nbsp; models,&nbsp; aka selection by election, actually lead to <strong>unrepresentativeness, </strong>because those who have the time, money, and influence are over-represented in the data, and the selected top-k tends to represent those preferences. The computing community too seems to care about representativeness to ensure the produced results are diverse, or fairly (proportionally) represent the underlying population. </p>
+
+<p class="wp-block-paragraph"><em>Sortition might be much more descriptively representative, as a random sample or a stratified sample from the population, as long as the sample is large enough. Using&nbsp; sortition, the statistical probability is likely to guarantee the selection of top-k who truly represent the underlying population.</em></p>
+
+<p class="wp-block-paragraph">Sortition, however, has its obvious weaknesses, too. (a) When k is small (i.e., the selected number of objects is not large enough), the top-k selected by lottery may not be representative. This may call for applying advanced sampling techniques and studying their qualities analytically. (b) Sortition, in its original form, is not suitable when users’ preferences are provided as ranks or score. Therefore, interesting research challenges lie ahead in studying these variants in a systematic manner. (c) finally, sortition as it is, is not suitable when the produced top-k needs to be a list/permutation.</p>
+
+<h2 class="wp-block-heading"><strong>Sortition, followed by Preference Aggregation (The way forward)</strong></h2>
+
+<p class="wp-block-paragraph"><em>Perhaps a middle ground exists that takes the best of both worlds.</em></p>
+
+<p class="wp-block-paragraph">I conclude this article by laying out a middle ground by motivating the opportunities and challenges that exist in combining sortition and preference aggregation and leaving some food for thought.</p>
+
+<p class="wp-block-paragraph">A primary weakness of the preference aggregation methods is that they are oftentimes computationally intensive. On the other hand, Sortition is highly lightweight, but does not extend easily for ranked inputs or when the output needs to be ordered. A research opportunity exists in studying the middle ground, which is less computationally intensive than running the aggregation models on the entire inputs, i.e.,&nbsp; perform sortition first and collect a reasonably large number of samples from there, and then perform aggregation over the collected samples, as opposed to on the entire inputs. A cautionary note here though &#8211; <strong><em>Sample Carefully.</em> </strong>It is evident when k is small, a truly uniform random sample is not representative of the population. Thus an alternative is to select the top-k carefully, stratify when possible, and cluster/multistage the sampling process, as applicable for the underlying input data. This gives rise to a set of interesting research problems.</p>
+
+<div style="height:17px" aria-hidden="true" class="wp-block-spacer"></div>
+
+<p class="wp-block-paragraph"> <strong>(1) </strong>A key question is to define the notion of <em>sample </em>carefully and meticulously. A sample can represent a subset of the users’ entire preference, partial preference of all users, or a combination of both.&nbsp; The challenge however is to ensure that for a given aggregation model, if a property holds true on the entire inputs, it must also remain satisfied on the collected samples. As a specific example, given a large number of ranked preferences, how to obtain a sample such that the Borda score on that satisfies consistency, pareto-optimality, and monotonicity?</p>
+
+<p class="wp-block-paragraph"><strong>(2)</strong> Equally important is the aspect of understanding and analyzing the sample size which will allow one to theoretically approximate the error introduced by the sampling process wrt the entire inputs. As an example,&nbsp; how to sample from the given inputs, such that the selected top-k are not very different from the original top-k, or how to reason the value of MOV obtained on the sample with the value of MOV obtained on the entire input.&nbsp;&nbsp;</p>
+
+<p class="wp-block-paragraph"><strong>(3)</strong> More generally, given a sampling approach and size, an interesting question is to be able to produce theoretical error bounds of the underlying computational problems.</p>
+
+<p class="wp-block-paragraph"><strong>(4)</strong> An interesting research question for the social welfare theorists is to study what additional properties does this combination give rise to that either of them does not satisfy individually.</p>
+
+<div style="height:24px" aria-hidden="true" class="wp-block-spacer"></div>
+
+<h3 class="wp-block-heading">Blogger&#8217;s Bio</h3>
+
+<p class="wp-block-paragraph">Senjuti Basu Roy is the Panasonic Chair in Sustainability and an Associate Professor in the Department of Computer Science at the New Jersey Institute of Technology. Her research focus lies at the intersection of data management and AI, especially enabling human-in-the-loop AI&nbsp; in scale. Senjuti has published more than 75 research papers in high impact data management and data mining conferences and journals. She is the tutorial co-chair of VLDB 2023, The Web Conference 2022, has served as the Mentorship co-chair of SIGMOD 2018, PhD workshop co-chair of VLDB 2018, and has been involved in organizing several international workshops and meetings. She is a recipient of the NSF CAREER Award, a PECASE nominee, and one of the 100 invited early career engineers to attend the National Academy of Engineering’s 2021 US Frontiers of Engineering Symposium.</p>
+
+<div class="wp-block-group"><div class="wp-block-group__inner-container is-layout-flow wp-block-group-is-layout-flow">
+<h3 class="wp-block-heading">References:</h3>
+
+<p class="wp-block-paragraph">1. Kenneth Arrow. <em>Social Choice and Individual Values</em>. Wiley, New York, 1951.&nbsp;</p>
+
+<p class="wp-block-paragraph">2. Amer-Yahia, S., Roy, S. B., Chawlat, A., Das, G., &amp; Yu, C. (2009). Group recommendation: Semantics and efficiency. <em>Proceedings of the VLDB Endowment</em>, <em>2</em>(1), 754-765.</p>
+
+<p class="wp-block-paragraph">3. Esfandiari, M., Basu Roy, S., &amp; Amer-Yahia, S. (2018, October). Explicit Preference Elicitation for Task Completion Time. In <em>Proceedings of the 27th ACM International Conference on Information and Knowledge Management</em> (pp. 1233-1242).</p>
+
+<p class="wp-block-paragraph">4. Roy, S. B., Thirumuruganathan, S., Amer-Yahia, S., Das, G., &amp; Yu, C. (2014, March). Exploiting group recommendation functions for flexible preferences. In <em>2014 IEEE 30th international conference on data engineering</em> (pp. 412-423). IEEE.</p>
+
+<p class="wp-block-paragraph">5. Basu Roy, S., Lakshmanan, L. V., &amp; Liu, R. (2015, May). From group recommendations to group formation. In <em>Proceedings of the 2015 ACM SIGMOD international conference on management of data</em> (pp. 1603-1616)</p>
+
+<p class="wp-block-paragraph">6. Wei, D., Islam, M. M., Schieber, B., &amp; Basu Roy, S. (2022, June). Rank Aggregation with Proportionate Fairness. In <em>Proceedings of the 2022 International Conference on Management of Data</em> (pp. 262-275).</p>
+
+<p class="wp-block-paragraph">7. Islam, M. M., Wei, D., Schieber, B., &amp; Basu Roy, S. (2022, June). Satisfying Complex Top-k Fairness Constraints by Preference Substitutions. To Appear in VLDB 2023.</p>
+
+<p class="wp-block-paragraph">8. Airiau, S., Aziz, H., Caragiannis, I., Kruger, J., Lang, J., &amp; Peters, D. (2019, August). Portioning using ordinal preferences: Fairness and efficiency. In <em>Proceedings of the Twenty-Eighth International Joint Conference on Artificial Intelligence, IJCAI 2019</em>.</p>
+
+<p class="wp-block-paragraph">9. Aziz, H., Faliszewski, P., Grofman, B., Slinko, A., &amp; Talmon, N. (2018, January). Egalitarian Committee Scoring Rules. In <em>IJCAI</em> (pp. 56-62).</p>
+
+<p class="wp-block-paragraph">10. Munagala, K., Shen, Z., &amp; Wang, K. (2021, July). Optimal algorithms for multiwinner elections and the chamberlin-courant rule. In <em>Proceedings of the 22nd ACM Conference on Economics and Computation</em> (pp. 697-717).</p>
+
+<p class="wp-block-paragraph">11. Blom, M., Conway, A., Stuckey, P. J., &amp; Teague, V. J. (2020, April). Did that lost ballot box cost me a seat? Computing manipulations of STV elections. In <em>Proceedings of the AAAI Conference on Artificial Intelligence</em> (Vol. 34, No. 08, pp. 13235-13240).</p>
+
+<p class="wp-block-paragraph">12. Fagin, R., Kumar, R., &amp; Sivakumar, D. (2003). Comparing top k lists. <em>SIAM Journal on discrete mathematics</em>, <em>17</em>(1), 134-160.</p>
+
+<p class="wp-block-paragraph">13. Flanigan, B., Gölz, P., Gupta, A., Hennig, B., &amp; Procaccia, A. D. (2021). Fair algorithms for selecting citizens’ assemblies. <em>Nature</em>, <em>596</em>(7873), 548-552.</p>
+
+<p class="wp-block-paragraph">14. Diaconis, P. (1988). Group representations in probability and statistics. <em>Lecture notes-monograph series</em>, <em>11</em>, i-192.</p>
+
+<p class="wp-block-paragraph">15. Cross, E. (2005). NP-Hard Manipulations of Voting Schemes.</p>
+
+<p class="wp-block-paragraph">16. Malleson, T. (2018). Should democracy work through elections or sortition?. <em>Politics &amp; Society</em>, <em>46</em>(3), 401-417.</p>
+
+<p class="wp-block-paragraph">17. Nikookar, S., Esfandiari, M., Borromeo, R. M., Sakharkar, P., Amer-Yahia, S., &amp; Basu Roy, S. (2022). Diversifying recommendations on sequences of sets. <em>The VLDB Journal</em>, 1-22.</p>
+</div></div>
+{% endraw %}

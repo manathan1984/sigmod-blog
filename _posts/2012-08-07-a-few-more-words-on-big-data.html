@@ -1,0 +1,59 @@
+---
+layout: post
+title: "A Few More Words on Big Data"
+date: 2012-08-07 06:48:49
+last_modified_at: 2015-07-22 01:07:57
+author: "donaldk"
+categories: ["Big Data"]
+excerpt: "Big Data is the buzzword in the database community these days. Two of the first three blog entries of the SIGMOD blog are on Big Data. There was a plenary research session with invited talks at the 2012 SIGMOD Conference and there will be a panel at the 2012 VLDB Conference. Probably, everything…"
+image: null
+wp_id: 559
+permalink: "/2012/08/07/a-few-more-words-on-big-data/"
+---
+{% raw %}
+<p>
+Big Data is <i>the</i> buzzword in the database community these days. Two of the first three blog entries of the SIGMOD blog are on Big Data. There was a plenary research session with invited talks at the 2012 SIGMOD Conference and there will be a panel at the 2012 VLDB Conference. Probably, everything has already been said that can be said. So, let me just add my own personal data point to the sea of existing opinions and leave it to the reader whether I am adding to the “signal” or adding to the “noise”. This blog entry is based on the talk that I gave at SIGMOD 2012 and the slides of that talk can be found at <a href="http://www.systems.ethz.ch/Talks" target=_blank">http://www.systems.ethz.ch/Talks</a>.
+</p>
+<p>
+Upfront, I would like to make clear that I am a believer. Stepping back, I am asking myself why do I work on Big Data technologies? I came up with two potential reasons:
+</p>
+<p>1. because we want to make the world a better place and</p>
+<p>2.because we can.</p>
+<p>
+In the following, I would like to explain my personal view on these two reasons.
+</p>
+<h3>Making the World a Better Place </h3>
+<hr />
+<p>
+The real question to ask is whether bigger = smarter? The simple answer is “yes”. The success of services like the Google and Bing are evidence for the “bigger = smarter” principle. The more data you have and can process, the higher the statistical relevance of your analysis and the better answers you get. Furthermore, Big Data allows you to make statements about corner cases and the famous “long tail”. Putting it differently, “experience” is more valuable than “thinking”.
+</p>
+<p>
+The more complicated answer to the question whether bigger is smarter is “I do not know”. My concern is that the bigger Big Data gets, the more difficult we make it for humans to get involved. Who wants to argue with Google or Bing? At the end, all we can do is trust the machine learning. However, Big Data analytics needs as much debugging as any other software we produce and how can we help people to debug a data-driven experiment with 5 PB of data? Putting it differently, what do you make out of an experiment that validates your hypothesis with 5 PB of data but does not validate your hypothesis with, say, 1 KB of data using the same piece of code? Should we just trust the “bigger = smarter” principle and use the results of the 5 PB experiment to claim victory?
+</p>
+<p>
+The more fundamental problem is that Big Data technologies tempt us into doing experiments for which we have no ground truth. Often, the absence of a ground truth is the reason of using Big Data: If we knew the answer already, we would not need Big Data. Despite all the mathematical and statistical tools that are available today, however, debugging a program without knowing what the program should be doing is difficult. To give an example: Let us assume that a Big Data study revealed that the left most lane is the fastest lane in a traffic jam. What does this result mean? Does it mean that we should all be going on the left lane? Does it mean that people on the left lane are more aggressive? Or does it mean that people on the left lane just believe that they are faster? This example combines all the problems of discovering facts without a ground truth: By asking the question, you are biasing the result. And by getting a result, you might be biasing the future result, too. (And, of course, if you had done the same study only looking at data from Great Britain, you might have come to the opposite conclusion that the right most lane is the fastest.)
+</p>
+<p>
+Google Translate is a counter example and clearly a Big Data success story: Here, we do know the ground truth and Google developers are able to debug and improve Google Translate based on that ground truth &#8211; at least as long as we trust our own language skills more than we trust Google. (When it comes to spelling, I actually already trust Google and Bing more than I trust myself. 🙁 )
+</p>
+<p>
+Maybe, all I am trying to say is that we need to be more careful in what we promise and do not forget to keep the human in the loop. I trust statisticians that “bigger is smarter”, but I also believe that humans are even smarter and the combination is what is needed, thereby letting each party do what it is best at.
+</p>
+<h3>Because We Can </h3>
+<hr />
+<p>
+Unfortunately, we cannot make humans become smarter (and we should not even try), but we can try to make Big Data bigger. Even though I argued in the previous section that it is not always clear that bigger Big Data makes the world a better or smarter place, we as a data management community should be constantly pushing to make Big Data bigger. That is, we should build data management tools that scale, perform well, and are cost effective and get continuously better in all regards. Honestly, I do not know how that will make the world a better place, but I am optimistic that it will: History teaches that good things will happen if you do good work. Also, we should not be shy to make big promises such as processing 100 PB of heterogeneous data in real-time &#8211; if that is what our customers want and are willing to pay for. We should also continue to encourage people to collect all the data and then later think about what to do with it. If there are risks in doing all that (e.g., privacy risks), we need to look at those, too, and find ways to reduce those risks and still become better at our core business of becoming bigger, faster, and cheaper. We might not be<br />
+able to keep all these promises, but making these promises will keep us busy and at least we understand why we failed, rather than mumbling about traffic jams or other phenomena outside of our area of expertise.
+</p>
+<p>
+There are two things that we need to change, however. First, we need to build systems that are explicit about the utility / cost tradeoff of Big Data. Mariposa pioneered this idea in the Nineties; in Mariposa, utility was defined as response time (the faster the higher the utility), but now things get more complicated: With Big Data, utility may include data quality, data diversity, and other statistical metrics of the data. We need tools and abstractions that allow users to explicitly specify and control these metrics.
+</p>
+<p>
+Second, we need to package our tools in the right way so that users can use them. There is a reason why Hadoop is so successful even though it has so many performance problems. In my opinion, one of the reasons is that it is not a database system. Yet, it can be a database system if combined with other tools of the Hadoop eco-system. For instance, it can be a transactional database system if combined with HDFS, Zookeeper, and HBase. However, it can also become a logging system to help customer support if combined with HDFS and SOLR. And, of course, it can easily become a data warehouse system and a great tool for scientists together with Mahout. Quoting Mike Stonebraker again, one size does not fit all. The lesson to learn from this observation, however, is not to build a different, dedicated system for each use case with a significant market. The more important lesson to learn is to repackage our technology and define the right, general-purpose building blocks that if put together can solve a large variety of different use cases. As a community, I think that we are paying too little attention on defining the right interfaces and abstractions for our technology.
+</p>
+<h4> Blogger&#8217;s Profile: </h4>
+<p>Donald Kossmann is a professor in the Systems Group of the Department of Computer Science at ETH Zurich (Switzerland). He received his MS in 1991 from the University of Karlsruhe and completed his PhD in 1995 at the Technical University of Aachen. After that, he held positions at the University of Maryland, the IBM Almaden Research Center, the University of Passau, the Technical University of Munich, and the University of Heidelberg. He is a former associate editor of ACM Transactions on Databases and ACM Transactions on Internet Technology. He was a member of the board of trustees of the VLDB endowment from 2006 until 2011, and he was the program committee chair of the ACM SIGMOD Conf., 2009 and PC co-chair of VLDB 2004. He is an ACM Fellow. He has been a co-founder of three start-ups in the areas of Web data management and cloud computing.</p>
+<div>
+<p> Copyright @ 2012, Donald Kossmann, All rights reserved.</p>
+</div>
+{% endraw %}

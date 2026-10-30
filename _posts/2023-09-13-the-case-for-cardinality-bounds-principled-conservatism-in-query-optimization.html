@@ -1,0 +1,171 @@
+---
+layout: post
+title: "The Case for Cardinality Bounds: Principled Conservatism in Query Optimization"
+date: 2023-09-13 10:47:59
+last_modified_at: 2024-07-03 18:36:39
+author: "kyledeeds_ziniuwu"
+categories: ["Databases", "Query Processing"]
+excerpt: "Introduction In the last decade, the database community has identified cardinality estimation as the primary stumbling block for modern query optimizers. Cardinality estimates, which estimate the size of sub-plan queries, are the primary basis for choosing between query plans, so poor estimates may…"
+image: "/wp-content/uploads/2023/07/unnamed-1024x473.png"
+wp_id: 3707
+permalink: "/2023/09/13/the-case-for-cardinality-bounds-principled-conservatism-in-query-optimization/"
+---
+{% raw %}
+<h3 class="wp-block-heading">Introduction</h3>
+
+<p class="wp-block-paragraph">In the last decade, the database community has identified cardinality estimation as the primary stumbling block for modern query optimizers.&nbsp; Cardinality estimates, which estimate the size of sub-plan queries, are the primary basis for choosing between query plans, so poor estimates may result in catastrophic query execution plans. Research on this topic has consistently emphasized a few findings: 1) traditional query optimizers regularly underestimate by orders of magnitude, 2) the bad query plans are often orders of magnitude slower than good ones, and 3) underestimates are worse than overestimates.</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-1024x473.png" alt="" class="wp-image-3678" width="743" height="343" /></figure>
+
+<p class="wp-block-paragraph">To see this, consider a few graphs from the seminal 2015 benchmarking paper “How good are query optimizers really?”. The first shows the performance of a few commercial query optimizers on the cardinality estimation problem. Even a series of battle-tested commercial optimizers consistently underestimate by orders of magnitude on this benchmark. Intuitively, this is because they all rely on some form of independence assumptions to simplify the problem. For instance, many of them assume that WHERE predicates on different columns randomly and independently filter rows. However, this assumption is almost always violated because columns are generally correlated, e.g. city and state columns.</p>
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-1-3.png" alt="" class="wp-image-3682" width="649" height="558" /></figure>
+
+<p class="wp-block-paragraph">The second figure demonstrates the performance of all possible plans for a few queries under different index configurations. For most queries, performance differs wildly between plans. A small proportion (~5%) of plans are within 10x of the optimal plan’s performance, but the vast majority of plans are 2-4 orders of magnitude worse. In a perfect world, the query optimizer would simply choose the optimal plan, but this would require perfect cardinality estimates, which is impossible. Given this limitation, it makes sense to aim for an optimizer that simply avoids catastrophically bad plans. Most of these plans contain a sub-plan with a large intermediate join result which brings us to the core problem of underestimating cardinalities; A single underestimate of a large intermediate result can push the query optimizer to include that sub-plan, resulting in an overall plan that is much, much slower than the optimizer expects. For example, suppose that cardinality estimator A produces perfect cardinality estimates for 99% of intermediate results but drastically underestimates 1% of them. Despite estimator A’s incredibly high average accuracy, the query optimizer will always select plans that incorporate these underestimated intermediates. On the other hand, suppose that cardinality estimator B produces perfect cardinality estimates for 99% of intermediates and drastically overestimates 1% of them. In this case, the query optimizer will simply ignore plans with bad estimates. If a single good plan is accurately estimated, then the optimizer will still produce a good query plan. In other words, systems that overestimate only need to be accurate for <em>at least one</em> good plan, while systems that underestimate need to be accurate for <em>every</em> bad query plan. This asymmetric risk is why recent benchmarks have shown much better performance when systems consistently produce overestimates.&nbsp;</p>
+
+<h3 class="wp-block-heading">Recent CardEst Methods</h3>
+
+<p class="wp-block-paragraph">Proposed methods for this problem have generally fallen into one of three categories: traditional, learned, and bound-based. Each of these angles has its own benefits and drawbacks to consider. We summarize the methods in all these categories, along with our newly proposed methods (FactorJoin and Safebound), in the following table.</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-2-1024x753.png" alt="" class="wp-image-3683" width="754" height="554" /></figure>
+
+<h4 class="wp-block-heading">Traditional Approaches</h4>
+
+<p class="wp-block-paragraph">The traditional cardinality estimators are the most commonly used method in DBMSes. The traditional histogram-based methods generally adopt attribute independence and join uniformity assumptions to decompose the join queries as a combination of single table estimates. They are very efficient, easy to train, update and maintain, thus perfect for system deployment. However, their simplifying assumptions can generate erroneous estimates and poor query plans.</p>
+
+<p class="wp-block-paragraph">Sampling-based methods also have a long history in the database community. There are two fundamental issues facing sampling methods: the exponential decline of sample sizes as the number of joins increases and how to handle estimates when the sample doesn’t include any satisfying tuples. To illustrate the first problem, consider a simple FK-PK join where rows are sampled from R and S independently with probability p. The likelihood that a row in the sample of R joins with a row in the sample of S is 1/p. Immediately, the sampling probability for tuples in R effectively goes from 1/p to 1/p^2. This becomes exponentially worse as more tables are added to the query. For the second, consider a query with a filter predicate that doesn’t match any tuples in our sample of R. At this point, the estimation algorithm has some information to infer the number of tuples in R, but it has no information to estimate how the filtered subset of R would interact with other tables in the query. The most promising sampling methods, such as WanderJoin, tend to avoid this problem by using dynamic sampling rather than computing samples offline, and they achieve very robust accuracy. However, this introduces further concerns about the maintenance of indices, the latency of accessing data during optimization, and increased code complexity.</p>
+
+<h4 class="wp-block-heading">Learned Approaches</h4>
+
+<p class="wp-block-paragraph">Τhe learned cardinality estimators use the machine learning (ML) model to relax or eliminate the simplifying assumptions made by traditional methods. Their sophisticated ML models can provide accurate estimation but are subject to expensive training/updating costs and slow inference speed.</p>
+
+<p class="wp-block-paragraph">Query-driven ML methods learn cardinality estimates by running an example workload of queries and training a traditional ML model from the resulting (query, cardinality) pairs. These methods can achieve high accuracy on the queries which come from the same distribution as the example workload, and they are often very fast to both train and perform inference. However, running these example queries can be very time-consuming, and they often suffer significantly when faced with updates or queries that differ significantly from the example workload.</p>
+
+<p class="wp-block-paragraph">Data-driven ML methods use unsupervised approaches which attempt to learn the data distribution directly rather than training on example queries. This allows for generalization to different query workloads and can be accurate depending on the complexity of the underlying models. However, the model complexity needed for accurate estimates grows quickly due to the inherent challenge of modeling all the complicated non-linear relationships between columns both within and between tables. Because of this, they generally take a long time to train and are slow to perform inference on, and have problems scaling to complicated schemas.&nbsp;</p>
+
+<h4 class="wp-block-heading">Previous Cardinality Bounds</h4>
+
+<p class="wp-block-paragraph">The last approach is grounded in database theory and provides provable upper bounds on the query size rather than an average-case estimate. When used in place of traditional estimates, this guarantees that there will be no underestimates. Because bounds on query sizes are helpful for complexity analysis, these bounds have been thoroughly studied by the theory community and have motivated areas of algorithm design, such as worst-case-optimal join algorithms. However, the bound formulas, which are interesting to theoreticians, have generally relied on minimal statistics about the underlying dataset, e.g., the size of each table and the maximum frequency of each column. This provides good interpretability and insight, but it generally does not result in tight bounds that could be practically used by a query optimizer. The paper “Pessimistic Cardinality Estimation” was the first work to attempt to adapt these formulas to cardinality estimation, and it managed to produce fairly tight bounds, which significantly improved query execution time. However, it couldn’t handle filter predicates (e.g., “R.A &lt; 10”), and its inference latency increased exponentially in the granularity of its statistics.</p>
+
+<h4 class="wp-block-heading">Our Practical Cardinality Bounds</h4>
+
+<p class="wp-block-paragraph">To effectively support filter predicates and enable efficient inference, we describe two novel practical bound-based cardinality estimators: FactorJoin and SafeBound. FactorJoin formulates the problem of cardinality estimation of general multi-table join queries as a well-studied inference problem in the field of probabilistic graphical models. FactorJoin can quickly construct a factor graph model from the database schema in the offline phase, which will be used to efficiently deliver a probabilistic cardinality bound for any query. SafeBound draws on recent theoretical advances in cardinality bounding to produce deterministic bounds using degree sequence statistics.</p>
+
+<p class="wp-block-paragraph">These two approaches inherit the robustness of bound-based cardinality estimators while overcoming their drawbacks to provide flexible and efficient inference. The experimental results demonstrate that FactorJoin and SafeBound can achieve up to 80% lower end-to-end runtimes than PostgreSQL on well-established benchmarks. This performance is comparable to or better than the state-of-the-art (SOTA) machine learning methods. Furthermore, FactorJoin can achieve 40x less estimation latency, a 100x smaller model size, and 100x faster training/updating than the previous SOTA methods. SafeBound can save up to 500x in query planning latency and 6.8x less space when compared to previous SOTA methods.</p>
+
+<h3 class="wp-block-heading">FactorJoin</h3>
+
+<h4 class="wp-block-heading"><strong>Formulating Cardinality Estimation as PGM Inference Problem</strong></h4>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-3-1024x256.png" alt="" class="wp-image-3684" width="680" height="170" /></figure>
+
+<p class="wp-block-paragraph">Before looking at the formulation, let’s go through a simple example of a query joining two tables. The figure above illustrates query ? joining tables ? and ? on the inner join1 condition ?.?? = ?.??? with base table filter predicates ?(?) and ?(?). Table ? first goes through the filter ?(?), resulting in an intermediate table ?|?(?) (records in ? that satisfy the filter ?(?)). The same procedure is applied to table ?. Then, the query ? will match the value of join keys ?.?? and ?.??? from these two intermediate tables. Specifically, the value ? appears 8 times in table ?|?(?) and 6 times in table ?|?(?), resulting in value ? appearing 48 times in the join result. Therefore, we can calculate the cardinality of this query ? as 8 × 6 + 4 × 5 + 3 × 5 = 83.&nbsp;</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-4-1024x112.png" alt="" class="wp-image-3685" width="703" height="76" /></figure>
+
+<p class="wp-block-paragraph">We can formulate the above procedure for calculating ? as a statistical equation, where ?(?.??) denotes the domain of all unique values of ?.??. We observe that only single-table distributions ? and ? are required to accurately compute the ?? cardinality of this join query. Also in this equation, ?<sub>?</sub>(?.?? = ?|?(?)) ∗ |?(?)| equals to ?<sub>?</sub>(?.?? = ? ∧ ?(?)) ∗ |?|, which is exactly what single-table CardEst methods estimate. Thus, we can accurately calculate the cardinalities of two-table join queries using single-table estimators. Note that the summation over the domain of join key D(?.??) has the same complexity as computing the join. Therefore, we need to approximate this calculation for FactorJoin to be practical.</p>
+
+<p class="wp-block-paragraph">A general join query can involve a combination of different forms of joins (e.g., chain, star, self, or cyclic joins), so its counterpart equation of Equation 1 can be very difficult to derive and compute. We provide a generalizable formulation that automatically decomposes join queries into single-table estimations using the factor graph model. Let’s take a look at a more complicated example below.</p>
+
+<p class="wp-block-paragraph"></p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-5-1-1024x406.png" alt="" class="wp-image-3687" width="714" height="283" /></figure>
+
+<p class="wp-block-paragraph">Figure (i) shows a SQL query ? joining four tables ?,?,?,?. We visualize its join template as a graph in Figure 3-(ii), where each dashed rectangle represents a table, each ellipse (node) represents a join-key in ?, and each solid line (edge) represents an equi-join relation between two join keys connected by it. Note that both sides of an equi-join relation represent the semantically equivalent join keys. We call them equivalent key group variables. In Figure (ii), there are three connected components and thus three equivalent key group variables?<sub>1</sub>,&#8230;,?<sub>3</sub>. ?<sub>1</sub> represents ?.?? and ?.??? in this group since ? contains the join condition ?.?? = ?.???.&nbsp;</p>
+
+<p class="wp-block-paragraph">Next, we explain how to compute the cardinality of ? using a factor graph. Let’s first explain what a factor graph is. A factor graph is a bipartite graph with two types of nodes: variable nodes, and factor nodes representing an unnormalized probability distribution w.r.t. the variables connected to it. Figure (iii) shows the constructed factor graph <em>F</em> for computing the cardinality of ?. Specifically, <em>F</em> contains a variable node for each equivalent key group variable ?, and a factor node for each table ? touched by ?. A factor node is connected to a variable node if the variable represents a key in the table. In this case, the factor node representing table ? is connected to ?<sub>1</sub> (equivalent to ?.??) and ?<sub>2</sub> (equivalent to ?.??<sub>2</sub>). Each factor node maintains an unnormalized probability distribution for the variable nodes connected to it, e.g., node ? maintains ?<sub>?</sub>(?<sub>1</sub>,?<sub>2</sub>|(?(?))) ∗ |?(?)|, which is the same as the distribution ?<sub>?</sub>(?.??, ?.??<sub>2</sub>|(?(?))) ∗ |?(?)|. The factor graph model utilizes the graph structure to compute the sum using well-studied inference algorithms. We can more formally state this relationship between computing the join cardinalities and factor graphs as the following lemma, whose proof is provided in the original paper.&nbsp;</p>
+
+<p class="wp-block-paragraph"><strong>Lemma1</strong>: Given a join graph <em>G</em> representing a query ?, there exists a factor graph <em>F</em> such that the variable nodes in <em>F</em> are the equivalent key group variables of <em>G</em> and each factor node represents a table ? touched by ?. A factor node is connected to a variable node if and only if this variable represents a joining key in table ?. The potential function of a factor node is defined as table ?’s probability distribution of the connected variables (join keys) conditioned on the filter predicates ?(?). Then, calculating the cardinality of ? is equivalent to computing the partition function of<em> F</em>.</p>
+
+<p class="wp-block-paragraph">The computation of such probabilistic inference on this factor graph is very expensive. The complexity is O(N * |D|<sup>max(|JK|)</sup>), where N is the number of equivalent key groups (3 in the above example), |D| is the largest domain size of all join keys, and ???(|??|) is the maximum number of join keys in a single table (2 in the above example). This complexity of conducting exact inference is not practical for real-world queries, as |D| can be millions, and ???(|??|) can be larger than 4 in real-world DB instances, such as IMDB.</p>
+
+<p class="wp-block-paragraph">Therefore, in the following, we will show how FactorJoin designs approximate probabilistic inference on factor graph to estimate the cardinality, which reduces the complexity to O(N * k<sup>2</sup>) where N (less than 10) and k are typically small (hundreds).&nbsp;</p>
+
+<h4 class="wp-block-heading">Efficient bound-based cardinality estimation</h4>
+
+<p class="wp-block-paragraph">The key idea behind our bound-based approximate probabilistic inference on factor graph is to bin the domain D of the join key into k bins where we can compute an upper bound of cardinality within each bin. This helps reduce the complexity |D| to k, and users can arbitrarily set the number of bins k for performance-latency trade-offs. For example, Equation (1) above can be approximated as Equation (2).</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-6-1024x236.png" alt="" class="wp-image-3688" width="714" height="164" /></figure>
+
+<p class="wp-block-paragraph">Now, we will illustrate the probabilistic bound the within each bin using a simple example query Q joining two tables. Specifically, assuming that value {?, ?, ?, ?, ? } of ?.?? and ?.??? are binned into ???1 as shown in Figure 5. We know the summation of all values in bin<sub>1</sub> equals to 8×6+4×5+3×5=83. This summation has a dominating term of 8 × 6, because the count of MFV of bin<sub>1</sub> is 8 for ?.?? (denoted as ?<sub>1</sub><sup>*</sup>(?.??)) and 6 for?.??? (denoted as ?<sub>2</sub><sup>*</sup>(?.???)) so each value can appear at most 8 × 6 times in the denormalized table after the join. Since we know the total count of values in bin<sub>1</sub> for ?.?? is 16, there can be at most 16/8 = 2 MFVs. Similarly, there can be at most 4 MFVs in bin<sub>1</sub> for ?.???. Therefore, we have the summation of all values in bin<sub>1</sub> is upper bounded by ???(2, 4) × 8 × 6 = 96.&nbsp;</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-7-1024x298.png" alt="" class="wp-image-3690" width="675" height="196" /></figure>
+
+<p class="wp-block-paragraph">We formally represent the aforementioned procedure in Equation (3),where ?<sub>i</sub><sup>∗</sup>(?.??) and ?<sub>?</sub>(?.?? ∈???<sub>i</sub>|?(?)) ∗ |?(?)| are the MFV count and estimated total count of ???<sub>i</sub> for?.??. Our bound is probabilistic because ?<sub>?</sub>(?.?? ∈ ???<sub>?</sub>|?(?)) ∗ |?(?)| is estimated with a single table CardEst method, which may have some errors.</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-8-1-1024x234.png" alt="" class="wp-image-3692" width="709" height="161" /></figure>
+
+<p class="wp-block-paragraph">We evaluate the performance of our CardEst framework on two well-established benchmarks: STATS-CEB and IMDB- JOB and compare with a wide range of representative baselines, including traditional methods (PostgreSQL, JoinHist, WJSample), learned methods (MSCN, BayesCard, DeepDB, FLAT), bound-based methods (PessEst, U-Block) and the optimal baseline with true cardinality (TrueCard). The overall performance plots and tables are given below.</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-9-1-1024x250.png" alt="" class="wp-image-3694" width="729" height="178" /></figure>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-10-1024x555.png" alt="" class="wp-image-3695" width="705" height="382" /></figure>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-11-1024x392.png" alt="" class="wp-image-3696" width="710" height="271" /></figure>
+
+<p class="wp-block-paragraph">To summarize, FactorJoin achieves the best performance among all the baselines on both benchmarks. Specifically, FactorJoin is as effective as the previous state-of-the-art learned methods, and simultaneously as efficient and practical as the traditional CardEst methods.&nbsp;</p>
+
+<h3 class="wp-block-heading">SafeBound</h3>
+
+<h4 class="wp-block-heading">The Degree Sequence Bound</h4>
+
+<p class="wp-block-paragraph">Our goal in SafeBound was to make the theoretical work on cardinality bounding practical without sacrificing the deterministic, provable nature of the bounds. So, to understand SafeBound, we need to start by introducing the Degree Sequence Bound, which SafeBound is based on, and the degree sequence statistics, which that is based on.</p>
+
+<p class="wp-block-paragraph">The degree sequence of a column in a database is the <em>sorted list of value frequencies</em>. As an example, consider the “Name” column below and the accompanying degree sequence on its right. The name “Eseah” is the most frequent value and appears 5 times, so there is a 5 at the start of the degree sequence. Carlos and Vivek both appear 3 times and so on.</p>
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-12.png" alt="" class="wp-image-3697" width="638" height="413" /></figure>
+
+<p class="wp-block-paragraph">This statistic has a few nice characteristics that we take advantage of in our work: 1) it fully captures the skew of join columns, 2) it is monotonic and decreasing, 3) we can upper bound it very efficiently with simple piecewise constant functions. We can see all of these on a degree sequence from the IMDB dataset below. Specifically, this is the ActorID column in the CastInfo table, where each row represents a single actor being cast in a single movie or TV show. The most-cast actor appeared ~10,000 times, while over half of the actors appeared just a single time. Further, the true degree sequence is 4 million data points because there are over 4 million unique actors, but the approximation shown in green is only 7 segments while largely capturing the shape of the curve.</p>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-13-1024x683.png" alt="" class="wp-image-3699" width="708" height="472" /></figure>
+
+<p class="wp-block-paragraph">Without going into the mathematical details, the Degree Sequence Bound can be thought of as a black box algorithm. It takes in 1) a simple join query (only joins, no selections) and 2) the degree sequence approximations of every join column, and it outputs a provable, deterministic bound on the size of the query’s output. Further, it does this in log-linear time with respect to the size of the approximations, so it’s very fast when the approximations are small (~20 segments in our experiments).</p>
+
+<p class="wp-block-paragraph">More details about this bound can be found in our theory paper <a href="https://drops.dagstuhl.de/opus/volltexte/2023/17750/pdf/LIPIcs-ICDT-2023-8.pdf">here</a>.</p>
+
+<h4 class="wp-block-heading">Handling Selection Predicates</h4>
+
+<p class="wp-block-paragraph">Given that we have an effective algorithm for bounding join sizes given degree sequences, the main obstacle to bounding real queries is handling selection predicates (e.g., LIKE, =, &lt;,&gt;, NOT NULL). These predicates filter a relation, and the resulting relation often has a drastically different set of degree sequences. For instance, if we looked at the CastInfo table from above, a common predicate might be to filter for a particular movie (“CastInfo.MovieId = 12345”). The filtered degree sequence for the MovieId column would have a single element whose frequency is equal to the number of actors in the film. The naive approach to handling this would be to scan the table every time a predicate appeared and calculate the new degree statistics. However, this would take linear time in the size of the data, which is generally considered unacceptable for query optimization, particularly in the case of distributed systems.&nbsp;</p>
+
+<p class="wp-block-paragraph">To tackle this problem, SafeBound adapts traditional summary statistics such as histograms, most-common value lists, and n-grams to the cardinality bounding setting. For starters, traditionally, you would store the number of rows in each bucket, value, or n-gram, but SafeBound stores the degree sequences of those rows. However, more subtle changes are required as well because simple operations like addition and multiplication don’t work well with degree sequences and/or result in true upper bounds. For instance, consider a range predicate that spans multiple buckets of a histogram. Without additional information, we need to do a pointwise addition of the degree sequences from each bucket. This assumes that the most (second most, third most, etc.) frequent value is the same across buckets and results in a very loose bound. To avoid this, we use overlapping, dyadic range intervals, as shown below.</p>
+
+<figure class="wp-block-image size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2023/07/unnamed-14.png" alt="" class="wp-image-3700" width="704" height="414" /></figure>
+
+<p class="wp-block-paragraph">Consider a range predicate Instead of simply adding the degree sequences of the [0,1], [1,2], [2,3], [3,4] buckets, we find the smallest bucket which fully encapsulates our range predicate and use the degree sequences stored there, resulting in much more accurate bounds.</p>
+
+<p class="wp-block-paragraph">We similarly adapt MCV lists and n-grams, as described in the paper.</p>
+
+<h4 class="wp-block-heading">Building Efficient Approximations</h4>
+
+<p class="wp-block-paragraph">The base of SafeBound is the degree sequence approximations, and it’s not immediately clear how to build these approximations while balancing speed, accuracy, and space constraints. To handle this, SafeBound uses a novel two-pass algorithm called ValidCompress which takes inspiration from the PGM learned index and, more distantly, convex hull algorithms.</p>
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="572" src="../../../../wp-content/uploads/2023/07/unnamed-15-1024x572.png" alt="" class="wp-image-3701" /></figure>
+
+<p class="wp-block-paragraph">At a high level, this algorithm aims to minimize the bound for the self-join query by limiting the error induced by each segment to a particular threshold. By choosing the self-join as our metric, we rely on the assumption that tables join with similarly skewed tables. In the first pass of the algorithm, it calculates the self-join bound based on the exact degree sequence, which happens to be equivalent to the second moment of the degree sequence. In the second pass, it constructs piecewise segments one at a time, starting a new sequence every time the squared error exceeds some percent of the exact bound.&nbsp;</p>
+
+<h4 class="wp-block-heading">Experiments</h4>
+
+<p class="wp-block-paragraph">While the full suite of experimental findings can be found in the paper, the most important findings are on the overall workload runtime. This directly measures the quality of the plans produced when using each cardinality estimation system. Specifically, we injected the estimates from each system into the query optimizer of Postgres and measured the total runtime of the workload relative to the runtime when Postgres is given the exact cardinalities for every sub-plan.</p>
+
+<figure class="wp-block-image size-full"><img loading="lazy" decoding="async" width="497" height="319" src="../../../../wp-content/uploads/2023/09/unnamed-17.png" alt="" class="wp-image-3720" /></figure>
+
+<p class="wp-block-paragraph">SafeBound achieves a roughly optimal overall runtime across all four benchmarks, while a traditional estimator like Postgres’ built-in estimator is up to 75% slower. Further, compared to ML methods (BayesCard &amp; Neurocard), SafeBound has <strong>3-500x</strong> faster inference, <strong>3-6.8x</strong> smaller memory footprint, and <strong>2-17x</strong> faster construction time. Compared to PessEst, it has <strong>100x</strong> faster inference.&nbsp;</p>
+
+<h3 class="wp-block-heading">Blogger Profile</h3>
+
+<div class="wp-block-media-text alignwide is-stacked-on-mobile" style="grid-template-columns:29% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="450" height="602" src="../../../../wp-content/uploads/2023/09/Kyle_Deeds_Headshot_resized.jpg" alt="" class="wp-image-3715 size-full" /></figure><div class="wp-block-media-text__content">
+<p class="has-small-font-size wp-block-paragraph">Kyle Deeds is a 4th year PhD student at the University of Washington advised by Dan Suciu and Magda Balazinska. His research interests include cardinality estimation, theoretical bounds on conjunctive queries, and array programming. Broadly, he wants to apply database optimization techniques to new computing paradigms.</p>
+</div></div>
+
+<div class="wp-block-media-text alignwide is-stacked-on-mobile" style="grid-template-columns:29% auto"><figure class="wp-block-media-text__media"><img loading="lazy" decoding="async" width="602" height="602" src="../../../../wp-content/uploads/2023/09/ziniu-ID_photo.jpeg" alt="" class="wp-image-3716 size-full" /></figure><div class="wp-block-media-text__content">
+<p class="has-small-font-size wp-block-paragraph">Ziniu Wu is 2<sup>nd</sup>&nbsp;year PhD student at MIT data system group, advised by Samuel Madden and Tim Kraska. His research focuses on cardinality estimation, query optimization, and new data mesh architecture.&nbsp;</p>
+</div></div>
+
+<hr class="wp-block-separator"/>
+
+<p class="wp-block-paragraph">&nbsp;<sup>1</sup>Leis, Viktor, et al. &#8220;How good are query optimizers, really?.&#8221; <em>Proceedings of the VLDB Endowment</em> 9.3 (2015): 204-215.</p>
+
+<p class="wp-block-paragraph"><sup>2</sup>Kipf, Andreas, et al. &#8220;Learned Cardinalities: Estimating Correlated Joins with Deep Learning.&#8221;;&nbsp; Dutt, Anshaman, et al. “Selectivity estimation for range predicates using lightweight models.”; Wu, Peizhi, and Gao Cong. &#8220;A unified deep model of learning from both data and queries for cardinality estimation.&#8221; <em>Proceedings of the 2021 International Conference on Management of Data</em>. 2021.</p>
+
+<p class="wp-block-paragraph"><sup>3</sup>Yang, Zongheng, et al. &#8220;NeuroCard: one cardinality estimator for all tables.&#8221; <em>Proceedings of the VLDB Endowment</em> 14.1 (2020): 61-73; Zhu, Rong, et al. &#8220;FLAT: fast, lightweight and accurate method for cardinality estimation.&#8221; <em>arXiv preprint arXiv:2011.09022</em> (2020).</p>
+{% endraw %}

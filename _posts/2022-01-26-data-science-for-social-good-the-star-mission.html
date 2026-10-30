@@ -1,0 +1,105 @@
+---
+layout: post
+title: "Data Science for Social Good: the STAR Mission"
+date: 2022-01-26 07:27:52
+last_modified_at: 2022-02-24 11:19:02
+author: "reynoldcheng"
+categories: ["Data Science", "Social Good"]
+excerpt: "Data Science for Social Good, or DSSG, broadly refers to the use of data engineering and analysis solutions in the social work domain. I am interested in this field, because it gives me a chance to understand how database technologies can be used in a domain whose data-driven approaches are only in…"
+image: "/wp-content/uploads/2022/01/star-logo.png"
+wp_id: 3308
+permalink: "/2022/01/26/data-science-for-social-good-the-star-mission/"
+---
+{% raw %}
+<p class="wp-block-paragraph"><em><strong>Data Science for Social Good</strong></em>, or DSSG, broadly refers to the use of data engineering and analysis solutions in the social work domain.&nbsp; I am interested in this field, because it gives me a chance to understand how database technologies can be used in a domain whose data-driven approaches are only in its infancy. Moreover, we can develop impactful and meaningful projects that benefit the society at large.</p>
+
+<p class="wp-block-paragraph">Here, I will share my work in DSSG. First, I will introduce our Social Technology and Research Laboratory (STAR). I will discuss our social and legal application projects, as well as fundamental research. I will also talk about our experience of building the lab.</p>
+
+<h3 class="wp-block-heading" id="the-hku-star-lab"><strong><strong><em>The HKU STAR Lab</em></strong></strong></h3>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/01/star-logo.png" alt="" class="wp-image-3310" width="216" height="69" /></figure>
+
+<p class="wp-block-paragraph">The Social Technology and Research Laboratory (<a href="https://star.hku.hk" data-type="URL" data-id="https://star.hku.hk" target="_blank" rel="noreferrer noopener">STAR Lab</a>) of the University of Hong Kong aims to develop novel IT technologies for serving the society. Our team has more than three years of experience in project development, web, app, and game design, photography, and video production.&nbsp; As of Fall 2021, the STAR lab is comprises four professors, five postdoc researchers, ten PhD students, and more than twenty software developers. The lab members are working on different aspects towards “Data Science for Social Good”:&nbsp;</p>
+
+<ol class="wp-block-list"><li>research – interdisciplinary research on data and social science;&nbsp;</li><li>technology – developing technologies for social services;&nbsp;</li><li>synergy – connecting with the public, NGOs, and the government;&nbsp;</li><li>teaching – educating NGOs and the public on social technologies; and&nbsp;</li><li>impact – bringing benefit to the public, NGOs, and the government.&nbsp;</li></ol>
+
+<p class="wp-block-paragraph">To achieve the above goals, the STAR lab has been working on two frontiers: fundamental research and social and legal applications. <em>For fundamental research</em>, we tackle the challenge of the huge volume and complexity of graph data, and develop efficient, scalable, and efficient algorithms on different kinds of graphs.&nbsp; We also develop novel graph-based recommender systems. We collaborate with universities including the University of Illinois at Urbana-Champaign and the University of British Columbia on these efforts. As <em>for social and legal applications</em>, we have been collaborating with more than 20 organizations in universities, governments, NGOs, and commercial organizations. The lab has acquired more than HKD $35M funding. We have recently received a SIGMOD Research Highlights Award, two industry awards, and one university knowledge-exchange award. A PhD graduate of the lab has been selected by Baidu Scholar as one of the 2021 Global Top 100 Chinese Rising Stars in Artificial Intelligence.</p>
+
+<h3 class="wp-block-heading" id="hincare-intelligent-elderly-care"><strong><strong><em>HINCare: Intelligent Elderly Care</em></strong></strong></h3>
+
+<figure class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex">
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="512" height="387" data-id="3315" src="../../../../wp-content/uploads/2022/01/app.png" alt="" class="wp-image-3315" /></figure>
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="485" height="319" data-id="3317" src="../../../../wp-content/uploads/2022/01/flow.png" alt="" class="wp-image-3317" /></figure>
+</figure>
+
+<p class="wp-block-paragraph">Many metropolitan cities are facing sharp increase in aging population. In Hong Kong, for instance, the number of elderly citizens is estimated to rise to one third of the population, or 2.37 million, in year 2037.&nbsp; As they age and become more frail, the demand for formal support services will increase exponentially in the coming years. However, there is a severe lack of manpower to meet these needs: in HK, on average, each NGO employee needs to manage 10 elderly people at the same time. There is thus a strong need of helpers for taking care of elderly people on a full-time, part-time, or voluntary basis.&nbsp;</p>
+
+<p class="wp-block-paragraph">We have been working on <a href="https://www.hincare.hku.hk" data-type="URL" data-id="https://www.hincare.hku.hk" target="_blank" rel="noreferrer noopener">HINCare</a>, a HKD $4M project supported by HK Innovation and Technology Commission. The HINCare is a volunteer management system with <em>timebanking</em> facilities (i.e., each person, after providing a service, can earn a time credit. The time credits are stored in the person’s time bank account. He/she can later use the earned time credits to purchase other services.) We have designed an elderly-user-friendly mobile app. The system backend, designed for NGO administrators, is cloud-based and generic. Essentially, any organization can use our system to support their voluntary work services easily; only a few customization steps are needed. The platform supports multiple organizations, which can enable more sharing of data and collaboration. Currently, HINCare has been serving 5000 elders in 6 NGOs. We won one local IT award (HKICT), one international award (Asia Smart Apps), and a HKU Faculty Knowledge Exchange Award. Recently, the HK government’s Community Investment and Inclusion Fund (CIIF) has provided a number of contract research projects to our team to further support the volunteering activities of NGOs.&nbsp;</p>
+
+<p class="wp-block-paragraph"><em>HIN-based matching.</em> The core of HINCare employs novel heterogeneous information network (HIN) and AI technologies to recommend helpers to elders. Here, the HIN stores the relationship information among elders, helpers, and NGOs. It originates from various Big Data sources, such as social networks and senior citizen profiles. We use the HIN to find out the best helpers for assisting elders. For example, a living-alone elder may want someone to repair a light bulb; the HIN reveals that a certain helper living close to the elder has the expertise and availability to do so, and the system will recommend the helper to the elder.&nbsp; We study the use of meta-path-based recommenders (e.g., [1]) in the helper-recommendation tasks. This is the first time that HIN is used to support elderly care.&nbsp;</p>
+
+<h3 class="wp-block-heading" id="data-analytics-for-social-services"><strong><em>Data analytics for social services</em></strong></h3>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/01/conference-1.jpeg" alt="" class="wp-image-3323" width="353" height="120" /></figure>
+
+<p class="wp-block-paragraph">Applying big data and artificial intelligence in behavioral and social science is promising but limited currently [2]. Family is the core in shaping individual behavior and influencing social capital, particularly in Chinese societies. Family services provide an important source to understand the influences of family on individual and society by using the large volume of data regularly collected in territory-wide family services, including the information on service users, groups and programmes, and counseling case recordings. These data are multi-dimensional, containing text, numeric, audio, or video forms.&nbsp;</p>
+
+<p class="wp-block-paragraph">The <a rel="noreferrer noopener" href="https://jcsmartfamilylink.hk/en/" data-type="URL" data-id="https://jcsmartfamilylink.hk/en/" target="_blank">Hong Kong Jockey Club SMART Family-Link</a> (JCSFL) Project, initiated and funded by the Hong Kong Jockey Club Charities Trust in 2018, is a large-scale (HKD $80M), 4-year cross-sectoral collaboration among (1) the School of Public Health, (2) the Technology-Enriched Learning Initiative of HKU, and (3) the STAR lab, with 26 Integrated Family Service Centers and Integrated Service Centers to advance the use of Information and Communications Technology and big data analytics for enhancing family services in Hong Kong. Being the first in Chinese population, we are collaborating with family services providers to analyze aggregated anonymous data of a large number of IFSCs/ISCs. The findings will be useful for informing family services and policy in the future.&nbsp; A key element of JCSFL is i-Connect &#8212; a software service management platform developed by the STAR lab to support the service operations of the NGO-operated IFSCs. The system enables the users, who are social workers and clerical staff in IFSCs, to perform their operational processes and workflow on a centralized platform. Different kinds of data about clients, staff, services, workflow, and operations are processed and stored through this system. The system has been deployed on a secure cloud platform. Industrial standards and various security measures are also adopted to ensure data security and data privacy.&nbsp;</p>
+
+<h3 class="wp-block-heading" id="legal-data-analysis-with-lawtech-centre"><strong><em>Legal data analysis (with LawTech Centre)</em></strong></h3>
+
+<figure class="wp-block-image size-large is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/01/demo.png" alt="" class="wp-image-3325" width="404" height="183" /></figure>
+
+<p class="wp-block-paragraph">We collaborate with HKU Law Faculty in joint projects that study the problems of machine-assisted extraction and modeling of legal knowledge from legal texts, leveraging domain knowledge provided by law experts. Our knowledge models have led to the development of a number of essential legal applications that facilitate legal studies and research. For example, we developed a prediction model for illegal drug trafficking sentencing, which can be accessed online by the public (<a href="http://wwwnew2.hklii.hk/predictor">http://wwwnew2.hklii.hk/predictor</a>). The sentencing predictor is used by some NGOs in youth education and crime prevention programs. Moreover, our sentencing prediction model helps address a number of interesting issues in legal information processing, which include judgment recommendation, fairness and explainability in machine predictions [3]. We also develop an AI-driven conversational system that helps people who have not received any legal training to effectively locate relevant legal information on our&nbsp; <em>Community Legal Information Centre</em> (CLIC) website. CLIC is an online information source covering 32 legal topics with contents such as FAQs, reading guides and explanatory notes on illustrative court cases, and short videos with hypothetical illustrative stories. </p>
+
+<h3 class="wp-block-heading" id="other-fundamental-research"><strong><em>Other Fundamental Research</em></strong></h3>
+
+<p class="wp-block-paragraph">Graph data are prevalent in many of the applications we mentioned above. For example, HINCare utilizes big graph technologies to facilitate the matching of volunteers to elders. Hence, the STAR lab has been recently engaged in various of fundamental research in graph databases, including <em>densest subgraph discovery</em> [4, 5, 6, 7], <em>higher-order graph analysis</em> [8, 9, 10], <em>community search </em>[11, 12], and <em>HIN </em>[13, 14, 15].&nbsp; Our work in DSD [6] received the SIGMOD Research Highlight Award 2021, and its journal extension has been recently accepted by TODS as one of the Best of SIGMOD 2020 papers [7].&nbsp; Recently, we have been collaborating with the HK Applied Science and Technology Research Institute on using the densest subgraphs found on their user-website-click graphs to find fraudulent clicks. We also plan to investigate how to provide recommendations of volunteers to elders.&nbsp;</p>
+
+<h3 class="wp-block-heading" id="education-and-engagement"><strong><em>Education and Engagement</em></strong></h3>
+
+<p class="wp-block-paragraph">The STAR lab has dedicated a lot of effort in education. We have been producing video clips and conducting seminars, in order to train social workers to use our systems.&nbsp; We have organized press conferences and international symposiums for sharing our knowledge and experience with the public. I have used some materials related to the projects in my courses, to educate students about how data science can be used in the social domain.&nbsp; We plan to recruit students to assist NGOs in our projects, in order to enrich their social awareness and practical experience.</p>
+
+<h3 class="wp-block-heading" id="building-the-lab"><strong><em>Building the Lab</em></strong></h3>
+
+<p class="wp-block-paragraph">Finally, we share our experience of building the capabilities of our lab. We have built a core team of professors, who have worked with each other, and have expertise in data science, gerontology, and social science. We assembled a competent software development team, through funding provided by government and charity organizations. It is very important for the NGOs to participate actively and provide their data for our projects. This requires a huge communication effort in understanding their needs and establishing trust with them. We have also organized public seminars, conducted interviews in newspapers and radio stations, and participated in exhibitions.</p>
+
+<h4 class="wp-block-heading" id="blogger-profile"><strong>Blogger Profile</strong></h4>
+
+<p class="wp-block-paragraph">Prof. <a href="https://i.cs.hku.hk/~ckcheng/" data-type="URL" data-id="https://i.cs.hku.hk/~ckcheng/" target="_blank" rel="noreferrer noopener">Reynold Cheng </a>is a Professor of the Department of Computer Science in the University of Hong Kong (HKU). He is the Associate Director of the HKU Musketeers Foundation Institute of Data Science, Program Director of Data Science and Engineering UG Program, and Associate Dean of Engineering (Student Enrichment). His research interests are in data science, big graph analytics and uncertain data management.&nbsp; He received the SIGMOD Research Highlights Reward 2020, HKICT Awards 2021, and HKU Knowledge Exchange Award (Engineering) 2021, Outstanding Young Researcher Award 2011-12 by HKU,&nbsp; Universitas 21 Fellowship in 2011, and two Performance Awards from HKPU Computing in 2006 and 2007. &nbsp;He is an academic advisor to the College of Professional and Continuing Education of HKPU. He is a member of IEEE, ACM, ACM SIGMOD, and UPE. He was a PC co-chair of IEEE ICDE 2021, and has been serving on the program committees and review panels for leading database conferences and journals like SIGMOD, VLDB, ICDE, KDD, IJCAI, AAAI, and TODS. He is on the editorial board of IS and DAPD, and was a former editorial board member of TKDE.</p>
+
+<h5 class="wp-block-heading" id="references"><strong>References</strong></h5>
+
+<p class="wp-block-paragraph">1. Y. Cao, X. Wang, X. He, Z. Hu, and T.-S. Chua. Unifying knowledge graph learning and recommendation: Towards a better understanding of user preferences. In The world wide web conference, pages 151–161, 2019.&nbsp;</p>
+
+<p class="wp-block-paragraph">2. M. Robila and S. A. Robila. Applications of artificial intelligence methodologies to behavioral and social sciences. Journal of Child and Family Studies, 29(10):2954–2966, 2020.&nbsp;</p>
+
+<p class="wp-block-paragraph">3. T.Wu, B.Kao, A.S.Y.Cheung, M.M.K. Cheung, C. Wang, Y. Chen, G. Yuan, and R. Cheng. Integrating domain knowledge in ai-assisted criminal sentencing of drug trafficking cases. In Legal Knowledge and Information Systems &#8211; JURIX 2020: The Thirty-third Annual Conference, Brno, Czech Republic, December 9-11, 2020, volume 334, pages 174–183. IOS Press, 2020.&nbsp;</p>
+
+<p class="wp-block-paragraph">4. Y. Fang, K. Yu, R. Cheng, L. V. S. Lakshmanan, and X. Lin. Efficient algorithms for densest subgraph discovery. Proc. VLDB Endow., 12(11):1719 – 1732, jul 2019.&nbsp;</p>
+
+<p class="wp-block-paragraph">5. C. Ma, Y. Fang, R. Cheng, L. V. Lakshmanan, W. Zhang, and X. Lin. Efficient algorithms for densest subgraph discovery on large directed graphs. In SIGMOD, pages 1051–1066, 2020.&nbsp;</p>
+
+<p class="wp-block-paragraph">6. C. Ma, Y. Fang, R. Cheng, L. V. Lakshmanan, W. Zhang, and X. Lin. Efficient directed densest subgraph discovery. ACM SIGMOD Record, 50(1):33–40, 2021.&nbsp;</p>
+
+<p class="wp-block-paragraph">7. C. Ma, Y. Fang, R. Cheng, L. V. Lakshmanan, W. Zhang, and X. Lin. On directed densest subgraph discovery. ACM Transactions on Database Systems (TODS), 46(4):1–45, 2021.&nbsp;</p>
+
+<p class="wp-block-paragraph">8. X. Li, R. Cheng, K. Chang, C. Shan, C. Ma, and H. Cao. On analyzing graphs with motif-paths. volume 14, pages 1111–1123. VLDB Endowment, 2021.&nbsp;</p>
+
+<p class="wp-block-paragraph">9. C. Ma, R. Cheng, L. V. Lakshmanan, T. Grubenmann, Y. Fang, and X. Li. Linc: a motif counting algorithm for uncertain graphs. Proceedings of the VLDB Endowment, 13(2):155–168, 2019.&nbsp;</p>
+
+<p class="wp-block-paragraph">10. X. Li, R. Cheng, M. Najafi, K. Chang, X. Han, and H. Cao. M-cypher: A gql framework supporting motifs. In Proceedings of the 29th ACM International Conference on Information &amp; Knowledge Management (CIKM), pages 3433–3436, 2020.&nbsp;</p>
+
+<p class="wp-block-paragraph">11. &nbsp;Y. Fang, R. Cheng, X. Li, S. Luo, and J. Hu. Effective community search over large spatial graphs. PVLDB, 10(6):709–720, 2017.&nbsp;</p>
+
+<p class="wp-block-paragraph">12. &nbsp;Y. Fang, R. Cheng, S. Luo, and J. Hu. Effective community search for large attributed graphs. PVLDB, 9(12):1233–1244, 2016.&nbsp;</p>
+
+<p class="wp-block-paragraph">13. Z. Huang, Y. Zheng, R. Cheng, Y. Sun, N. Mamoulis, and X. Li. Meta structure: Computing relevance in large heterogeneous information networks. In Proceedings of the 22nd ACM SIGKDD International conference on knowledge discovery and data mining, pages 1595–1604, 2016.&nbsp;</p>
+
+<p class="wp-block-paragraph">14. Z. Huang, B. Cautis, R. Cheng, Y. Zheng, N. Mamoulis, and J. Yan. Entity-based query recommendation for long-tail queries. ACM Trans. Knowl. Discov. Data, 12(6):64:1–64:24, 2018.&nbsp;</p>
+
+<p class="wp-block-paragraph">15. C. Meng, R. Cheng, S. Maniu, P. Senellart, and W. Zhang. Discovering meta-paths in large heterogeneous information networks. In WWW, pages 754–764, 2015.</p>
+
+<p class="wp-block-paragraph">Copyright @ 2022, Reynold Cheng, All rights reserved. </p>
+{% endraw %}

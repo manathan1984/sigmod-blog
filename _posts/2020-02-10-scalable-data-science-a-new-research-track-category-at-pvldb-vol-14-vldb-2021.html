@@ -1,0 +1,53 @@
+---
+layout: post
+title: "Scalable Data Science: A New Research Track Category at PVLDB Vol 14 / VLDB 2021"
+date: 2020-02-10 20:32:01
+last_modified_at: 2020-03-24 17:57:56
+author: "alonhalevyarunkumarnesime"
+categories: ["Uncategorized"]
+excerpt: "This post introduces and explains the newly created category of “Scalable Data Science” within the Research Track of PVLDB. This category comes into effect for volume 14, i.e., submissions starting April 1, 2020, which will be evaluated by the Review Board of PVLDB vol 14 for presentation at VLDB…"
+image: null
+wp_id: 3033
+permalink: "/2020/02/10/scalable-data-science-a-new-research-track-category-at-pvldb-vol-14-vldb-2021/"
+---
+{% raw %}
+<p class="wp-block-paragraph"><br>This post introduces and explains the newly created category of “Scalable Data Science” within the Research Track of PVLDB. This category comes into effect for volume 14, i.e., submissions starting April 1, 2020, which will be evaluated by the Review Board of PVLDB vol 14 for presentation at VLDB 2021.</p>
+
+<h4 class="wp-block-heading"><strong>The Growth of Data Science</strong></h4>
+
+<p class="wp-block-paragraph">The emerging interdisciplinary field of <em>data science</em> is witnessing rapid evolution and growth. In particular, many companies have widely adopted statistical, machine learning (ML), and artificial intelligence (AI) methods to power numerous applications that have captured the imagination of broader society. This includes e-commerce, social media, language translation, conversational assistants, autonomous vehicles, and more. Scalable data science is also empowering the domain sciences, healthcare, humanities, governance, journalism, and other fields to study phenomena at scales and granularities never before possible. In addition to powering the applications themselves, data science is a key tool for navigating product and engineering decisions in many companies. Database/data management/data systems/data engineering are an inevitable part of all of these large-scale data-driven applications and decision-making, because ML/AI methods are powered by massive collections of potentially heterogeneous and messy datasets, and, as such, must be managed as part of the <em>overall data lifecycle</em> of an organization. Tackling <em>practical data-related research challenges</em> in such settings has repeatedly been identified as an exciting frontier of new research for the VLDB/SIGMOD community.</p>
+
+<h4 class="wp-block-heading"><strong>Why a new Research Track Category?</strong></h4>
+
+<p class="wp-block-paragraph">Although VLDB, SIGMOD, and related venues have seen a growth of research in this arena, there is still a large gap between research and practice, especially due to the <em>pace and volume of innovation in industry</em>. The last decade has seen an explosion of highly attended industrial conferences on practical data science such as O’Reilly Strata Data Conference, Open Data Science Conference, Deep Learning Summit, Spark+AI Summit, and more. Many practically relevant technical innovations may go unnoticed by the research community, while interesting and potentially impactful research ideas may go unnoticed by practitioners. We believe it is in the long-term interest of the VLDB community to bridge this intellectual gap. But cutting-edge work on this frontier may need a new category due to <em>fundamental differences in the rationales and evaluation criteria</em> of the existing Regular Research and Industrial Tracks.</p>
+
+<p class="wp-block-paragraph">The Scalable Data Science (SDS) Category is under the Research Track and will thus be evaluated by the same Review Board. So, PVLDB’s standard of <em>significance</em>, <em>validity</em>, and <em>soundness of empirical evaluation</em> for the Research Track will still apply. However, the proposed solutions <em>need not necessarily meet the same bar on technical depth/novelty</em> as Regular Research Category papers. In the fast-moving data science arena, we believe such a high bar, which often leads to long timelines, may blindside the community on potentially transformative practical innovations in their early stages. Of course, <em>novelty</em> is expected in the problem itself, the setting/assumptions, and/or the evaluation/impact/applications, just not necessarily in the techniques. </p>
+
+<p class="wp-block-paragraph">The SDS Category differs from the Industrial Track on both <em>scope and level of impact expected</em>. This category focuses more specifically on new technology for data science-oriented workloads, while the Industrial Track is more general and covers all aspects of database technology. The Industrial Track focuses on already commercial technology, while this category also welcomes work that may not yet be commercial or deployed but still at the proof-of-concept stage, as long as it is convincingly validated and has good potential for impact.&nbsp;</p>
+
+<h4 class="wp-block-heading"><strong>What kinds of papers are a fit for SDS?</strong></h4>
+
+<p class="wp-block-paragraph">We solicit submissions of papers describing design, implementation, experience, or evaluation of solutions and systems for practical data science and data engineering tasks, including data management, data engineering, data analytics, data visualization, data quality, data integration, data mining, and machine learning on large-scale data. SDS Category papers <em>do not necessarily propose new breakthrough algorithms or models</em>, but emphasize solutions that either solve or advance the understanding of issues related to data science technologies in the real world. We anticipate two main kinds of SDS papers:</p>
+
+<p class="wp-block-paragraph"><strong><em>Papers regarding deployed solutions</em></strong> describe the implementation of a system that solves a significant real-world problem and is (or was) in use for an extended period of time in industry, science, medicine, education, government, nonprofit organizations, or as open source. The paper should present the problem, its significance to the application domain, the design choices for the solution, the implementation challenges, and the lessons learned from successes and failures, including post-launch performance analysis. <em>Papers that describe enabling infrastructure</em> for deployment of applied machine learning also fall into this category. </p>
+
+<p class="wp-block-paragraph"><em>Examples:</em> A paper on an open-source, general-purpose entity linkage tool that takes data from any two data sources and links records that refer to the same real-world entity. A paper on a low-latency system to automatically monitor online model predictions on streaming data at scale to detect concept drift and recommend how to react.</p>
+
+<p class="wp-block-paragraph"><strong><em>Papers regarding evaluated but not necessarily deployed solutions</em></strong> shall describe fundamental experiences and insights derived from addressing a real-world problem. This might include papers that provide significant insights into an applied area/domain or papers that provide strong baselines that are thoroughly tested on real data. We also encourage papers that conclude that a problem is solved under particular conditions or is infeasible with current techniques. In addition to insights, the paper should explain what milestones were reached, what the practical impact is, and (if applicable) what the obstacles to deployment are. Straightforward improvements over trivial baseline solutions tested on small datasets are unlikely to qualify. </p>
+
+<p class="wp-block-paragraph"><em>Examples:</em> Continuing with the first example above, a paper might present an entity linkage model that applies state-of-the-art deep learning techniques and obtains high performance on a few real-world datasets, showing success of adaptations of recent techniques in helping solve an important and practical data science problem. Similarly, a paper on a system to handle concept drift in streaming prediction applications may&nbsp;apply or extend recent statistical or ML approaches but demonstrates their efficacy and scalability convincingly with real-world datasets.</p>
+
+<h4 class="wp-block-heading"><strong>Logistics of SDS Papers</strong></h4>
+
+<p class="wp-block-paragraph">Since SDS Category papers are Research Track papers, they must explain their innovations clearly, empirically validate them on real data, and position against related work appropriately. However, to reduce the burden on both authors and reviewers in this fast-moving field, submissions should only be up to <strong>8 pages long</strong>, with <strong>unlimited pages for references</strong>. A submission need not cover all aspects of an application or give all details. Instead, we encourage papers with key insights supported by solid data points.</p>
+
+<p class="wp-block-paragraph">In relation to concurrent submissions, authors are <em>not allowed to submit a paper on the same work</em> to any other Category or Track of VLDB, except for the Demonstrations Track. Likewise, concurrent submissions of the same work are not allowed to any other peer-reviewed venues with archival proceedings beyond 4 pages (e.g., SIGMOD Research or Industrial Track). The review process for the SDS Category will be overseen by the three of us as Associate Editors in conjunction with the PC chairs.</p>
+
+<p class="wp-block-paragraph">In conclusion, it is our hope that the Scalable Data Science category will attract more of the cutting-edge and impactful real-world work in the scalable data science arena to VLDB for the benefit of the VLDB community, including <em>spurring new technical connections</em>, <em>inspiring new follow-on research</em> on scalable data science, and <em>enhancing the impact</em> of the VLDB community on data science practice. Please do check out this category in the <a href="http://www.vldb.org/pvldb/contributions_vol14.html">Call for Papers for PVLDB vol 14</a> and consider submitting your best work on scalable data science!</p>
+
+<h4 class="wp-block-heading">Authors</h4>
+
+<p class="wp-block-paragraph">Alon Halevy, Arun Kumar, and Nesime Tatbul. </p>
+
+<p class="wp-block-paragraph"><strong>Acknowledgment</strong>: We thank Luna Dong and Felix Naumann for their feedback on this article.</p>
+{% endraw %}

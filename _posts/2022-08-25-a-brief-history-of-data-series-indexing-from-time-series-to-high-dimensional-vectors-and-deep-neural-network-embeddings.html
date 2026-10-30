@@ -1,0 +1,133 @@
+---
+layout: post
+title: "A Brief History of Data Series Indexing: from Time Series to High-Dimensional Vectors and Deep Neural Network Embeddings "
+date: 2022-08-25 15:27:49
+last_modified_at: 2022-09-17 20:25:32
+author: "themispalpanas"
+categories: ["Data Series"]
+excerpt: "In this post, we motivate the need for efficient and effective solutions for data series similarity search, and we briefly present the work that has been done in this direction by the data series community. We also discuss the relationship to high-dimensional (high-d) vectors and deep neural…"
+image: "/wp-content/uploads/2022/08/figure-1024x451.png"
+wp_id: 3524
+permalink: "/2022/08/25/a-brief-history-of-data-series-indexing-from-time-series-to-high-dimensional-vectors-and-deep-neural-network-embeddings/"
+---
+{% raw %}
+<p class="wp-block-paragraph">In this post, we motivate the need for efficient and effective solutions for data series similarity search, and we briefly present the work that has been done in this direction by the data series community. We also discuss the relationship to high-dimensional (high-d) vectors and deep neural network embeddings, point to the relevant efforts in the multi-dimensional data management community, and argue for the need to make further progress, describing open research directions in this area.</p>
+
+<h3 class="wp-block-heading">Data Series</h3>
+
+<p class="wp-block-paragraph">A data sequence, or data series, S=(s<sub>1</sub>,…,s<sub>n</sub>) is defined as an ordered sequence of points s<sub>i</sub>=(v<sub>i</sub> ; d<sub>i</sub>) with length n, where each point is associated with a value v<sub>i</sub> at position d<sub>i</sub>, in which the measurement of this value was made. When the value v<sub>i</sub> is a scalar, we talk about univariate sequences, and when v<sub>i</sub> is itself a vector, we talk about multivariate sequences. The position d<sub>i</sub> refers to a dimension that imposes the ordering of the sequence. If this dimension is time then we talk about time series, where the values are measured over time. Nevertheless, a sequence can also be defined over other dimensions (e.g., mass in mass spectroscopy data, position in the genome in biology data, angles in astronomy data, etc.). We assume numerical (real-valued) series, and collections of very large numbers of data series.</p>
+
+<p class="wp-block-paragraph">Note that data sequences have gathered the attention of the data management community for almost three decades [BCP+19]. They are one of the most common data types, present in virtually every domain, making them a data type of particular importance. Example application domains are meteorology (e.g., temperature), astronomy (e.g., gamma-ray bursts), chemistry (e.g., mass spectroscopy), medicine (e.g., electrocardiograms), neuroscience (e.g., electroencephalograms), finance (e.g., stock quotes), agriculture (e.g., soil humidity), entomology (e.g., insect feeding behavior), sociology (e.g., crime rates), smart cities (e.g., road traffic), marketing (e.g., opinion evolution), the web (e.g., web traffic), and others.</p>
+
+<p class="wp-block-paragraph">Recent advances in sensing, networking, data processing and storage technologies have significantly eased the process of generating and collecting tremendous amounts of data sequences from all these domains at extremely high rates and volumes. Evidently, these data have to be processed and analyzed, in order to identify patterns, gain insights, detect abnormalities, and extract useful knowledge. At the same time, it is not unusual for applications to involve numbers of sequences in the order of hundreds of millions to billions. Examples of such datasets are: (a) the more than 70TB of spectroscopic sequence data from 200 million galaxies, quasars and stars, collected by the Sloan Digital Sky Survey [Sds14], allowing astronomers to study the sky objects and the universe; (b) the 4.5 billion non-overlapping (or 1,100 billion overlapping) sequences of length 256 (9TB) corresponding to functional magnetic resonance imaging data from 776 subjects [Adh11], collected in order to help build models for the early detection of Attention Deficit Hyperactivity Disorder; and (c) the 20TB per hour that each engine of every Boeing jet generates (on any given day there are more than 25,000 commercial flights in the USA alone) [Sha11][BCP+19], enabling analysts to monitor their operation and identify problems early. Past surveys have revealed that sequences are the second largest data type in the business domain, with the vast majority of the analysts (just like scientists) requiring days to months to deploy a solution that analyses the gathered data, and asking for better management and processing tools for data sequences [Rex13].</p>
+
+<h3 class="wp-block-heading">Challenges</h3>
+
+<p class="wp-block-paragraph">A key point is that analysts need to process and analyze a sequence (or subsequence) of values as a single object, rather than the individual points independently, which is what makes the management and analysis of data sequences a hard problem: they are high-dimensional objects (the dimensionality is in our case the size, or length of the sequence, and is typically in the order of hundreds to thousands). Having to process each sequence as a single object means that even simple operations (e.g., distance computation) become very expensive both in terms of CPU and disk I/O, since each sequence may involve thousands of real-valued points.&nbsp;</p>
+
+<p class="wp-block-paragraph">In many applications across different domains, the analysis of sequence data is an essential part of the analysis pipeline, and a prerequisite for decision making [PB19][BCP+19]. In several cases, the performance (time and/or accuracy) requirements of these applications are challenging to meet, even with state-of-the-art methods. Consider for instance, that astrophysicists need to make near real-time decisions on the detection of gravitational wave signals in order to point X- and Gamma-ray telescopes towards the signal source (these rays reach the Earth a few minutes later than the gravitational waves), but this is not currently possible, because analyzing the sequence data from the interferometer (the main measuring instrument) and the ~10,000 sensors that monitor the operation of the interferometer cannot be done with the required speed and accuracy. The same is true in various manufacturing and engineering situations, such as early anomaly detection in helicopter, aircraft and rocket engines, or predictive maintenance in nuclear electricity production plants [BCP+19].&nbsp;</p>
+
+<h3 class="wp-block-heading">Similarity Search</h3>
+
+<p class="wp-block-paragraph">One of the most essential data series problems is to identify patterns of interest. These patterns could be interferometer subsequences where gravitational waves are observed, sensor subsequences where mechanical failure happens, and others [PB19]. Patterns may be known in advance, in which case the target is to find more similar or relevant patterns, such as in data series indexing and similarity search. Patterns may also be unknown, in which case the target is to find patterns whose behavior could be distinguished with respect to others, such as in data series classification and anomaly detection.&nbsp;</p>
+
+<p class="wp-block-paragraph">Similarity search (or pattern matching) is a crucial operation, used by many tasks in sequence analytics. For example, in k-Nearest Neighbor (k-NN) Classifiers, the class of an unknown sequence is determined by the majority class of its nearest neighbors). At the same time, it is a very expensive operation, since it is applied on sequences with hundreds to thousands of values each, and sequence collections in modern applications measure in TBs-PBs in size. Therefore, it is imperative to have very efficient similarity search algorithms that exhibit consistent, scalable behavior across datasets.&nbsp;</p>
+
+<h3 class="wp-block-heading">Data Series Indices</h3>
+
+<p class="wp-block-paragraph">In response to this need, specialized index structures for data series similarity search have been developed. In general, sequence indices operate by pruning the search space based on suitable summarizations of the sequences and corresponding lower bounds, and only use the raw data of the sequences in order to filter out the false positives. Sequence similarity search algorithms can be categorized into four types, according to the answers they produce [EZP+18]: algorithms that produce (i) exact answers, (ii) approximate answers with deterministic quality guarantees, (iii) approximate answers with probabilistic quality guarantees, and (iv) approximate answers without quality guarantees.&nbsp;</p>
+
+<p class="wp-block-paragraph">Several such indices have been proposed in the literature. Agrawal et al. [AFS93] presented the first work that argued for the use of a spatial indexing structure for indexing data sequences, by indexing the first few DFT coefficients of each sequence using an R-Tree. This approach was later optimized by considering the symmetric property of Fourier coefficients [RM98]. Metric indices, such as the VP-tree [Yia93], can be used for the same task, and require only a user-defined metric distance function between the objects to be indexed. Various indices specific to data sequences have been proposed in the literature, as well. Such indices are able to exploit the inherent characteristics of the sequence summarization techniques they employ. DSTree [WWP+13] is an index based on APCA. The DSTree can adaptively perform split operations by increasing the detail of APCA as needed. The iSAX family of indices (refer to Figure 1) [Pal20] employs iSAX, the indexable SAX summarization [SK08]. This is a bitwise summarization, which means a very small amount of data is needed to describe both the index and the iSAX representations of the sequences. Recently, these indices have been extended to exploit the parallelism offered by modern hardware (i.e., SIMD, multi-core, multi-socket, and GPU) [PFP21][PFP21b][PFP21c]. While all indices presented above can only answer queries of a (predefined) fixed length, some studies have tried to address this problem, sich as ULISSE [LP20] and L-Match [FWW+20]. All these indices support (or can be extended to support) all four types of exact and approximate similarity queries described above. </p>
+
+<figure class="wp-block-image size-large"><img loading="lazy" decoding="async" width="1024" height="451" src="../../../../wp-content/uploads/2022/08/figure-1024x451.png" alt="" class="wp-image-3525" /><figcaption><em><em>Figure 1: Lineage of the iSAX family of indexes. Timeline is depicted on the top; implementation languages are marked on the right. Solid arrows denote inheritance of the index design; dashed arrows denote inheritance of some of the design features; the two new versions of iSAX2+ and ADS+ marked with an asterisk support approximate similarity search with deterministic and probabilistic quality guarantees.</em></em></figcaption></figure>
+
+<h3 class="wp-block-heading">Multi-Dimensional Indices</h3>
+
+<p class="wp-block-paragraph">Even though we have so far discussed only techniques developed by the data series community, other approaches could be used for approximate similarity search as well, such as those developed by the multi-dimensional community for general high-d vector data collections. This is true since data series are essentially high-d vectors. Therefore, similarity search approaches for high-d vector data can be applied to data series, as well. Similarly, data series techniques can be applied to general high-d vector data, as well.</p>
+
+<p class="wp-block-paragraph">The state-of-the-art high-d vector similarity search approaches include SRS [SWQ+14] (a Locality Sensitive Hashing method) that supports only approximate answers with quality guarantees, IMI [BL15] (a quantization-based inverted index) that supports only approximate answers with no quality guarantees, and HNSW [MY16] (a k-NN proximity graph method) that only supports approximate answers with no quality guarantees, and only works for datasets that fit in main memory.&nbsp;</p>
+
+<p class="wp-block-paragraph">Interestingly, recent extensive comparative studies have shown that these high-d vector approaches cannot be the answer to the similarity search problem, since they scale less, and/or produce less accurate results (over a variety of both data series and general high-d vector datasets) than the data series indices outlined above [EZP+18][EZP+19].</p>
+
+<h3 class="wp-block-heading">Deep Embeddings</h3>
+
+<p class="wp-block-paragraph">It is important to note that the above observation still holds when we consider a special type of high-d vector data, that of deep (neural network) embeddings [EZP+18][EZP+19]. Deep embeddings are high-d vector representations of a large variety of objects (such as text, multimedia, images, audio and video recordings, graphs, database tables, and others) produced by appropriate deep neural networks. Their advantage is that they render similarity search and other complex analytics tasks much easier and more scalable, since it suffices to operate on the embeddings, instead of the original (much more complex) data objects.&nbsp;</p>
+
+<p class="wp-block-paragraph">Therefore, the similarity search methods we are discussing are becoming increasingly more important, because of this additional application with growing utility and popularity [EPZ21].</p>
+
+<h3 class="wp-block-heading">Outlook</h3>
+
+<p class="wp-block-paragraph">The rapid increase of the rate of production and size of sequence collections across many domains and applications associated with modern-day industrial operations and scientific experiments push the current data series analysis methods to their limits [PB19]. This is due to the characteristics of the data and query workloads (i.e., billions of series, thousands of dimensions, dense areas in the data space that make exact query answering challenging), which render such data hard to analyze [ZLI+18].&nbsp;</p>
+
+<p class="wp-block-paragraph">Therefore, we need novel ideas and techniques that will significantly improve the performance of the state-of-the-art solutions. An interesting research direction in this area is combining elements of different approaches, in a way that the resulting mix is better than the parts (an example of such a solution is the Hercules index [EFZ+22]). Moreover, an even more promising direction is that of using machine learning in order to take decisions on data transformations and summarizations, as well as on data structures and algorithmic choices (for example, use machine learning for early-termination decisions, or progressive query answering [GTE+20]), with the goal to deliver up to orders of magnitude of improvement in terms of performance. Deep learning techniques can play an important role in this effort, since they enable approaches that adapt to data and query characteristics (in contrast to existing methods that are rather rigid), and can also naturally operate on multivariate series, avoiding the exponential complexity of traditional summarization and indexing methods (an example of such a solution is the SEAnet architecture for learning data series summarizations [WP21]).</p>
+
+<p class="wp-block-paragraph">Despite the long history of this seemingly simple problem, data series (and high-d vector) similarity search is nowadays not only posing new challenges, but also offering exciting research opportunities. Fortunately, the end of this story is nowhere near…</p>
+
+<h3 class="wp-block-heading">Acknowledgements</h3>
+
+<p class="wp-block-paragraph">I would like to sincerely thank all my collaborators and co-authors, for making this (ongoing) research trip possible, and for teaching me so much.</p>
+
+<h3 class="wp-block-heading">Blogger Profile</h3>
+
+<div class="wp-block-image"><figure class="alignleft size-full is-resized"><img loading="lazy" decoding="async" src="../../../../wp-content/uploads/2022/08/profile.jpeg" alt="" class="wp-image-3536" width="185" height="228" /><figcaption><em>themis@mi.parisdescartes.fr</em></figcaption></figure></div>
+
+<p class="wp-block-paragraph">Themis Palpanas is Senior Member of the French University Institute (IUF), a distinction that recognizes excellence across all academic disciplines, and professor of computer science at Université Paris Cité (France), where he is director of the Data Intelligence Institute of Paris (diiP), and director of the data management group, diNo. He received the BSc degree from the National Technical University of Athens, Greece, and the MSc and PhD degrees from the University of Toronto, Canada. He has previously held positions at the University of California at Riverside, University of Trento, and at IBM T.J. Watson Research Center, and visited Microsoft Research, and the IBM Almaden Research Center. His interests include problems related to data science (big data analytics and machine learning applications). He is the author of 9 US patents (3 of which have been implemented in world-leading commercial data management products), and 2 French patents. He is the recipient of 3 Best Paper awards, and the IBM Shared University Research (SUR) Award. He is currently serving on the VLDB Endowment Board of Trustees, as an ICDE 2023 Industrial and Applications track Chair, and has served as Editor in Chief for the BDR Journal, Associate Editor for VLDB 2022, 2019 and 2017, Research PC Vice Chair for ICDE 2020, and Workshop Chair for EDBT 2022 and 2016, ADBIS 2014 and 2013, and General Chair for VLDB 2013.</p>
+
+<h3 class="wp-block-heading">References</h3>
+
+<p class="wp-block-paragraph">[Adh11] &nbsp; ADHD-200, http://fcon_1000.projects.nitrc.org/indi/adhd200/, 2011&nbsp;</p>
+
+<p class="wp-block-paragraph">[AFS93] R. Agrawal, C. Faloutsos, A. Swami: Efficient similarity search in sequence databases. Foundations of Data Organization and Algorithms (1993) pp. 69-84&nbsp;</p>
+
+<p class="wp-block-paragraph">[BCP+19] Anthony J. Bagnall, Richard L. Cole, Themis Palpanas, Konstantinos Zoumpatianos: Data Series Management (Dagstuhl Seminr 19282). Dagstuhl Reports 9(7): 24-39 (2019)&nbsp;</p>
+
+<p class="wp-block-paragraph">[BL15] A. Babenko and V. Lempitsky. The Inverted Multi-Index. IEEE Transactions on Pattern Analysis and Machine Intelligence, 37(6):1247–1260, June 2015</p>
+
+<p class="wp-block-paragraph">[EFZ+22] Karima Echihabi, Panagiota Fatourou, Kostas Zoumbatianos, Themis Palpanas, Houda Benbrahim: Hercules Against Data Series Similarity Search. Proceedings of the VLDB Endowment (PVLDB) Journal (2022)</p>
+
+<p class="wp-block-paragraph">[EPZ21] Karima Echihabi, Themis Palpanas, Kostas Zoumpatianos: New Trends in High-D Vector Similarity Search: AI-driven, Progressive, and Distributed. Proc. VLDB Endow. 14(12): 3198-3201 (2021)</p>
+
+<p class="wp-block-paragraph">[EZP+18] Karima Echihabi, Kostas Zoumpatianos, Themis Palpanas, Houda Benbrahim: The Lernaean Hydra of Data Series Similarity Search: An Experimental Evaluation of the State of the Art. Proc. VLDB Endow. 12(2): 112-127 (2018)&nbsp;</p>
+
+<p class="wp-block-paragraph">[EZP+19] Karima Echihabi, Kostas Zoumpatianos, Themis Palpanas, Houda Benbrahim: Return of the Lernaean Hydra: Experimental Evaluation of Data Series Approximate Similarity Search. Proc. VLDB Endow. 13(3): 403-420 (2019)</p>
+
+<p class="wp-block-paragraph">[FWW+20] Kefeng Feng, Peng Wang, Jiaye Wu, Wei Wang: L-Match: A Lightweight and Effective Subsequence Matching Approach. IEEE Access 8: 71572-71583 (2020)</p>
+
+<p class="wp-block-paragraph">[GTE+20] Anna Gogolou, Theophanis Tsandilas, Karima Echihabi, Anastasia Bezerianos, Themis Palpanas: Data Series Progressive Similarity Search with Probabilistic Quality Guarantees. SIGMOD Conference 2020: 1857-1873</p>
+
+<p class="wp-block-paragraph">[LP20] Michele Linardi, Themis Palpanas: Scalable data series subsequence matching with ULISSE. VLDBJ 29(6): 1449-1474 (2020)</p>
+
+<p class="wp-block-paragraph">[MY16] Y. A. Malkov and D. A. Yashunin. Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs. CoRR, abs/1603.09320, 2016</p>
+
+<p class="wp-block-paragraph">[Pal20] Themis Palpanas. Evolution of a Data Series Index &#8211; The iSAX Family of Data Series Indexes. Communications in Computer and Information Science (CCIS) 1197 (2020)</p>
+
+<p class="wp-block-paragraph">[PB19] Themis Palpanas, Volker Beckmann: Report on the First and Second Interdisciplinary Time Series Analysis Workshop (ITISA). SIGMOD Rec. 48(3): 36-40 (2019)&nbsp;</p>
+
+<p class="wp-block-paragraph">[PFP21] Botao Peng, Panagiota Fatourou, Themis Palpanas: ParIS+: Data Series Indexing on Multi-Core Architectures. IEEE Trans. Knowl. Data Eng. 33(5): 2151-2164 (2021)</p>
+
+<p class="wp-block-paragraph">[PFP21b] Botao Peng, Panagiota Fatourou, Themis Palpanas: Fast Data Series Indexing for In-Memory Data. International Journal on Very Large Data Bases (VLDBJ) 2021&nbsp;</p>
+
+<p class="wp-block-paragraph">[PFP21c] Botao Peng, Panagiota Fatourou, Themis Palpanas: SING: Sequence Indexing Using GPUs. ICDE 2021: 1883-1888</p>
+
+<p class="wp-block-paragraph">[Rex13]&nbsp; &nbsp; Rexer Analytics, http://www.rexeranalytics.com/Data-Miner-Survey-Results-2013.html, 2013&nbsp;</p>
+
+<p class="wp-block-paragraph">[RM98] D.Rafiei, A.Mendelzon: Efficient Retrieval of Similar Time Sequences Using DFT, FODO, 1998.&nbsp;</p>
+
+<p class="wp-block-paragraph">[Sds14] Sloan Digital Sky Survey, https://www.sdss3.org/dr10/data_access/volume.php, 2014</p>
+
+<p class="wp-block-paragraph">[Sha11]&nbsp; &nbsp; Rogers Shawn, “Big Data Is Scaling BI and Analytics.” Information Management, (Sep 1) 2011</p>
+
+<p class="wp-block-paragraph">[SK08] Jin Shieh, Eamonn J. Keogh: iSAX: indexing and mining terabyte sized time series. KDD 2008</p>
+
+<p class="wp-block-paragraph">[SWQ+14] Y. Sun, W. Wang, J. Qin, Y. Zhang, and X. Lin. SRS: Solving c-approximate Nearest Neighbor Queries in High Dimensional Euclidean Space with a Tiny Index. PVLDB, 8(1):1–12, 2014</p>
+
+<p class="wp-block-paragraph">[WP21] Qitong Wang, Themis Palpanas: Deep Learning Embeddings for Data Series Similarity Search. KDD 2021</p>
+
+<p class="wp-block-paragraph">[WWP+13] Yang Wang, Peng Wang, Jian Pei, Wei Wang, Sheng Huang: A Data-adaptive and Dynamic Segmentation Index for Whole Matching on Time Series. PVLDB 6(10):793-804 (2013)</p>
+
+<p class="wp-block-paragraph">[Yia93] Peter N. Yianilos: Data Structures and Algorithms for Nearest Neighbor Search in General Metric Spaces. SODA 1993:311-321</p>
+
+<p class="wp-block-paragraph">[ZLI+18] Kostas Zoumpatianos, Yin Lou, Ioana Ileana, Themis Palpanas, Johannes Gehrke: Generating data series query workloads. VLDB J. 27(6): 823-846 (2018)</p>
+
+<p class="wp-block-paragraph"><em>Copyright @ 2022, Themis Palpanas, All rights reserved. </em></p>
+{% endraw %}

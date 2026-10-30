@@ -1,0 +1,109 @@
+---
+layout: post
+title: "Panel Summary: Where Does Academic Database Research Go From Here?"
+date: 2025-07-04 08:16:06
+last_modified_at: 2026-09-21 13:50:27
+author: "eugenewu"
+categories: ["Databases"]
+excerpt: "Date: Thursday, June 26, 2025 Organizers: Eugene Wu, Raul Castro Fernandez Panelists: Overview As organizers, we aimed to foster a bottom-up discussion on the evolving role and future direction of academic database research. Motivated by seismic technological and budgetary shifts, particularly the…"
+image: null
+wp_id: 3828
+permalink: "/2025/07/04/panel-summary-where-does-academic-database-research-go-from-here/"
+---
+{% raw %}
+<p class="wp-block-paragraph"><strong>Date:</strong>&nbsp;Thursday, June 26, 2025&nbsp;</p>
+
+<p class="wp-block-paragraph"><strong>Organizers:</strong>&nbsp;Eugene Wu, Raul Castro Fernandez&nbsp;</p>
+
+<p class="wp-block-paragraph"><strong>Panelists:</strong>&nbsp;</p>
+
+<ul class="wp-block-list">
+<li>Dan Suciu: Microsoft Endowed Professor in CSE at the University of Washington.</li>
+
+<li>Sihem Amer-Yahia: Research Director, CNRS, LIG; VP of VLDB Endowment.</li>
+
+<li>Yannis Ioannidis: Professor of Informatics &amp; Telecom at the University of Athens, President of the ACM.</li>
+
+<li>Ippokratis Pandis: Distinguished Engineer at Databricks.</li>
+
+<li>Jens Dittrich, Professor of CS at Saarland University; 3x CIDR gong show winner.</li>
+</ul>
+
+<h3 class="wp-block-heading">Overview</h3>
+
+<p class="wp-block-paragraph">As organizers, we aimed to foster a bottom-up discussion on the evolving role and future direction of academic database research.&nbsp;<a href="../../../../2024/10/10/where-does-database-research-go-from-here/">Motivated</a>&nbsp;by seismic technological and budgetary shifts, particularly the rise of AI, we explored the comparative advantage of the academic database community. This advantage is critical because it dictates our ability to recruit top students, ensure their success after graduation, and maintain our relevance in a rapidly changing technology and economic landscape. We specifically emphasized that &#8220;we&#8221; refers to academic database research, contextualizing the topic around recent shifts in government funding ($4B NSF expected budget for 2026) compared to the rapid growth of private investment in AI (e.g., &gt;$100B VC funding in 2024, &gt;$50B in Q1 2025), as funding directly influences the talent landscape.</p>
+
+<p class="wp-block-paragraph">The feedback for the panel and its structure was as varied as the recommendations themselves. Many approached us afterward to share their excitement in the panel’s discourse and for surfacing their worries and challenges. Others felt the existence of such a panel was yet another in a &#8220;<a href="https://jhellerstein.github.io/blog/sigmod-optimism/">sorry tradition of needless negativity</a>&#8221; for a vibrant and thriving research community. &nbsp; With a community as big as ours, we are grateful to receive these diverse opinions.</p>
+
+<p class="wp-block-paragraph">Matthew Butrovich and Lampros Flokas kindly took notes. &nbsp;The quoted text below is pulled from these notes, so we do not attribute them to specific individuals. &nbsp; The post ends with reflections from the organizers.</p>
+
+<p class="wp-block-paragraph">If this topic is of interest to you, we will be <strong>running a companion panel at VLDB 2025 with a different set of panelists, including Shreya Shankar, Gustavo Alonso, Natacha Crooks, Jiannan Wang, and Divesh Srivastava! </strong>   We have updated the <a href="https://arxiv.org/abs/2504.08948">ArXiv paper</a> to reflect this summary and the panelists’ takes.    Comments and hot takes that you would like to include in the paper are welcome at <a href="mailto:ewu@cs.columbia.edu">ewu@cs.columbia.edu</a> and <a href="mailto:raulcf@uchicago.edu">raulcf@uchicago.edu</a>.</p>
+
+<h3 class="wp-block-heading">Panel Summary</h3>
+
+<p class="wp-block-paragraph">The discussion revolved around two primary topics: the competitive advantage of the academic database research community and actionable strategies for its future.</p>
+
+<h4 class="wp-block-heading">Our Competitive Advantage</h4>
+
+<p class="wp-block-paragraph">The first topic focused on the academic database community’s competitive advantage as compared to other disciplines, industry, and startups.</p>
+
+<p class="wp-block-paragraph"><strong>Data Principles and AI:</strong>&nbsp;Our community&#8217;s core database principles, such as &#8220;independence between physical and logical&#8221; and &#8220;declarativeness”, and “automatic scalability hold lasting value. The CTO of Alibaba Cloud demonstrated this by applying query optimization principles to rebuild their pipeline for training QWEN 3, significantly reducing costs. We believe &#8220;all AI problems boil to data,&#8221; and our deep systems knowledge offers unique insights into challenges like data provenance, security, and novel data abstractions for AI workloads. A panelist noted the &#8220;bug&#8221; of companies needing hundreds of engineers for each of their separate &#8220;AI stack&#8221; and &#8220;data stack&#8221; teams, highlighting a significant opportunity for unified solutions rooted in database thinking.</p>
+
+<p class="wp-block-paragraph">While some external communities might prioritize immediate problem-solving and &#8220;accuracy&#8221; over these foundational principles, WE must effectively communicate their long-term benefits. &#8220;The way we interact with other communities is problematic&#8221; and &#8220;we don&#8217;t communicate what we have in the right away.&#8221;</p>
+
+<p class="wp-block-paragraph"><strong>Navigating the Modern Data Landscape Beyond the Traditional DBMS:</strong>&nbsp;“DBMSes are fast enough” for most applications, and our community&#8217;s expertise is vital for new data problems&nbsp;<em>beyond</em>&nbsp;the classic RDBMS. For instance, many performance problems are due to the ORM and never arise at the DBMS, while societal-level issues like fake news with an ongoing wave of AI-generated content (“AI slop”) is an information integrity problem. A panelist pointed out that<a href="https://duckdb.org/2025/05/19/the-lost-decade-of-small-data.html">&nbsp;</a><a href="https://duckdb.org/2025/05/19/the-lost-decade-of-small-data.html">a MacBook can comfortably run TPC-H scale factor 1000</a>: “small data” is enough for most applications and challenges lie in programmability, interoperability, and usability. Conversely, an audience member argued that improving the performance of RDBMSes can also be valuable as throughput increases may unlock new types of applications.</p>
+
+<p class="wp-block-paragraph">In the AI world, &#8220;solutions are crappy when you&#8221; combine diverse workloads like vectors, keywords, and relational queries in commercial systems. The platform for building data management systems is &#8220;radically different&#8221; at &#8220;cloud scale,&#8221; involving &#8220;smart NICs, disaggregated memory that comes and goes, [and] GPU spending.&#8221; These new hardware environments present unique opportunities for our deep systems knowledge.</p>
+
+<p class="wp-block-paragraph"><strong>Academic Research Identity: Balancing Curiosity, Impact, and Resources:</strong>&nbsp;Academia holds a unique position to pursue &#8220;curiosity driven research,&#8221; which contrasts with industry&#8217;s often shorter-term, product-focused cycles. This allows for &#8220;academic play&#8221; that breaks free from the need to make numbers go up. Panelists observed that &#8220;industry thinks 3/4 quarters ahead&#8221; while &#8220;Academia thinks 5 years ahead.&#8221; Despite industry&#8217;s &#8220;muscle&#8221; (e.g., 600 people on projects compared to &#8220;2 students for 2 years&#8221; in academia), academia retains the freedom to explore complex, foundational questions without immediate commercial constraints. This implies that academia should&nbsp;<em>not</em>&nbsp;directly compete with industry; as Surajit mentioned in the Tuesday panel, researchers should look for high upside when choosing a problem.</p>
+
+<h4 class="wp-block-heading">What the Academic Community Should Do</h4>
+
+<p class="wp-block-paragraph">The second half of the panel shifted towards actionable take-aways for the community.</p>
+
+<p class="wp-block-paragraph"><strong>Bring the Data (Researcher) To the Problem:</strong>&nbsp;“The way we interact with other communities is problematic” and we expect other communities to come to us. Instead, 1/3 of research sessions in other conferences have ‘data’ in their titles and “these communities are not going to come to SIGMOD”. A key recommendation was to proactively engage with other academic disciplines. The panel stressed the need to &#8220;go out&#8221; to these communities, and that &#8220;inter-disciplinary research post tenure&#8221; could be &#8220;tremendously fulfilling&#8221;. One suggestion was to create &#8220;Data + X&#8221; workshops in the X communities that are run in a &#8220;true discussion mode not as a paper presentation&#8221;.</p>
+
+<p class="wp-block-paragraph"><strong>Win the Heart of Data Stakeholders:&nbsp;</strong>Despite the lasting value our core database principles, such as &#8220;independence between physical and logical&#8221; and &#8220;declarativeness,&#8221; hold, we should not waste our efforts convincing other CS disciplines that these matter. We should direct our efforts toward winning the hearts of data stakeholders. How do we do that? By showing how good we are at treating everything as data and building the data backbone of their needs. &nbsp;</p>
+
+<p class="wp-block-paragraph"><strong>Improve Dissemination and Communication:</strong>&nbsp;There was a strong call to make academic research more accessible and understandable, as &#8220;nobody reads our papers, but they want to talk to someone who reads our papers&#8221;. It was suggested that papers are &#8220;extremely hard to read,&#8221; and the community &#8220;let[s] others pull the knowledge&#8221;. Recommendations included writing &#8220;better tutorials&#8221; and producing &#8220;YouTube videos&#8221;, and reducing SIGMOD papers to &#8220;8 pages&#8221; accompanied by &#8220;a clean and fun youtube video&#8221;.</p>
+
+<p class="wp-block-paragraph"><strong>Foster Industry-Academia Collaboration:</strong>&nbsp;Encouraging students to spend time in industry was highlighted as a way to expose academic research to real-world challenges and bring practical problems back. It was noted that &#8220;OpenAI doesn&#8217;t come here, but they bought a database&#8221; company, Rockset. Their “head of engineering is from Almaden. Send students into industry for a bit after teaching them systems.”</p>
+
+<p class="wp-block-paragraph"><strong>Rethink Conferences and Publication Norms:</strong>&nbsp;The panel discussed the need to innovate scholarly communication and conference formats. SIGMOD is a leader in pushing scholarly communication forward (e.g., we introduced reproducibility efforts), and there are ongoing discussions at the SIGMOD and ACM levels about reorganizing conference formats to better support &#8220;conferring&#8221; over listening to &#8220;canned presentations&#8221;. &nbsp; Continuing the idea of academic play, a panelist remarked that our reviewing process may over-index on work that must be&nbsp;<em>faster</em>&nbsp;than some baseline, and inadvertently prune the early seeds of ideas that may not lead to impressive results&nbsp;<em>now</em>&nbsp;but open up impactful research directions in the long run.</p>
+
+<p class="wp-block-paragraph"><strong>Strategically Focus on Foundational Principles in New Contexts:</strong>&nbsp;Panelists argued that we need not &#8220;become experts in LLMs&#8221; or other domains. Instead, our strength lies in forming &#8220;multi-disciplinary teams&#8221; where each contributes their core expertise. Specifically, for AI, &#8220;LLMs are a race to 0. It&#8217;s a tool.&#8221; Instead, &#8220;the application and the data is interesting and where the money is&#8221;. The community&#8217;s advantage lies in knowing &#8220;complexities of modern technology like GPUs&#8221; and continually learning.</p>
+
+<h4 class="wp-block-heading">Closing Comments</h4>
+
+<p class="wp-block-paragraph">The panelists were asked to imagine they were “president of database research” and could unilaterally force one change.</p>
+
+<ul class="wp-block-list">
+<li>“Go out and create workshops that are ‘data + X’ or ‘data 4 X’, have them run in a true discussion mode not as a paper presentation with two questions. Interactive panels and a few keynotes by experts. Run interdisciplinary workshops and everyone is forced to go to at least one of them”</li>
+
+<li>“Force everybody to send students to industry for a bit and bring problems back. security, provenance, data integration. Force a change of mind that academia is the holy land and let students be more open to industry.”</li>
+
+<li>“Impose that SIGMOD papers be reduced to 8 pages. accompanied by a clean and fun youtube video.”</li>
+
+<li>“Help people build real applications and make it open source.”</li>
+</ul>
+
+<h3 class="wp-block-heading">Reflections From the Organizers</h3>
+
+<p class="wp-block-paragraph">Overall, we came away from the panel excited that our community&nbsp;<a href="https://sigmod.org/sigmod-awards/sigmod-systems-award/">has so much impact</a>, and possesses the data-centric tools that the world needs! &nbsp; &nbsp;However, our future impact hinges on proactively engaging with a rapidly evolving landscape of applications, evangelizing our expertise to other communities, and strategically collaborating across domains. &nbsp; All great motivations for academic research!</p>
+
+<p class="wp-block-paragraph">The positive and insightful discussion ultimately led to recommendations that exhibit inherent trade-offs, rather than a single, clear set of recommendations:</p>
+
+<ul class="wp-block-list">
+<li><strong>Is Database Research Art?&nbsp;</strong>&nbsp;We should leverage academia’s unique capacity to pursue curiosity-driven research (academic play), but a real and present budget crisis exists. How do we balance these two imperatives? How can academic research secure sustainable funding for foundational, long-term problems that industry cannot or will not pursue, without becoming irrelevant to the capitalist marketplace that attracts top talent and resources? &nbsp; It reminds us of artists that strive to pursue purity in expression but face economic realities.</li>
+
+<li><strong>Impactful Research vs. Market Dominance:</strong>&nbsp;We should do impactful research that is neither too short-term nor too long-term, yet offers high upside. However, the relational database market completely dwarfs any alternative data applications and domains. How do we balance the dominance of existing database technologies with the need to explore new paradigms that may not have immediate commercial application but might offer long-term, high-upside impact?</li>
+
+<li><strong>Go Big and Stay Real:</strong>&nbsp;We should talk to other domains and experts to be “trans-disciplinary.” But how do we initiate such projects effectively? What specific models for &#8220;multi-disciplinary teams&#8221; can integrate deep database knowledge into diverse fields (e.g., AI, quantum computing, social sciences) to solve &#8220;data problems&#8221; without sacrificing the rigor and identity of database research?</li>
+
+<li><strong>Engineering vs Science:</strong>&nbsp;We encourage students to engage with industry to gain real-world experience, but we also aim to conduct long-term, ambitious scientific research. How do we ensure that industry exposure enriches, rather than detracts from, fundamental scientific inquiry? On the other hand, data management is an applied field, so does it matter?</li>
+</ul>
+
+<p class="wp-block-paragraph">In either case, we do feel that problems should be paired with solutions. We plan to re-structure the upcoming panel at VLDB 2025 in late August to delve deeper into concrete trade-offs in the above recommendations. If you have suggestions on how to organize the VLDB panel, or would like to share your take on the topic or panel discussion, please share them with&nbsp;<a href="mailto:ewu@cs.columbia.edu">ewu@cs.columbia.edu</a>&nbsp;and&nbsp;<a href="mailto:raulcf@uchicago.edu">raulcf@uchicago.edu</a>.</p>
+
+<p class="wp-block-paragraph">We again thank the panelists, the audience members, people that shared feedback, and Matt Butrovich and Lampros Flokas for taking notes.</p>
+{% endraw %}
