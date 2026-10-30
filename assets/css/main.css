@@ -26,7 +26,7 @@ body {
   margin: 0;
   background: var(--page-bg);
   color: var(--text);
-  font: 500 16px/1.7 var(--body-font);
+  font: 400 16px/1.7 var(--body-font);
 }
 
 a { color: var(--link); text-decoration: none; }
