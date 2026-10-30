@@ -5,7 +5,8 @@ Posts on the ACM SIGMOD Blog are commissioned and edited by the blog editors
 This guide covers the whole path: from pitch to publication.
 
 - **Authors** only need [step 1](#1-pitch-and-write-authors) — no GitHub knowledge required.
-- **Editors** (or authors comfortable with GitHub) do [steps 2–6](#2-create-the-post-file) to publish.
+- **Editors** publish with [steps 2–6](#2-create-the-post-file), by hand or
+  [with Claude or another AI agent](#using-claude-or-another-ai-agent).
 
 ---
 
@@ -27,111 +28,56 @@ The editors take it from there.
 
 ## 2. Create the post file
 
-Each post is one file in `_posts/`, named
-
-```
-_posts/YYYY-MM-DD-short-title.md
-```
-
-The date is the publication date and, together with `short-title`, forms the URL:
-`_posts/2026-11-15-learned-indexes-revisited.md` is published at
-`/2026/11/15/learned-indexes-revisited/`. Use lowercase letters, digits and hyphens.
-
-Start the file from this template:
+Create `_posts/YYYY-MM-DD-short-title.md` (publication date + lowercase,
+hyphenated title). It is published at `/YYYY/MM/DD/short-title/`.
 
 ```markdown
 ---
 title: "Learned Indexes, Revisited"
-author: jane-doe
-categories: [Databases, Machine Learning]
-excerpt: "One or two sentences shown on the home page and in link previews."
-image: /assets/posts/2026-11-15-learned-indexes-revisited/figure1.png
+author: jane-doe                          # key from _data/authors.yml (step 3)
+categories: [Databases, Machine Learning] # existing names, or add one (step 4)
+excerpt: "One or two sentences for the home page."      # optional
+image: /assets/posts/2026-11-15-learned-indexes-revisited/figure1.png  # optional thumbnail
 ---
 
-Opening paragraph…
+Opening paragraph, in Markdown: **bold**, *italics*, [links](https://sigmod.org), tables, footnotes.[^1]
 
-## First section
+![Figure 1: Caption.]({{ '/assets/posts/2026-11-15-learned-indexes-revisited/figure1.png' | relative_url }})
 
-Text with **bold**, *italics*, [links](https://sigmod.org) and `inline code`.
+*Author bio: Jane Doe is …*
 
-![Figure 1: What the figure shows.]({{ '/assets/posts/2026-11-15-learned-indexes-revisited/figure1.png' | relative_url }})
-
-More text, with a footnote.[^1]
-
-## References
-
-[1] A. Author, B. Author. "Paper Title." SIGMOD 2026.
-
-[^1]: The footnote text.
+[^1]: Footnote text.
 ```
 
-| Field | Required | Notes |
-| --- | --- | --- |
-| `title` | yes | In quotes. |
-| `author` | yes | An author **key** from `_data/authors.yml` (step 3), not the display name. |
-| `categories` | recommended | Existing names are listed in the *Categories* dropdown on the site. A new name needs a category page (step 4). |
-| `excerpt` | recommended | Shown on the home page. Without it, the first paragraph is used. |
-| `image` | optional | Thumbnail on the home page. Without it, the post is listed without a picture. |
+HTML works too (e.g. `<figure>` with `<figcaption>`). To convert a Google Doc or
+Word file: *File → Download → Markdown* in Google Docs, or
+`pandoc post.docx -t gfm -o post.md`, then tidy up.
 
-The body is [Markdown](https://www.markdownguide.org/basic-syntax/) (GitHub-flavoured:
-tables and footnotes work). Plain HTML is allowed too, which is handy for figures
-with captions:
+## 3. Add the author (if new)
 
-```html
-<figure>
-  <img src="{{ '/assets/posts/2026-11-15-learned-indexes-revisited/figure2.png' | relative_url }}" alt="Throughput vs. data size">
-  <figcaption>Figure 2: Throughput as the data grows.</figcaption>
-</figure>
-```
-
-Tip: to convert a Google Doc or Word file, *File → Download → Markdown* (Google
-Docs) or [pandoc](https://pandoc.org/) (`pandoc post.docx -t gfm -o post.md`) gives
-a good starting point; then tidy up headings, figures and references by hand.
-
----
-
-## 3. Add the author
-
-Authors are listed in `_data/authors.yml`, keyed by a short lowercase id. If the
-author has written for the blog before, reuse their key (search the file for
-their name). Otherwise add an entry at the end:
+Append to `_data/authors.yml` (put the headshot, ~300 px, in `assets/authors/`):
 
 ```yaml
 "jane-doe":
-  name: "Jane Doe"
-  url: "https://janedoe.example.org"
-  avatar: "/assets/authors/jane-doe.jpg"
+  name: "Jane Doe"                         # for several authors: "Jane Doe and John Roe"
+  url: "https://janedoe.example.org"       # optional
+  avatar: "/assets/authors/jane-doe.jpg"   # optional
 ```
 
-- Put the headshot at `assets/authors/jane-doe.jpg` (about 300×300 px is plenty).
-  `avatar` and `url` are optional.
-- Create the author's page, `author/jane-doe.html`, with exactly:
+and create `author/jane-doe.html`:
 
-  ```yaml
-  ---
-  layout: author
-  title: "Jane Doe"
-  author: "jane-doe"
-  permalink: /author/jane-doe/
-  ---
-  ```
-
-For posts with several authors, use one entry whose `name` lists everyone
-(e.g. `name: "Jane Doe and John Roe"`), as the imported posts do.
-
-The author bio goes at the end of the post body itself, e.g.
-
-```markdown
-*Author bio: Jane Doe is a professor at … Her research focuses on …*
-```
-
+```yaml
 ---
+layout: author
+title: "Jane Doe"
+author: "jane-doe"
+permalink: /author/jane-doe/
+---
+```
 
-## 4. New category? Add its page
+## 4. Add the category (if new)
 
-If every category in the post already exists, skip this step. For a new one,
-create `category/<slug>.html`, where `<slug>` is the name in lowercase with
-hyphens instead of spaces:
+Create `category/machine-learning.html`; `category:` must match the name used in posts exactly:
 
 ```yaml
 ---
@@ -142,57 +88,61 @@ permalink: /category/machine-learning/
 ---
 ```
 
-The `category:` value must match the name used in posts exactly (including capitals).
-
----
-
 ## 5. Add images
 
-Put the post's images in a folder named after the post file:
+Put them in `assets/posts/<post-file-name>/`, keep each under ~1 MB (~1600 px wide),
+and always link them with `relative_url` as in the template.
 
-```
-assets/posts/2026-11-15-learned-indexes-revisited/figure1.png
-assets/posts/2026-11-15-learned-indexes-revisited/figure2.png
-```
+## 6. Review and publish
 
-Always reference them with the `relative_url` filter, as in the template above,
-so they work both on the GitHub Pages address and on a custom domain. Keep each
-image under ~1 MB (resize to ~1600 px wide; prefer PNG for plots, JPG for photos).
+1. Add the files on a new branch and open a pull request (on github.com:
+   *Add file → Upload files → Create a new branch*). Optionally preview locally
+   with `bundle exec jekyll serve` (see [README](README.md#local-preview)).
+2. Have the author and the other editor review it, using the checklist below.
+3. **Merge.** The post is live within a few minutes (a red ✗ in the *Actions* tab
+   means the build failed, usually a front-matter typo).
+
+**Checklist:** file name and date are right · author key and `author/` page exist ·
+categories exist · images load and are under 1 MB · links work · bio at the end ·
+**the author approved the final version**.
+
+**Good to know:** a post dated in the future only appears after a rebuild on or after
+that date (merge on the day, or re-run the workflow from *Actions*). Fix typos by
+editing and merging again. Never rename a published post's file: that changes its URL.
 
 ---
 
-## 6. Preview, review and publish
+## Using Claude or another AI agent
 
-**Preview locally** (optional, needs Ruby — see [README](README.md#local-preview)):
+Steps 2–6 are mechanical, so an AI coding agent such as
+[Claude Code](https://www.anthropic.com/claude-code) (or Claude on claude.ai with the
+files attached) can do them: convert the author's document, create the post,
+author and category files, resize and place images, preview the site, and open
+the pull request. Give it the author's files and point it at this guide, e.g.:
 
-```bash
-bundle exec jekyll serve      # then open http://localhost:4000/sigmod-blog/
-```
+> Following SUBMITTING.md, publish the attached post by Jane Doe
+> (draft.docx, figure1.png, figure2.png, headshot.jpg) with categories
+> "Databases" and "Machine Learning", dated 2026-11-15. Convert it to Markdown
+> without changing the wording, add the author and any new category, resize
+> the images, preview the site, check the post renders correctly, and open a
+> pull request — do not merge it.
 
-**Review on GitHub** — no local setup needed:
+Some advice from setting this blog up this way:
 
-1. Create a branch, e.g. `post/learned-indexes-revisited`, and add the files there
-   (on github.com: *Add file → Upload files*, then choose *Create a new branch*).
-2. Open a pull request. Ask the author and the other editor to review it.
-3. Check the post against the list below.
-4. **Merge the pull request.** The site rebuilds and the post is live within a
-   couple of minutes (watch the *Actions* tab; a red ✗ means the build failed —
-   usually a typo in the front matter).
-
-### Checklist before merging
-
-- [ ] File name is `_posts/YYYY-MM-DD-short-title.md` with the publication date.
-- [ ] `author` key exists in `_data/authors.yml` and `author/<key>.html` exists.
-- [ ] Every category exists (dropdown on the site) or has a new `category/<slug>.html`.
-- [ ] All images load, use `relative_url`, and are under ~1 MB.
-- [ ] Links work; references are complete.
-- [ ] Author bio is at the end of the post.
-- [ ] The author has approved the final version.
-
-### Scheduling and corrections
-
-- A post dated in the future is **not** published until the site is rebuilt on or
-  after that date — merge on the day, or re-run the *Deploy to GitHub Pages*
-  workflow from the *Actions* tab on the day.
-- To fix a typo after publication, edit the file and merge again; the URL stays the same.
-- Do not rename a published post file: that changes its URL and breaks existing links.
+- **Formatting only, not editing.** Ask the agent explicitly not to change the
+  author's wording, and check the pull request diff for unintended edits.
+  Copy-editing, if any, is an editorial decision agreed with the author.
+- **A human merges.** Let the agent open the pull request, but have an editor
+  review it and merge. The checklist above applies unchanged, including the
+  author's approval.
+- **Ask it to check its own work.** Agents that can run a browser can preview the
+  site and confirm that figures, tables, footnotes and links render; ask for that
+  explicitly, and for a short list of anything it was unsure about.
+- **Watch the details agents get wrong:** dates (publication date vs. today),
+  reusing an existing author key instead of creating a duplicate, category names
+  that almost match an existing one, and image paths missing `relative_url`.
+- **Keep the author's content private until it is public.** Only use tools your
+  institution allows for unpublished manuscripts, and do not paste drafts into
+  services that may train on them without the author's consent.
+- **Agents can also help authors** (step 1): converting a draft to Markdown or
+  checking references, as long as the text remains their own.
