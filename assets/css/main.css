@@ -14,8 +14,12 @@
   --button-bg: #eeeeee;
   --footer-bg: #222222;
   --footer-text: #bbbbbb;
+  /* Main text font. Any family loaded in _layouts/default.html (Google Fonts link) can be used;
+     weights loaded there: 400 (regular), 500, 600, 700. */
   --heading-font: "Roboto Condensed", Helvetica, Arial, sans-serif;
   --body-font: "Source Sans 3", "Source Sans Pro", Helvetica, Arial, sans-serif;
+  --body-weight: 400;
+  --body-size: 16px;
 }
 
 * { box-sizing: border-box; }
@@ -26,7 +30,13 @@ body {
   margin: 0;
   background: var(--page-bg);
   color: var(--text);
-  font: 400 16px/1.7 var(--body-font);
+  font-family: var(--body-font);
+  font-weight: var(--body-weight);
+  font-size: var(--body-size);
+  line-height: 1.7;
+  /* Same as the SIGPLAN (Divi) theme: thinner, lighter glyphs on macOS. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 a { color: var(--link); text-decoration: none; }
