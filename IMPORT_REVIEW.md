@@ -5,14 +5,13 @@ Every post was checked automatically for content that may not survive the move (
 external images, broken layout, unresolved old links, missing images…). Flagged posts were then
 looked at by eye; the verdicts live in `REVIEWED` in the script.
 
-11 of 82 posts flagged: **3 need a human decision**, 8 were checked and render correctly.
+11 of 82 posts flagged: **2 need a human decision**, 9 were checked and render correctly.
 
 ## Needs a human look
 
 | Post | What to check | Links |
 | --- | --- | --- |
 | ML/AI Systems and Applications: Is the SIGMOD/VLDB Community Losing Relevance? (2018-08-21) | One image (edtosavetheworld…/paradigms.png) is dead on the old blog too; five others are hotlinked from blogspot/wordpress.com and could disappear. Decide whether to remove the dead one. | [new](https://manathan1984.github.io/sigmod-blog/2018/08/21/2454/) · [old](https://wp.sigmod.org/?p=2454) |
-| ACM SIGMOD Jim Gray Doctoral Dissertation Award (2022-02-10) | Jim Gray photo URL on Wikimedia now returns 400 (also broken on the old blog). Replace with a valid Wikimedia thumbnail size, e.g. 250px, or a local copy. | [new](https://manathan1984.github.io/sigmod-blog/2022/02/10/acm-sigmod-jim-gray-doctoral-dissertation-award/) · [old](https://wp.sigmod.org/?p=3379) |
 | Auditing bias of recourse in classifiers (part II)  (2024-09-25) | Wide results table now scrolls sideways; check it reads well. Three footnote links (#_ftn1, #_msocom_1, #_bookmark6) have no target, as on the old blog. | [new](https://manathan1984.github.io/sigmod-blog/2024/09/25/auditing-bias-of-recourse-in-classifiers-part-ii/) · [old](https://wp.sigmod.org/?p=3760) |
 
 ## Flagged, checked, fine
@@ -22,6 +21,7 @@ looked at by eye; the verdicts live in `REVIEWED` in the script.
 | Are Databases ready for Gestural Workloads? (2013-12-11) | embedded iframe/video (YouTube, slides, maps…) (1); code / preformatted block (6) | YouTube embed (now https) plays; inline code renders. | [new](https://manathan1984.github.io/sigmod-blog/2013/12/11/are-databases-ready-for-gestural-workloads/) · [old](https://wp.sigmod.org/?p=978) |
 | Thinking Spatial (2016-10-06) | fixed inline width/height styles (1) | Fixed-width pull-quote box floats right as intended. | [new](https://manathan1984.github.io/sigmod-blog/2016/10/06/thinking-spatial/) · [old](https://wp.sigmod.org/?p=2012) |
 | The Rise of Natural Language Interfaces to Databases (2019-06-20) | table (2) | Data tables render. | [new](https://manathan1984.github.io/sigmod-blog/2019/06/20/the-rise-of-natural-language-interfaces-to-databases/) · [old](https://wp.sigmod.org/?p=2897) |
+| ACM SIGMOD Jim Gray Doctoral Dissertation Award (2022-02-10) | image hosted outside wp.sigmod.org (may disappear) (1) | Jim Gray photo fixed: importer now requests a supported Wikimedia thumbnail size (250px). | [new](https://manathan1984.github.io/sigmod-blog/2022/02/10/acm-sigmod-jim-gray-doctoral-dissertation-award/) · [old](https://wp.sigmod.org/?p=3379) |
 | Robust Query Processing: A Case for Geometric Techniques (2022-03-24) | code / preformatted block (5) | Inline code and table image render. | [new](https://manathan1984.github.io/sigmod-blog/2022/03/24/robust-query-processing-a-case-for-geometric-techniques/) · [old](https://wp.sigmod.org/?p=3403) |
 | Why Uncertainty is Unavoidable and What We Can Do About That (2023-01-24) | table (3) | Data tables render. | [new](https://manathan1984.github.io/sigmod-blog/2023/01/24/why-uncertainty-is-unavoidable-and-what-we-can-do-about-that/) · [old](https://wp.sigmod.org/?p=3624) |
 | Auditing bias of recourse in classifiers (part I) (2024-06-19) | table (1) | Reference table renders. | [new](https://manathan1984.github.io/sigmod-blog/2024/06/19/auditing-bias-of-recourse-in-classifiers-part-i/) · [old](https://wp.sigmod.org/?p=3726) |

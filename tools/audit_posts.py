@@ -44,10 +44,9 @@ REVIEWED = {
     3726: ("ok", "Reference table renders."),
     3833: ("ok", "Fixed width is the resized author photo."),
     3855: ("ok", "Fixed width is the resized author photo."),
+    3379: ("ok", "Jim Gray photo fixed: importer now requests a supported Wikimedia thumbnail size (250px)."),
     2454: ("human", "One image (edtosavetheworld…/paradigms.png) is dead on the old blog too; five others are hotlinked "
                     "from blogspot/wordpress.com and could disappear. Decide whether to remove the dead one."),
-    3379: ("human", "Jim Gray photo URL on Wikimedia now returns 400 (also broken on the old blog). Replace with a "
-                    "valid Wikimedia thumbnail size, e.g. 250px, or a local copy."),
     3760: ("human", "Wide results table now scrolls sideways; check it reads well. Three footnote links (#_ftn1, "
                     "#_msocom_1, #_bookmark6) have no target, as on the old blog."),
 }

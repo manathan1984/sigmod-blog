@@ -43,6 +43,8 @@ CAT_RE = re.compile(r"https?://wp\.sigmod\.org/?\?cat=(\d+)")
 # Images pasted from Google Docs are served from expiring googleusercontent URLs.
 EXTERNAL_IMG_RE = re.compile(r"(<img[^>]+src=\")(https://lh\d(?:-[a-z]+)?\.googleusercontent\.com/[^\"]+)\"")
 
+WIKIMEDIA_WIDTHS = [20, 40, 60, 120, 250, 330, 500, 960, 1280, 1920, 3840]
+
 # Filled in by main(): WordPress category id -> {"name", "slug"}.
 CATEGORIES = {}
 
@@ -233,6 +235,15 @@ def clean_html(content, depth, id_map):
         return f'{m.group(1)}{up}{path.lstrip("/")}"' if path else m.group(0)
 
     content = EXTERNAL_IMG_RE.sub(external, content)
+    # Wikimedia now only serves a fixed set of thumbnail widths; bump others to the next one up.
+    def wikimedia_thumb(m):
+        width = int(m.group(2))
+        if width in WIKIMEDIA_WIDTHS:
+            return m.group(0)
+        std = next((w for w in WIKIMEDIA_WIDTHS if w >= width), WIKIMEDIA_WIDTHS[-1])
+        return f"{m.group(1)}{std}px-"
+
+    content = re.sub(r"(upload\.wikimedia\.org/wikipedia/commons/thumb/[^\"\s]+/)(\d+)px-", wikimedia_thumb, content)
     # Embeds over http are blocked as mixed content on an https site.
     content = re.sub(r'(<iframe[^>]+src=")http://', r"\1https://", content)
     content = unwrap_layout_tables(content)
