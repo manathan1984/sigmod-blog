@@ -102,6 +102,10 @@ def audit(site_url, check_external=True):
                     reasons.append(f"external image no longer loads: {src[:60]}…")
                     score += 2
 
+        if re.match(r"user-\d+$", fm.get("author", "")):
+            reasons.append("author unknown (placeholder user-N)")
+            score += 2
+
         bal = div_balance(body)
         if bal:
             reasons.append(f"unbalanced &lt;div&gt; tags ({bal:+d}); may break the page layout")

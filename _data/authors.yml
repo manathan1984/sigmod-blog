@@ -28,6 +28,11 @@
   wp_id: 63
   url: ""
   avatar: "/wp-content/uploads/2018/10/amol-150x150.jpg"
+"arnab-nandi":
+  name: "Arnab Nandi"
+  wp_id: 18
+  url: ""
+  avatar: "/wp-content/uploads/2015/07/arnab-150x150.jpg"
 "arunkumar":
   name: "Arun Kumar"
   wp_id: 60
@@ -63,6 +68,11 @@
   wp_id: 71
   url: ""
   avatar: "/wp-content/uploads/2020/01/all-150x71.jpg"
+"chen-li":
+  name: "Chen Li"
+  wp_id: 11
+  url: ""
+  avatar: "/wp-content/uploads/2012/11/chenli.png"
 "chen_hu_khan_shankar_wang_wang_wu":
   name: "Xi Chen, Wei Hu, Arijit Khan, Shreya Shankar, Haofen Wang, Jianguo Wang, and Tianxing Wu"
   wp_id: 114
@@ -71,6 +81,7 @@
   name: "Chris Tsapelas"
   wp_id: 87
   url: ""
+  avatar: "/wp-content/uploads/2022/02/image_6483441-138x150.jpg"
 "dimitrissacharidis_giorgosgiannopoulos_loukaskavou":
   name: "Dimitris Sacharidis - Giorgos Giannopoulos - Loukas Kavouras"
   wp_id: 104
@@ -96,6 +107,26 @@
   wp_id: 3
   url: ""
   avatar: "/wp-content/uploads/2016/02/georgia-133x150.jpg"
+"gerhard-weikum":
+  name: "Gerhard Weikum"
+  wp_id: 13
+  url: ""
+  avatar: "/wp-content/uploads/2013/03/gerhardweikum-114x150.jpg"
+"gio-wiederhold":
+  name: "Gio Wiederhold"
+  wp_id: 17
+  url: ""
+  avatar: "/wp-content/uploads/2013/09/gio-109x150.jpg"
+"guy-lohman":
+  name: "Guy Lohman"
+  wp_id: 20
+  url: ""
+  avatar: "/wp-content/uploads/2014/04/lohman-120x150.jpg"
+"h-v-jagadish":
+  name: "H. V. Jagadish"
+  wp_id: 8
+  url: ""
+  avatar: "/wp-content/uploads/2018/01/Jagadish-128x128.jpg"
 "ibrahim-sabek":
   name: "Ibrahim Sabek"
   wp_id: 120
@@ -161,6 +192,11 @@
   wp_id: 26
   url: ""
   avatar: "/wp-content/uploads/2015/07/all-150x58.png"
+"kurt-stockinger":
+  name: "Kurt Stockinger"
+  wp_id: 67
+  url: ""
+  avatar: "/wp-content/uploads/2019/06/KurtStockinger-1-150x118.jpg"
 "kyledeeds_ziniuwu":
   name: "Kyle Deeds and Ziniu Wu"
   wp_id: 103
@@ -186,6 +222,11 @@
   wp_id: 57
   url: ""
   avatar: "/wp-content/uploads/2018/03/melyan-96x96.jpg"
+"michael-stonebraker":
+  name: "Michael Stonebraker"
+  wp_id: 28
+  url: ""
+  avatar: "/wp-content/uploads/2015/07/mikestonebraker-150x122.png"
 "mohamedmokbel":
   name: "Mohamed Mokbel"
   wp_id: 33
@@ -245,6 +286,11 @@
   wp_id: 86
   url: ""
   avatar: "/wp-content/uploads/2021/05/sourav-art-150x133.jpg"
+"stratos-idreos":
+  name: "Stratos Idreos"
+  wp_id: 27
+  url: ""
+  avatar: "/wp-content/uploads/2015/06/stratos-150x135.png"
 "surajitchaudhu":
   name: "Surajit Chaudhuri"
   wp_id: 48
@@ -260,46 +306,11 @@
   wp_id: 98
   url: ""
   avatar: "/wp-content/uploads/2022/08/profile-122x150.jpeg"
-"user-11":
-  name: "user-11"
-  wp_id: 11
-  url: ""
-"user-12":
-  name: "user-12"
+"thomas-haigh":
+  name: "Thomas Haigh"
   wp_id: 12
   url: ""
-"user-13":
-  name: "user-13"
-  wp_id: 13
-  url: ""
-"user-17":
-  name: "user-17"
-  wp_id: 17
-  url: ""
-"user-18":
-  name: "user-18"
-  wp_id: 18
-  url: ""
-"user-20":
-  name: "user-20"
-  wp_id: 20
-  url: ""
-"user-27":
-  name: "user-27"
-  wp_id: 27
-  url: ""
-"user-28":
-  name: "user-28"
-  wp_id: 28
-  url: ""
-"user-67":
-  name: "user-67"
-  wp_id: 67
-  url: ""
-"user-8":
-  name: "user-8"
-  wp_id: 8
-  url: ""
+  avatar: "/wp-content/uploads/2012/12/Photo-II-from-session-100x150.jpg"
 "vanessawolfgang":
   name: "Vanessa Braganholo and Wolfgang Lehner"
   wp_id: 89

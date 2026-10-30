@@ -292,6 +292,31 @@ def clean_slug(slug):
     return re.sub(r"-{2,}", "-", slug).strip("-") or "post"
 
 
+def scrape_author(post_id):
+    """Author name and photo from the post's page on the old blog.
+
+    The REST API refuses to show some users (401), but the theme prints the
+    author's name and avatar in the post header.
+    """
+    req = urllib.request.Request(f"{SITE}/?p={post_id}", headers={"User-Agent": UA})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            page = r.read().decode("utf-8", "replace")
+    except Exception as e:  # noqa: BLE001
+        print(f"  ! could not fetch post page for author: {e}", file=sys.stderr)
+        return None
+    block = re.search(r'class="archiveblog_left\s*">(.*?)</div>', page, re.S)
+    if not block:
+        return None
+    name = re.search(r"<h5>\s*(?:<a[^>]*>)?([^<]+)", block.group(1))
+    avatar = re.search(r"<img[^>]+src=['\"]([^'\"]+)['\"]", block.group(1))
+    if not name:
+        return None
+    name = html.unescape(name.group(1)).strip()
+    return {"name": name, "slug": clean_slug(name.replace(" ", "-")), "url": "",
+            "avatar_urls": {"96": avatar.group(1)} if avatar else {}}
+
+
 def post_permalink(p):
     d = p["date"][:10].split("-")
     return f"/{d[0]}/{d[1]}/{d[2]}/{clean_slug(p['slug'])}/"
@@ -319,12 +344,17 @@ def import_posts(posts, authors, categories, id_map, force=False):
         print(f"post {p['id']}: {title}  ->  {link}")
         emb = p.get("_embedded", {})
         author = (emb.get("author") or [{}])[0]
+        if not author.get("slug"):
+            author = scrape_author(p["id"]) or {}
         aslug = author.get("slug") or f"user-{p['author']}"
         if aslug not in authors:
             authors[aslug] = {}
         a = authors[aslug]
         a.update({"name": author.get("name", aslug), "wp_id": p["author"], "url": author.get("url", "")})
         avatar = (author.get("avatar_urls") or {}).get("96", "")
+        if not UPLOAD_RE.match(avatar):
+            # The API sometimes reports only a Gravatar; the post page may show an uploaded photo.
+            avatar = ((scrape_author(p["id"]) or {}).get("avatar_urls") or {}).get("96", "")
         m = UPLOAD_RE.match(avatar)
         if m and download(m.group(1)):
             a["avatar"] = m.group(1)

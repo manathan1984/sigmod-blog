@@ -11,8 +11,8 @@ looked at by eye; the verdicts live in `REVIEWED` in the script.
 
 | Post | What to check | Links |
 | --- | --- | --- |
-| ML/AI Systems and Applications: Is the SIGMOD/VLDB Community Losing Relevance? (2018-08-21) | One image (edtosavetheworld…/paradigms.png) is dead on the old blog too; five others are hotlinked from blogspot/wordpress.com and could disappear. Decide whether to remove the dead one. | [new](https://manathan1984.github.io/sigmod-blog/2018/08/21/2454/) · [old](https://wp.sigmod.org/?p=2454) |
 | Auditing bias of recourse in classifiers (part II)  (2024-09-25) | Wide results table now scrolls sideways; check it reads well. Three footnote links (#_ftn1, #_msocom_1, #_bookmark6) have no target, as on the old blog. | [new](https://manathan1984.github.io/sigmod-blog/2024/09/25/auditing-bias-of-recourse-in-classifiers-part-ii/) · [old](https://wp.sigmod.org/?p=3760) |
+| ML/AI Systems and Applications: Is the SIGMOD/VLDB Community Losing Relevance? (2018-08-21) | One image (edtosavetheworld…/paradigms.png) is dead on the old blog too; five others are hotlinked from blogspot/wordpress.com and could disappear. Decide whether to remove the dead one. | [new](https://manathan1984.github.io/sigmod-blog/2018/08/21/2454/) · [old](https://wp.sigmod.org/?p=2454) |
 
 ## Flagged, checked, fine
 
