@@ -4,6 +4,8 @@ Static (Jekyll) version of the [ACM SIGMOD Blog](https://wp.sigmod.org/), with a
 layout modelled on the [SIGPLAN blog](https://blog.sigplan.org/). Pushes to
 `main` are built and deployed to GitHub Pages by `.github/workflows/pages.yml`.
 
+**Writing or publishing a new post?** See [SUBMITTING.md](SUBMITTING.md).
+
 ## Importing from the old WordPress site
 
 `tools/wp_import.py` pulls posts and pages through the public WordPress REST API

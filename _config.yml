@@ -16,7 +16,7 @@ paginate: 10
 paginate_path: "/page/:num/"
 
 include: [_pages]
-exclude: [tools, README.md, IMPORT_REVIEW.md, Gemfile, Gemfile.lock, vendor, .bundle]
+exclude: [tools, README.md, SUBMITTING.md, IMPORT_REVIEW.md, Gemfile, Gemfile.lock, vendor, .bundle]
 
 plugins:
   - jekyll-paginate
@@ -28,5 +28,7 @@ feed:
   path: feed.xml
 
 defaults:
+  - scope: { path: "", type: posts }
+    values: { layout: post }
   - scope: { path: "_pages" }
     values: { layout: page }
