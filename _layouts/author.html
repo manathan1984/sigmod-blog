@@ -1,0 +1,13 @@
+---
+layout: default
+---
+{%- assign a = site.data.authors[page.author] %}
+<div class="author-box author-header">
+  {%- if a.avatar %}<img src="{{ a.avatar | relative_url }}" alt="" width="64" height="64">{% endif %}
+  <div>
+    <h1 class="archive-title">Posts by {{ a.name | default: page.title }}</h1>
+    {%- if a.url and a.url != "" %}<p class="small"><a href="{{ a.url }}">{{ a.url | remove: "https://" | remove: "http://" }}</a></p>{% endif %}
+  </div>
+</div>
+{% assign posts = site.posts | where: "author", page.author %}
+{% include post-list.html posts=posts %}

@@ -1,0 +1,18 @@
+---
+layout: default
+title: Archives
+permalink: /archives/
+---
+<h1 class="archive-title">Archives</h1>
+{%- assign months = site.posts | group_by_exp: "p", "p.date | date: '%Y-%m'" %}
+{%- for m in months %}
+<section class="archive-month" id="{{ m.name }}">
+  <h2>{{ m.items.first.date | date: "%B %Y" }}</h2>
+  <ul>
+    {%- for post in m.items %}
+    <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> <span class="small">&mdash; {{ site.data.authors[post.author].name | default: post.author }}, {{ post.date | date: "%b %-d" }}</span></li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endfor %}
+<p class="small">Posts are being migrated from the <a href="{{ site.legacy_site }}">previous ACM SIGMOD Blog</a>; older posts not yet listed here can still be read there.</p>

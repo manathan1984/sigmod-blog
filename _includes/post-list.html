@@ -1,0 +1,13 @@
+{%- for post in include.posts %}
+<article class="post-card{% if post.image %} has-image{% endif %}">
+  {%- if post.image %}
+  <a class="post-thumb" href="{{ post.url | relative_url }}"><img src="{{ post.image | relative_url }}" alt="" loading="lazy"></a>
+  {%- endif %}
+  <h2 class="entry-title"><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h2>
+  {% include post-meta.html post=post %}
+  <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 55 }}</p>
+  <a class="more-link" href="{{ post.url | relative_url }}">Read more&hellip;</a>
+</article>
+{%- else %}
+<p>No posts yet.</p>
+{%- endfor %}

@@ -1,0 +1,6 @@
+---
+layout: default
+---
+<h1 class="archive-title">Category: {{ page.category }}</h1>
+{% assign posts = site.categories[page.category] %}
+{% include post-list.html posts=posts %}

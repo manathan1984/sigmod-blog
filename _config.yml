@@ -1,0 +1,32 @@
+title: ACM SIGMOD Blog
+description: >-
+  Catching the heartbeat of the data management community: perspectives on
+  exciting and controversial topics, from and for the ACM SIGMOD community.
+url: "https://manathan1984.github.io"
+baseurl: "/sigmod-blog"
+# When moving to a custom domain (e.g. wp.sigmod.org), set url to it and baseurl to "".
+
+legacy_site: "https://wp.sigmod.org"
+editors_page: /editors/
+sigmod_url: "https://sigmod.org"
+
+timezone: UTC
+permalink: /:year/:month/:day/:title/
+paginate: 10
+paginate_path: "/page/:num/"
+
+include: [_pages]
+exclude: [tools, README.md, Gemfile, Gemfile.lock, vendor, .bundle]
+
+plugins:
+  - jekyll-paginate
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+feed:
+  path: feed.xml
+
+defaults:
+  - scope: { path: "_pages" }
+    values: { layout: page }

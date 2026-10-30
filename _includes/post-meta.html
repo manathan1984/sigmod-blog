@@ -1,0 +1,11 @@
+{%- assign a = site.data.authors[include.post.author] -%}
+<p class="post-meta">by
+  <a href="{{ '/author/' | append: include.post.author | append: '/' | relative_url }}">{{ a.name | default: include.post.author }}</a>
+  on <span class="published">{{ include.post.date | date: "%b %-d, %Y" }}</span>
+  {%- if include.post.categories.size > 0 %} | Categories:
+    {% for c in include.post.categories -%}
+      {%- include category-url.html name=c -%}
+      <a href="{{ cat_url | relative_url }}" rel="category">{{ c }}</a>{% unless forloop.last %}, {% endunless %}
+    {%- endfor %}
+  {%- endif %}
+</p>

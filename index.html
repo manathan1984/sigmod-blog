@@ -1,0 +1,11 @@
+---
+layout: default
+legacy_redirect: true
+---
+{% include post-list.html posts=paginator.posts %}
+{%- if paginator.total_pages > 1 %}
+<nav class="pagination">
+  {%- if paginator.previous_page %}<a href="{{ paginator.previous_page_path | relative_url }}">&laquo; Newer Entries</a>{% else %}<span></span>{% endif %}
+  {%- if paginator.next_page %}<a href="{{ paginator.next_page_path | relative_url }}">Older Entries &raquo;</a>{% endif %}
+</nav>
+{%- endif %}

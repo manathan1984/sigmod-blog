@@ -1,0 +1,6 @@
+{%- comment -%} Sets cat_url for include.name, using the WordPress slug when known. {%- endcomment -%}
+{%- assign cat_url = nil -%}
+{%- for c in site.data.categories -%}
+  {%- if c[1].name == include.name -%}{%- assign cat_url = '/category/' | append: c[0] | append: '/' -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+{%- unless cat_url -%}{%- assign cat_url = '/category/' | append: include.name | slugify | append: '/' -%}{%- endunless -%}

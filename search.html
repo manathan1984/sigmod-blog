@@ -1,0 +1,12 @@
+---
+layout: default
+title: Search
+permalink: /search/
+---
+<h1 class="archive-title">Search</h1>
+<form class="search-form" action="" role="search">
+  <input type="search" name="q" id="search-input" placeholder="Search the blog&hellip;" aria-label="Search terms">
+  <button type="submit" class="button">Search</button>
+</form>
+<div id="search-results" aria-live="polite"></div>
+<script src="{{ '/assets/js/search.js' | relative_url }}" data-index="{{ '/search.json' | relative_url }}"></script>

@@ -1,0 +1,18 @@
+<header id="main-header">
+  <div class="container header-inner">
+    <a class="logo" href="{{ '/' | relative_url }}" aria-label="{{ site.title }} home">
+      <img src="{{ '/assets/img/sigmod-logo.png' | relative_url }}" alt="ACM SIGMOD" width="140" height="45">
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle menu">
+    <label for="nav-toggle" class="nav-toggle-label" aria-hidden="true"><span></span></label>
+    <nav id="top-menu" aria-label="Main">
+      <a href="{{ '/about/' | relative_url }}">About</a>
+      <a href="{{ '/editors/' | relative_url }}">Editors</a>
+      <a href="{{ '/archives/' | relative_url }}">Archives</a>
+      <a href="{{ site.sigmod_url }}">ACM SIGMOD</a>
+      <a class="search-link" href="{{ '/search/' | relative_url }}" aria-label="Search">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="7"/><path d="m21 21-5.5-5.5"/></svg>
+      </a>
+    </nav>
+  </div>
+</header>

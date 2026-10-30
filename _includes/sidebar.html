@@ -1,0 +1,45 @@
+<aside id="sidebar">
+  <div class="widget">
+    <h4 class="widgettitle">Contribute</h4>
+    <p class="small"><strong>Editors:</strong> Hazar Harmouch and Essam Mansour</p>
+    <a class="button" href="{{ site.editors_page | relative_url }}">Contribute to the Blog</a>
+  </div>
+  <div class="widget">
+    <h4 class="widgettitle">Recent Posts</h4>
+    <ul>
+      {%- for post in site.posts limit: 5 %}
+      <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a></li>
+      {%- endfor %}
+    </ul>
+  </div>
+  <div class="widget">
+    <h4 class="widgettitle">Archives</h4>
+    <ul>
+      {%- assign months = site.posts | group_by_exp: "p", "p.date | date: '%Y-%m'" %}
+      {%- for m in months limit: 12 %}
+      <li><a href="{{ '/archives/' | relative_url }}#{{ m.name }}">{{ m.items.first.date | date: "%B %Y" }}</a></li>
+      {%- endfor %}
+      {%- if months.size > 12 %}<li><a href="{{ '/archives/' | relative_url }}">Older posts&hellip;</a></li>{% endif %}
+    </ul>
+  </div>
+  <div class="widget">
+    <h4 class="widgettitle">Categories</h4>
+    <select aria-label="Categories" onchange="if(this.value)location.href=this.value">
+      <option value="">Select Category</option>
+      {%- assign cats = site.categories | sort %}
+      {%- for c in cats %}
+      {%- assign cname = c[0] %}
+      {%- include category-url.html name=cname %}
+      <option value="{{ cat_url | relative_url }}">{{ c[0] }}&nbsp;&nbsp;({{ c[1].size }})</option>
+      {%- endfor %}
+    </select>
+  </div>
+  <div class="widget">
+    <h4 class="widgettitle">ACM SIGMOD</h4>
+    <p class="small">The ACM Special Interest Group on Management of Data (SIGMOD) is concerned with the principles, techniques and applications of database management systems and data management technology.</p>
+  </div>
+  <div class="widget">
+    <h4 class="widgettitle">Join Us</h4>
+    <p class="small">Keep up to date with the latest developments in data management, connect with colleagues, and support the community: <a href="https://sigmod.org/membership/">become a SIGMOD member</a>.</p>
+  </div>
+</aside>
