@@ -22,7 +22,7 @@ layout: default
     {%- if page.next %}<a class="next" href="{{ page.next.url | relative_url }}">{{ page.next.title }} &rarr;</a>{% endif %}
   </nav>
   {%- if page.wp_id %}
-  <p class="legacy-note">Originally published on the previous ACM SIGMOD Blog (wp.sigmod.org).</p>
+  <p class="legacy-note">Originally published on the previous ACM SIGMOD Blog.</p>
   {% include archived-comments.html wp_id=page.wp_id %}
   {%- endif %}
 </article>
