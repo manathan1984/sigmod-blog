@@ -4,9 +4,8 @@ description: >-
   exciting and controversial topics, from and for the ACM SIGMOD community.
 url: "https://sigmod-org.github.io"
 baseurl: "/blog.sigmod.org"
-# When moving to a custom domain (e.g. wp.sigmod.org), set url to it and baseurl to "".
+# When moving to the custom domain blog.sigmod.org, set url to it and baseurl to "".
 
-legacy_site: "https://wp.sigmod.org"
 editors_page: /editors/
 sigmod_url: "https://sigmod.org"
 
@@ -16,7 +15,7 @@ paginate: 10
 paginate_path: "/page/:num/"
 
 include: [_pages]
-exclude: [tools, README.md, SUBMITTING.md, IMPORT_REVIEW.md, Gemfile, Gemfile.lock, vendor, .bundle]
+exclude: [README.md, SUBMITTING.md, Gemfile, Gemfile.lock, vendor, .bundle]
 
 plugins:
   - jekyll-paginate
