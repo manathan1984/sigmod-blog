@@ -1,7 +1,7 @@
 # Submitting a new blog post
 
 Posts on the ACM SIGMOD Blog are commissioned and edited by the blog editors
-(see the [Editors page](https://manathan1984.github.io/sigmod-blog/editors/)).
+(see the [Editors page](https://sigmod-org.github.io/blog.sigmod.org/editors/)).
 This guide covers the whole path: from pitch to publication.
 
 - **Authors** only need [step 1](#1-pitch-and-write-authors) — no GitHub knowledge required.

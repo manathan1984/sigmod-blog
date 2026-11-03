@@ -74,5 +74,5 @@ set `url: "https://wp.sigmod.org"` and `baseurl: ""` in `_config.yml`, add a
 
 ```bash
 bundle install
-bundle exec jekyll serve      # http://localhost:4000/sigmod-blog/
+bundle exec jekyll serve      # http://localhost:4000/blog.sigmod.org/
 ```

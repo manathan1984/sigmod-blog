@@ -5,7 +5,7 @@ Reads _posts/*.html (and the built _site/ if present) and writes
 IMPORT_REVIEW.md: one row per post with the reasons it was flagged and links
 to both the new page and the original on wp.sigmod.org.
 
-    python3 tools/audit_posts.py [--site-url https://manathan1984.github.io/sigmod-blog]
+    python3 tools/audit_posts.py [--site-url https://sigmod-org.github.io/blog.sigmod.org]
 """
 
 import argparse
@@ -177,7 +177,7 @@ def audit(site_url, check_external=True):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--site-url", default="https://manathan1984.github.io/sigmod-blog")
+    ap.add_argument("--site-url", default="https://sigmod-org.github.io/blog.sigmod.org")
     ap.add_argument("--offline", action="store_true", help="skip checking that external images still load")
     a = ap.parse_args()
     audit(a.site_url, not a.offline)

@@ -2,8 +2,8 @@ title: ACM SIGMOD Blog
 description: >-
   Catching the heartbeat of the data management community: perspectives on
   exciting and controversial topics, from and for the ACM SIGMOD community.
-url: "https://manathan1984.github.io"
-baseurl: "/sigmod-blog"
+url: "https://sigmod-org.github.io"
+baseurl: "/blog.sigmod.org"
 # When moving to a custom domain (e.g. wp.sigmod.org), set url to it and baseurl to "".
 
 legacy_site: "https://wp.sigmod.org"

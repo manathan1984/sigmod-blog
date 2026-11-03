@@ -34,7 +34,7 @@ import urllib.request
 SITE = "https://wp.sigmod.org"
 API = SITE + "/index.php?rest_route="
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-UA = "sigmod-blog-importer/1.0 (+https://github.com/manathan1984/sigmod-blog)"
+UA = "sigmod-blog-importer/1.0 (+https://github.com/sigmod-org/blog.sigmod.org)"
 
 UPLOAD_RE = re.compile(r"https?://wp\.sigmod\.org(/wp-content/uploads/[^\s\"'<>)]+)")
 INTERNAL_RE = re.compile(r"https?://wp\.sigmod\.org/?\?(p|page_id)=(\d+)[^\s\"'<>]*")
