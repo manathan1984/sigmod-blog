@@ -23,5 +23,6 @@ layout: default
   </nav>
   {%- if page.wp_id %}
   <p class="legacy-note">Originally published on the previous ACM SIGMOD Blog (wp.sigmod.org).</p>
+  {% include archived-comments.html wp_id=page.wp_id %}
   {%- endif %}
 </article>

@@ -1,0 +1,98 @@
+[
+ {
+  "id": 53788,
+  "depth": 0,
+  "author": "Vinay Chaudhri",
+  "url": null,
+  "date": "2015-09-22T17:57:54",
+  "html": "<p>This is an excellent and well thought out piece Alon! Congratulations on such<br />\na successful career at Google, and for making a difference in this world!</p>"
+ },
+ {
+  "id": 53804,
+  "depth": 1,
+  "author": "Alon Halevy",
+  "url": "http://www.cs.washington.edu/homes/alon",
+  "date": "2015-09-25T07:26:08",
+  "html": "<p>Thank you very much, Vinay!</p>"
+ },
+ {
+  "id": 53794,
+  "depth": 0,
+  "author": "Kiran",
+  "url": null,
+  "date": "2015-09-23T16:16:20",
+  "html": "<p>Thank you so much for writing this article. I worked in a startup which tried to do something similar to WebTables &#8211; and we were &#8220;over&#8221; when Google launched it. Nevertheless, I was so delighted (and part-dismayed) to see it launch and working on such a huge scale.</p>\n<p>Thanks again. Brilliant article. And yes, we did shut down after another 3 years of struggle.</p>"
+ },
+ {
+  "id": 53805,
+  "depth": 1,
+  "author": "Alon Halevy",
+  "url": "http://www.cs.washington.edu/homes/alon",
+  "date": "2015-09-25T07:28:29",
+  "html": "<p>Thank you Kiran! I&#8217;m sorry to hear about what happened to your startup &#8212; you were certainly working on an important problem. If it&#8217;s any consolation, I think it would be very difficult to make a business purely based on tables on the Web. I&#8217;ve seen several companies try this and fail. Tables are useful as one feature of many of a search engine.</p>"
+ },
+ {
+  "id": 53797,
+  "depth": 0,
+  "author": "Gaurav Narang",
+  "url": null,
+  "date": "2015-09-24T13:52:02",
+  "html": "<p>Congratulations Alion on such<br />\na successful career at Google! Nice article!</p>"
+ },
+ {
+  "id": 53806,
+  "depth": 1,
+  "author": "Alon Halevy",
+  "url": "http://www.cs.washington.edu/homes/alon",
+  "date": "2015-09-25T07:28:53",
+  "html": "<p>Thank you Gaurav!</p>"
+ },
+ {
+  "id": 53798,
+  "depth": 0,
+  "author": "Jeremy Pickens",
+  "url": null,
+  "date": "2015-09-24T15:28:18",
+  "html": "<p>I have been very curious for well over a decade now &#8212; since 2002 &#8212; about what it means to do research at Google.  That year I encountered two different schools of thought.  First, I read this article by Cringely, in which he laments losing our appetite for basic research and compares it to eating our seed corn:</p>\n<p><a href=\"http://www.pbs.org/cringely/pulpit/2002/pulpit_20021010_000748.html\" rel=\"nofollow ugc\">http://www.pbs.org/cringely/pulpit/2002/pulpit_20021010_000748.html</a></p>\n<p>Second, that same year I had a conversation with Peter Norvig in which he told me that Google &#8220;does not do Research and Development; it does Engineering and Development&#8221;.  The critical difference being the notion that any research idea that is developed has a required 5 month lifecycle from initial concept to prototype that isn&#8217;t just standalone, but that is integrated with a product, perhaps in some A/B or other testable form in which it is receiving customer feedback and is therefore capable of being iterated on.</p>\n<p>So while it shocked me slightly that Google had no long term vision for 10-15 year basic research, as outlined by Cringely, it shocked me even more that Google also had no medium term vision, the 3-5 year cycle that is common in industrial research labs for applied research.  It was all on the 5 month cycle.</p>\n<p>Now, in your blog post you alluded not once, not twice, but three times to the notion of technology transfer (or whatever term you prefer), and how it was approached differently at Google.  I believe that is the E&amp;D rather than R&amp;D school of thought that Norvig mentioned.  However, reading what you say about WebTables, the requirement that the technology &#8220;transfers&#8221; within a 5 month cycle seems to have changed:</p>\n<p>&#8220;Unlike Fusion Tables, where we published a paper only after the product was launched, we published papers about WebTables before making a search service available, since we thought we were making contributions of interest to the community. For a variety of reasons, it took almost four years from the inception of the project until we launched a search engine for tables, and two more years until we reached the holy grail: displaying rows from HTML tables in the Google search result page and within snippets.&#8221;</p>\n<p>That sounds an awful lot like classic 3-5 year industrial applied research.  Unlike the 5 month E&amp;D cycle (in which Norvig told me that any research has to be conducted within the framework of an ability to immediately deploy that research into a product, or even to do the research in the product itself, in order to avoid the typical &#8220;tech transfer&#8221; mindset) this WebTables approach was done outside of the context of an existing product, for the sake of advancing the state of knowledge, to figure out whether or not something was even possible.  And rather than that taking 5 months, it took 4 years &#8212; the classic amount of time for applied research.  </p>\n<p>So does this mean that Google is changing / has changed?  Or were your experiences atypical of the average research scientist?  </p>\n<p>The reason I&#8217;m curious is that Google&#8217;s success has allowed it to set a precedent, a model that the field has a whole has a tendency to want to emulate.  And that precedent leads me back to the Cringley warnings from 2002.  I wonder whether the ability to put on a few more pounds of success comes from having eaten one&#8217;s seed corn rather than from having increased the harvest yield.  I.e. I wonder whether the E&amp;D approach is long-term sustainable.  Therefore, if the entire industry emulates the Google approach because of this decade+ of success, the whole industry might run out of seed corn.  </p>\n<p>So, seeing that you yourself have already experienced at least one shift away from the 5 month cycle, and back to a more traditional 3-5 year cycle makes me think that perhaps there has been an increase in the willingness to plant for the long term again.  </p>\n<p>Apologies for the length of this comment.  But, thoughts?</p>"
+ },
+ {
+  "id": 53803,
+  "depth": 1,
+  "author": "Jinglei Ren",
+  "url": "http://jinglei.ren.systems",
+  "date": "2015-09-25T01:15:20",
+  "html": "<p>I think Peter Norvig&#8217;s statement might be a little biased. Research ideas in different areas have different typical life cycles &#8212; you can make a graph/AI algorithm working in five months, but you can hardly do so for a system/architecture thing. It shocks me as well that Peter said like that as an author of the front-page article &#8220;Google’s Hybrid Approach to Research&#8221; which gives examples of systems infrastructure projects such as MapReduce, Google File System and BigTable. Also, I don&#8217;t think it is a &#8220;shift&#8221; in Google as you interpret &#8212; there are just various patterns of research, various characters of people, and various forms of projects in Google, I guess.</p>"
+ },
+ {
+  "id": 53808,
+  "depth": 2,
+  "author": "Alon Halevy",
+  "url": "http://www.cs.washington.edu/homes/alon",
+  "date": "2015-09-25T07:34:03",
+  "html": "<p>Very well said!</p>"
+ },
+ {
+  "id": 53816,
+  "depth": 2,
+  "author": "Jeremy Pickens",
+  "url": null,
+  "date": "2015-09-25T19:45:13",
+  "html": "<p>Well, Jinglei, it wasn&#8217;t just Peter who said this in 2002.  Another one of my fellow PhD students back in 2002 talked to a different high level Googler right around that same time and was told the exact same story: Google&#8217;s pattern for research was this 5 month cycle.  So if there was bias, the bias was more than just Peter&#8217;s, not just limited to one person.</p>\n<p>Alon, I had a look just now at the 2012 article that you mentioned.  What it describes as the primary method of doing research (writing near-production code from near-day one, getting immediate user feedback, and factorizing longer-term projects into a sequence of achievable shorter term projects, each with their own metrics and rewards) is pretty much exactly what Peter described to me in 2002.  The whole idea of that 5 month cycle matches perfectly with the factorized shorter term project. </p>\n<p>And I even like that Spector, Norvig, and Petrov admit that this model might not be capable of making larger leaps.  The analogy that I used, myself, back in 2002 was to an airplane.  You can&#8217;t break down the research problem of creating a flying machine into smaller units.. five months spent on fuselage, then five months on wing #1, then five months on wing #2, etc.  Either the the thing flies or it doesn&#8217;t.  Having one wing means it doesn&#8217;t fly.  You have to spend fifteen months doing both wings at the same time as you figure out how they best attach to the fuselage, instead of multiple five month periods doing one wing at a time.  </p>\n<p>And so that&#8217;s where I&#8217;m still curious about what you describe with WebTables.  What it sounds like from your post is that when you did WebTables over that period of four years, it was a single four year research project.  Rather than 9 or 10 five month research projects.  And it sounds like the project did not get it in front of users from near day-one.. it was only at the end of the 4th year that you finally got it in front of end users, at which point it was iterated (in a more Google-standard manner) for another two years with end user feedback after that.  That is, the research trajectory that it followed did not comport to either the 2002 or the 2012 Google &#8220;standard&#8221; approaches?</p>\n<p>Because if so, it is very exciting to me to see that diversity within Google.  In your comment, you do say that research there is done in many ways, but this is the first time I am actually hearing a great, successful story about a cool project having been done in a different manner.  Maybe it has been that way for a while, internally.  But again, all we get from the outside are articles like the 2012 one, or my conversations from 2002, which tell a different story.  So, thank you for sharing.</p>"
+ },
+ {
+  "id": 53807,
+  "depth": 1,
+  "author": "Alon Halevy",
+  "url": "http://www.cs.washington.edu/homes/alon",
+  "date": "2015-09-25T07:33:25",
+  "html": "<p>There have been many changes at Google since 2002 and research is done in many ways at the company. I highly recommend an article by Spector, Norvig and Petrov, titled &#8220;Google&#8217;s Hybrid Approach to Research&#8221;. It&#8217;s the most accurate description of how we think about research at Google.</p>"
+ },
+ {
+  "id": 53836,
+  "depth": 0,
+  "author": "abdel rahman",
+  "url": "http://______________",
+  "date": "2015-09-30T11:11:54",
+  "html": "<p>I have a creative idea and I want to be applied with Google Inc.</p>"
+ }
+]

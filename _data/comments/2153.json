@@ -1,0 +1,18 @@
+[
+ {
+  "id": 54274,
+  "depth": 0,
+  "author": "Jitendra Yadav",
+  "url": null,
+  "date": "2017-04-29T20:11:41",
+  "html": "<p>Interesting Post, thanks for sharing.<br />\nI&#8217;m hoping TrueTime API will eventually get opensource 🙂</p>"
+ },
+ {
+  "id": 54276,
+  "depth": 0,
+  "author": "Dr. Vijay Srinivas Agneeswaran",
+  "url": null,
+  "date": "2017-05-03T04:29:39",
+  "html": "<p>Thanks for your comments Jithendra. While it remains to be seen if TrueTime API will be opensourced, there is already something available in the open source: Cockroach DB. CockroachDB is interesting, as it provides ACID properties at scale similar to Google Spanner (it provides Serilizability and not Linearizability that is provided by Spanner).</p>"
+ }
+]

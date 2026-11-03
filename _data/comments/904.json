@@ -1,0 +1,10 @@
+[
+ {
+  "id": 32078,
+  "depth": 0,
+  "author": "Curtis Dyreson",
+  "url": "http://www.facebook.com/profile.php?id=622018639",
+  "date": "2013-07-04T03:48:03",
+  "html": "<p>Thanks for the interesting post! I teach a standard database course: ER design, SQL, RDBMS, optimization, indexing, etc. The same course is taught in most universities.  My question is, what should I be teaching?  And what textbook emphasizes spatio-temporal analyses, real-time stream processing, and data warehousing? I&#8217;d like to push these topics into an introductory DB course to develop &#8220;data scientists&#8221; but students tend to complain about topics not covered by the course textbook. Or would you see this as a separate course, in addition to a standard database course that uses white papers and on-line sources to cover the topics?</p>"
+ }
+]

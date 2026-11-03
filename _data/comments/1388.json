@@ -1,0 +1,26 @@
+[
+ {
+  "id": 50837,
+  "depth": 0,
+  "author": "Haim Kilov",
+  "url": null,
+  "date": "2014-11-10T04:22:14",
+  "html": "<p>So non-trivial modelling problems exist not only in complex phenomena of mind, life, and society (F.A. Hayek, &#8220;The theory of complex phenomena&#8221;), but also in other, perhaps related, domains of human endeavour. Thank you for emphasizing this.</p>\n<p>As to probabilistic models, note Neuman’s [1] statement that “chance is not an explanation but our way of conceptualizing ignorance” applied by him, for example, to “random” mutations and applied (earlier and independently) by Hayek [2] to the use of statistics “when we deliberately ignore or are ignorant of any structure into which [individual elements] are organized”. Such abuse of (quantitative) mathematics has been around not only in biology and medicine but also in economics and elsewhere, often with serious negative consequences. In particular, those who overemphasize data mining may want to carefully consider Neuman’s remark that extracting meaning from a sentence is not a simple task of identifying statistical regularities but a process of interpretation in context.</p>\n<p>1. Y. Neuman. Reviving the Living: Meaning Making in Living Systems. Elsevier, NY, 2008.<br />\n2. F.A. Hayek. The theory of complex phenomena. In: The critical approach to science and philosophy (In honor of Karl R. Popper). (Ed. M. Bunge). The Free Press of Glencoe, 1964, pp. 332-349.</p>"
+ },
+ {
+  "id": 50851,
+  "depth": 0,
+  "author": "Jennie Duggan",
+  "url": null,
+  "date": "2014-11-11T16:24:02",
+  "html": "<p>Hi Haim,</p>\n<p>You are right that we need to not rely too heavily on data mining.  Discoveries are only meaningful within a context, and semantics like that are notoriously hard put into a model. Thank you for the references.</p>"
+ },
+ {
+  "id": 50909,
+  "depth": 0,
+  "author": "Stephen Osei-Akoto",
+  "url": null,
+  "date": "2014-11-26T12:13:41",
+  "html": "<p>I like the comments pointing out that over reliance on data mining would not set the tone for scientific investigation even though it a factor we need to consider in defining variables. I&#8217;m also tempted to say that big Data or data mining concept from the industry and academic seems to differ based on what people are saying.</p>"
+ }
+]

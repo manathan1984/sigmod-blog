@@ -1,0 +1,66 @@
+[
+ {
+  "id": 3823,
+  "depth": 0,
+  "author": "Magdalena Balazinska",
+  "url": "http://www.cs.washington.edu/people/faculty/magda",
+  "date": "2013-03-06T18:25:14",
+  "html": "<p>I couldn&#8217;t agree more. In the database group at UW, we are building repositories of use-cases for the purpose of facilitating experimental evaluations of Big Data systems and techniques. We have a repository of various Hadoop workloads here (jointly with Duke):<br />\n<a href=\"http://nuage.cs.washington.edu/repository.php\" rel=\"nofollow ugc\">http://nuage.cs.washington.edu/repository.php</a></p>\n<p>We are now putting together a larger-scale repository (with larger-scale use-cases). It will be available through here:<br />\n<a href=\"http://myria.cs.washington.edu/\" rel=\"nofollow ugc\">http://myria.cs.washington.edu/</a></p>\n<p>We plan to post both real use-cases and various benchmarks since the latter also serve a purpose.</p>"
+ },
+ {
+  "id": 3824,
+  "depth": 0,
+  "author": "Stefan Decker",
+  "url": "http://www.stefandecker.org",
+  "date": "2013-03-06T21:08:01",
+  "html": "<p>Very interesting blog &#8211; thanks for sharing!<br />\nI have one comment regarding the &#8220;ivory tower&#8221; &#8211; the Semanic Web is about transforming the Web by creating the foundations for linked data and networked knowledge &#8211; and getting them used. As many things the Semantic Web effort was often not taken seriously initially. Explaining the Semantic Web in 2001  was equivalent to traveling back in time and explaining how the Web works to the World of 1989. Now has reached critical mass, fuelling self-propelled growth.  So the Semantic Web was not in an ivory tower &#8211; it has good ideas which needed to transition into reality, since it is &#8211; like the Web &#8211; a social technology exploiting Metcalfs law.</p>"
+ },
+ {
+  "id": 3931,
+  "depth": 1,
+  "author": "Gerhard Weikum",
+  "url": null,
+  "date": "2013-03-09T08:36:52",
+  "html": "<p>Thanks, Stefan.<br />\nThis remark was meant ironically:<br />\n&#8220;we database folks thought &#8230;&#8221;.<br />\nI hope it didn&#8217;t get across as offensive.<br />\nI would equally say that in the early<br />\nseventies, DB researchers<br />\nthought of the relational model as being<br />\nin the ivory tower forever.<br />\nHope this is clearer now.</p>"
+ },
+ {
+  "id": 3828,
+  "depth": 0,
+  "author": "Arnon Rosenthal",
+  "url": null,
+  "date": "2013-03-07T03:26:22",
+  "html": "<p>Excellent post! I&#8217;ll comment on one narrow misconception: &#8220;Surely, companies have their own interesting data, and industrial labs have access to such data and real-life workloads&#8221;  </p>\n<p>Alas, this access has been far from sure in my experience. At MITRE, the data often belongs to our government customers, who for legal constraints, security policy, or just risk averseness, are reluctant to share. For example, it can be illegal for the government to share data for research purposes with an outsider, or can require great legal contortions.</p>\n<p>Even within a company, the operating divisions may own the data, and may be reluctant to share it with the research lab.</p>\n<p>Making the data available publicly is an order of magnitude harder, of course.</p>"
+ },
+ {
+  "id": 3930,
+  "depth": 1,
+  "author": "Gerhard Weikum",
+  "url": null,
+  "date": "2013-03-09T08:34:20",
+  "html": "<p>Thanks, Arnie, for pointing this out.<br />\nSo even for some branches of industry,<br />\nit would be important to have more<br />\ninteresting data resources publicly<br />\navailable.<br />\nThis would not be propietary company<br />\ndata made public (which I agree<br />\nis awfully hard if not impossible)<br />\nbut other kinds of interesting data that<br />\nare already public, like data on energy,<br />\nhealth, etc.</p>"
+ },
+ {
+  "id": 3966,
+  "depth": 0,
+  "author": "Felix Naumann",
+  "url": "http://www.hpi.uni-potsdam.de/naumann/home.html",
+  "date": "2013-03-10T07:35:16",
+  "html": "<p>I also agree with Gerhard very much. Yet, an obvious difference between creating the TPC benchmark and creating a gold standard for DBLP author-cleansing is that the latter cannot be automated.<br />\nBut there might be a solution: We should have a look at other communities, such as psychology and many natural sciences: it is often a requirement for a bachelor and masters degree that students participate as subjects in behavioral experiments, gather data on field trips (geography), or assist in lab experiments. Essentially, the students are gathering data points for research as part of their curriculum. The same could be done in CS, especially in fields where only experts can judge the quality of an experimental result.</p>"
+ },
+ {
+  "id": 4738,
+  "depth": 0,
+  "author": "Jim Hendler",
+  "url": "http://www.cs.rpi.edu/~hendler",
+  "date": "2013-03-18T23:00:10",
+  "html": "<p>Gerhard, a hearty &#8220;Hear Hear&#8221; &#8211; many good points.  I think that the emerging web of data from govts and such (we have collected metadata for going on 1.2M web-accessible datasets) is becoming a great play ground for research &#8211; but these tend not to be social data &#8211; some good datasets that were representative of what is seen in real social web spaces would also be a great asset.   A sharing of existing assets would also be a plus &#8211; Wendy Hall has been leading an effort for a &#8220;Web Science Observatory&#8221; to make it possible to collect and share datasets about Web use &#8211; interestingly the most resistance has come from the traditional database community&#8230; (see <a href=\"http://webscience.org\" rel=\"nofollow ugc\">http://webscience.org</a> re: observatory)</p>"
+ },
+ {
+  "id": 4940,
+  "depth": 0,
+  "author": "William Mitlyng",
+  "url": null,
+  "date": "2013-03-20T05:41:00",
+  "html": "<p>If I think back to 1995 when we (org where I wrkd) processed join hundreds of records on a machine with the fraction of the power of the modern desktop we recoded about half the columns as integers and drastically reduced the volume of the data and eliminated working with comparisons of integers and filtering on integer of one. two. or four bytes and bit fields at the time a three hundred year process was reduced to six hours,  I moved up in the world to look at hundreds of gigabytes of data in a data warehouse. At the time I believe the FBI was working with peta bytes having been out of the &#8220;Ivory Towers&#8221; for years. I saw one little piece of information for a faster algorithm in KDD 2010 than page shrinkage. Yes that was cool. However business is pulling another chicken little and it and it shows up in the ACM. Instead of statisticians you have a data scientists. Rhetorically that was a cheap shot but this is nothing so astonishingly new. Argonne National Laboratories has dealt with large amounts of data. If I go further I need to supply footnotes. I am hoping members of the ACM unlike many people I have encountered in business can tolerate a negative point of view instead of always rooting for the team. If somebody pays attention to this and wants verification holler.</p>"
+ }
+]

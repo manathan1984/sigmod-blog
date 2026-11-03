@@ -1,0 +1,26 @@
+[
+ {
+  "id": 51368,
+  "depth": 0,
+  "author": "Peter Boncz",
+  "url": "http://ldbcouncil.org",
+  "date": "2014-12-12T08:14:41",
+  "html": "<p>Hi Amol,</p>\n<p>Very interesting article and indeed graph data management is a very interesting topic that the DB research community should look at more. What makes a data problem a graph problem is when the analysis is not just about the values of the data, but in detecting the interconnection patterns. Even relational scenarios lend themselves for this kind of analysis, as long as a schema has a circular foreign key relation.</p>\n<p>LDBC</p>\n<p>One of your &#8216;future work&#8217; points is a benchmarks for graph data management. Please take a look at LDBC (the Linked Data Benchmark Council): ldbcouncil.org<br />\nIt was talked about during the business meeting at SIGMOD in the 2014 programming contest, because SIGMOD used the LDBC SNB (Social Network Benchmark) data generator to set the stage for the contest.</p>\n<p>An overview on the SNB are in <a href=\"http://ldbcouncil.org/benchmarks/snb\" rel=\"nofollow ugc\">http://ldbcouncil.org/benchmarks/snb</a>, a paper has just been submitted, Details can be found on <a href=\"http://ldbcouncil.org/developer/snb\" rel=\"nofollow ugc\">http://ldbcouncil.org/developer/snb</a><br />\nand code on <a href=\"https://github.com/ldbc\" rel=\"nofollow ugc\">https://github.com/ldbc</a>. Finally, some material that is not yet published in papers can be previewed in EU deliverables on <a href=\"http://ldbc.eu/results/deliverables\" rel=\"nofollow ugc\">http://ldbc.eu/results/deliverables</a></p>"
+ },
+ {
+  "id": 51370,
+  "depth": 0,
+  "author": "Peter Boncz",
+  "url": "http://ldbcouncil.org",
+  "date": "2014-12-12T08:20:31",
+  "html": "<p>As for Graph Benchmarking, please take a look at the LDBC (Linked data benchmark Council). We have created a new benchmark called the Social Network Benchmark (SNB), it scope include both graph databae systems and graph programming frameworks. </p>\n<p>The LDBC SNB data generator was used already in the SIGMOD 2014 programming contest, which was about graph analytics. </p>\n<p>Developer details: <a href=\"http://ldbcouncil.org/developer/snb\" rel=\"nofollow ugc\">http://ldbcouncil.org/developer/snb</a></p>\n<p>[Just tried to post a longer comment, but it did not appear]</p>"
+ },
+ {
+  "id": 51455,
+  "depth": 0,
+  "author": "Jorge Evan",
+  "url": "http://www.millerkaplan.com/",
+  "date": "2014-12-15T07:12:12",
+  "html": "<p>Thanks Amol for the interesting article.</p>"
+ }
+]

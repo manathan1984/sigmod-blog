@@ -1,0 +1,66 @@
+[
+ {
+  "id": 46502,
+  "depth": 0,
+  "author": "James Parker",
+  "url": null,
+  "date": "2014-04-17T21:43:07",
+  "html": "<p>I found this an interesting and useful paper, given that this is not my area of expertise (main-memory DBMS).  However, I wonder to what extent query optimization ought to also consider the working set of rows already in memory when determining a query plan as well.  Such an approach might even improve performance when paging of the underlying in-VM rowss is possible, by keeping them in the working set(s) of the DBMS process(es).</p>"
+ },
+ {
+  "id": 46618,
+  "depth": 1,
+  "author": "Stephen Dillon",
+  "url": "http://www.linkedin.com/in/stephendillon/",
+  "date": "2014-04-20T14:48:04",
+  "html": "<p>James,</p>\n<p>I too was contemplating the role of an in-memory DBMS (IMDBS) and these query optimization points. Just how much of an impact will they contribute to a system such as VoltDB? This is actually something I&#8217;ve had discussions with other architects about to address their own proprietary main memory DBMS.</p>\n<p>My initial thoughts are that a commercial IMDBS may be impacted less, than a traditional RDBMS, by such optimizations when you consider the significant impact main-memory operations already provide queries. By commercial, I really mean one that is professionally developed and properly addresses latching, locking, durability, et al. That does not mean proper or better optimization is not needed for an IMDBS. Nobody has proven these optimizations yet with an IMDBS to my knowledge. I just believe that as compared to a traditional RDBMS, an IMDBS may not benefit as much. I also believe that these modern main-memory DBs such as memSQL or VoltDB allow &#8220;some&#8221; bad code to hide under the guise of fast execution plans that have benefited from zero disk reads. Now for someone&#8217;s proprietary IMDBS well these optimizations could certainly provide more benefits considering how less efficient it is to a commercial product.</p>"
+ },
+ {
+  "id": 46741,
+  "depth": 2,
+  "author": "Ruslan Fomkin",
+  "url": "http://se.linkedin.com/in/fomkin/",
+  "date": "2014-04-25T07:54:31",
+  "html": "<p>I haven&#8217;t tested, but in my opinion the query optimization has similar effect on in-memory and disk-based databases. I see two reason for this:<br />\n(1) Data in disk-based database are cached in main-memory. Thus no disk access in both DBMS types. The main difference is cardinality units: pages vs cache lines.<br />\n(2) The main bottleneck for query execution is memory wall nowadays. Thus suboptimal query plans in IMDBMS can still perform by an order of magnitude worse then optimal one.</p>"
+ },
+ {
+  "id": 46753,
+  "depth": 2,
+  "author": "James Parker",
+  "url": null,
+  "date": "2014-04-26T07:17:05",
+  "html": "<p>Stephen,</p>\n<p>I think you misunderstood me; I was not thinking directly of main memory (AKA in-memory) DBMSs, but rather about the memory hierarchy (memory vs. &#8220;disk&#8221;) and where specific data resides at the time of a query.  In a traditional DBMS, some data is known to be in memory, including which rows from which tables &#8212; a query optimizer might favor joins using tables with most or all rows in memory over those which are not, as a part of query optimization.  Of course the effort must take into account paging, if it may occur; however paging can often be managed programmatically, e.g., by &#8220;locking&#8221; pages in memory.</p>\n<p>The similar issue in a main memory DBMS would be where in the CPU cache hierarchy data resides; this is generally of much lower utility, since machine architectures generally do not expose ways to manage these caches programmatically (although I have speculated as to how hardware and OS architects might provide useful features toward this end, and would almost certainly need to be combined with processor scheduling and interrupt handling).</p>"
+ },
+ {
+  "id": 46523,
+  "depth": 0,
+  "author": "spaghettidba",
+  "url": "http://spaghettidba.com",
+  "date": "2014-04-18T10:19:38",
+  "html": "<p>Thanks for the interesting writing.<br />\nThe recently released SQL Server 2014 incorporates a new cardinality estimator that (partially) addresses the predicate independance issue. The new algorithm used is know as &#8220;exponential backoff&#8221; and it helps reducing the estimation error with multiple predicates.<br />\nYou can read about it here: <a href=\"http://www.sqlperformance.com/2014/01/sql-plan/cardinality-estimation-for-multiple-predicates\" rel=\"nofollow ugc\">http://www.sqlperformance.com/2014/01/sql-plan/cardinality-estimation-for-multiple-predicates</a></p>"
+ },
+ {
+  "id": 46542,
+  "depth": 0,
+  "author": "Lothar Flatz",
+  "url": null,
+  "date": "2014-04-18T17:54:37",
+  "html": "<p>After 15 years of tuning in the field I have come accross all of these issues.<br />\nThis I have my own examples i.e. Correlation of columns: mobile phone service provider. Primary key of table units consist of customer number and phone number. Selectivity of join predicates: Road assistence search for service centers. Selectivity differs largely depending on country of accident. Wrote a paper on it. Hope it gets accepted. 🙂</p>"
+ },
+ {
+  "id": 46544,
+  "depth": 0,
+  "author": "Alexandr Savinov",
+  "url": "http://conceptoriented.org/savinov",
+  "date": "2014-04-18T18:24:26",
+  "html": "<p>Thanks for the interesting post and relevant works. One problem in query optimization I am currently dealing with is optimizing column operations for analytical queries. It is highly important for a novel system for analytical data integration (ConceptMix &#8211; <a href=\"http://conceptoriented.com\" rel=\"nofollow ugc\">http://conceptoriented.com</a>) where all operations with data are described in terms of an algebra of functions (a function represents a column). Essentially, all manipulations are reduced to manipulating functions (and inverse functions) and the problem is to translate queries from the concept-oriented expression language to these functional operations.</p>"
+ },
+ {
+  "id": 46670,
+  "depth": 0,
+  "author": "Radim Baca",
+  "url": null,
+  "date": "2014-04-22T13:07:02",
+  "html": "<p>Thank you for an inspirational article. I have a question regarding the &#8220;redundant predicates problem&#8221;: can the CORDS method solve the problem? From my perspective this problem is just a result of high correlation of attributes, which is addressed by CORDS. Thanks</p>"
+ }
+]

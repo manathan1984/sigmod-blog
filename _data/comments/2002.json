@@ -1,0 +1,34 @@
+[
+ {
+  "id": 54033,
+  "depth": 0,
+  "author": "Thomas Marx",
+  "url": null,
+  "date": "2016-04-11T08:47:15",
+  "html": "<p>Is it really the fault of data that we all use similar apps and have similar behavioral patterns? I am shocked!</p>"
+ },
+ {
+  "id": 54034,
+  "depth": 0,
+  "author": "Antonio Badia",
+  "url": null,
+  "date": "2016-04-11T12:40:38",
+  "html": "<p>&#8220;Yet, if everybody knew everything and had access to same analytical methods or results, everybody would come to the same conclusions and act thereupon in the same way.&#8221; I think history shows this not to be the case. This assumes the &#8216;rational actor&#8217; of economics which, as has been shown over and over, does not correspond to reality. As the author knows, optimization relies on an objective function that guides it. We all have our own objective functions that do not have to coincide.  I think we should be talking more about what goes into the objective function -and who and why designs it. There&#8217;ll always be some people who&#8217;ll try to take advantage. The other aspect that we should be discussing is the data that we feed to the algorithm. Others have more eloquently argued that there is no such thing as &#8216;raw data&#8217;; see recent discussions on &#8216;algorithmic fairness&#8217;.</p>"
+ },
+ {
+  "id": 54035,
+  "depth": 0,
+  "author": "Antonio Badia",
+  "url": null,
+  "date": "2016-04-11T12:46:36",
+  "html": "<p>I think there are deeper reasons to be skeptical of (big) data:<br />\n-&#8220;Yet, if everybody knew everything and had access to same analytical methods or results, everybody would come to the same conclusions and act thereupon in the same way. &#8221; History shows this not to be the case. This seems to rely on the &#8216;rational agent&#8217; assumption in economics, which has been thoroughly debunked (see behavioral economics). Optimization relies on an objective function; we all have our own objective function, which may not be shared.<br />\n-the data that we feed our algorithms is rarely &#8216;neutral&#8217; (if such a thing exists), certainly never a random sample (see &#8220;algorithmic fairness&#8221;). Optimizing over this is simply going to reflect (and augment) any existing biases.<br />\nThose are the issues that should make us skeptical of any techno-utopias.</p>"
+ },
+ {
+  "id": 54036,
+  "depth": 0,
+  "author": "Antonio Badia",
+  "url": null,
+  "date": "2016-04-11T12:47:31",
+  "html": "<p>I think there are deeper reasons to be skeptical of (big) data:<br />\n-&#8220;Yet, if everybody knew everything and had access to same analytical methods or results, everybody would come to the same conclusions and act thereupon in the same way. &#8221; History shows this not to be the case. This seems to rely on the &#8216;rational agent&#8217; assumption in economics, which has been thoroughly debunked (see behavioral economics). Optimization relies on an objective function; we all have our own objective function, which may not be shared.<br />\n-the data that we feed our algorithms is rarely &#8216;neutral&#8217; (if such a thing exists), certainly never a random sample (see &#8220;algorithmic fairness&#8221;). Optimizing over this is simply going to reflect (and augment) any existing biases.</p>"
+ }
+]

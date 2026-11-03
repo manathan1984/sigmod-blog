@@ -1,0 +1,26 @@
+[
+ {
+  "id": 11,
+  "depth": 0,
+  "author": "YongChul Kwon",
+  "url": "http://www.facebook.com/profile.php?id=10727687",
+  "date": "2012-02-25T05:52:05",
+  "html": "<p>It&#8217;s a great start! Could you setup a RSS feed?</p>"
+ },
+ {
+  "id": 12,
+  "depth": 0,
+  "author": "Jérôme Darmont",
+  "url": "http://eric.univ-lyon2.fr/~jdarmont/",
+  "date": "2012-02-25T15:43:40",
+  "html": "<p>Thanks for this blog! I strongly second the demand for an RSS feed. Opening to other social networks but Facebook would be great too (I personally prefer Twitter and LinkedIn). The WP &#8220;Add Twitter, Facebook Like, Google plus one Social share&#8221; extension does it fine (<a href=\"http://wordpress.org/extend/plugins/twitter-facebook-google-plusone-share/\" rel=\"nofollow ugc\">http://wordpress.org/extend/plugins/twitter-facebook-google-plusone-share/</a>).</p>"
+ },
+ {
+  "id": 25,
+  "depth": 0,
+  "author": "Georgia Koutrika",
+  "url": null,
+  "date": "2012-03-02T00:18:04",
+  "html": "<p>thanks for the plugin suggestion. We will also install an RSS feed.</p>"
+ }
+]

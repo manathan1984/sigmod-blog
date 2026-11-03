@@ -318,6 +318,25 @@ img { max-width: 100%; height: auto; }
 
 .legacy-note { font-size: 13px; color: var(--muted); margin-top: 30px; }
 
+/* Archived comments from the old WordPress blog */
+.archived-comments { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.archived-comments h2 { font-size: 22px; margin-bottom: 4px; }
+.archived-comments h2 .count { font-weight: 400; color: var(--muted); font-size: 18px; }
+.comment { padding: 14px 0 6px; border-bottom: 1px solid var(--rule); }
+.comment.depth-1 { margin-left: 28px; }
+.comment.depth-2 { margin-left: 56px; }
+.comment.depth-3 { margin-left: 84px; }
+.comment-meta { margin: 0 0 4px; font-size: 15px; }
+.comment-meta a { color: var(--heading); }
+.comment-date { margin-left: 8px; font-size: 13px; color: var(--muted) !important; }
+.comment-body p { margin: 0 0 10px; }
+.comment-body { overflow-wrap: anywhere; }
+@media (max-width: 560px) {
+  .comment.depth-1 { margin-left: 14px; }
+  .comment.depth-2 { margin-left: 28px; }
+  .comment.depth-3 { margin-left: 42px; }
+}
+
 /* ---------- Archives / search ---------- */
 
 .archive-month h2 { font-size: 20px; margin-top: 10px; }

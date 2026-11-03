@@ -1,0 +1,122 @@
+[
+ {
+  "id": 440,
+  "depth": 0,
+  "author": "Alex Labrinidis",
+  "url": "http://www.cs.pitt.edu/~labrinid",
+  "date": "2012-07-17T21:58:07",
+  "html": "<p>@Tamer: Thank you for a great post!</p>\n<p>@Data Management Community:<br />\nAs part of the ongoing discussion within the SIGMOD community on possible changes to the current SIGMOD conference publication process, I have prepared a quick survey to capture the preferences of the data management community in relation to this post. </p>\n<p>Could you please go to <a href=\"http://bit.ly/sigmodsurvey\" rel=\"nofollow ugc\">http://bit.ly/sigmodsurvey</a> to voice your opinion? Thank you!</p>\n<p>Alex Labrinidis</p>"
+ },
+ {
+  "id": 441,
+  "depth": 0,
+  "author": "Louiqa Raschid",
+  "url": "http://www.umiacs.umd.edu",
+  "date": "2012-07-17T23:28:02",
+  "html": "<p>Tamer &#8211; I like the idea of increasing the times assigned to the poster mode where there is more opportunity for discussion. I also like the idea of asking people to serve on a committee for a longer period of time &#8211; say 2 years.</p>"
+ },
+ {
+  "id": 447,
+  "depth": 0,
+  "author": "Michael Carey",
+  "url": "http://www.facebook.com/profile.php?id=1381017262",
+  "date": "2012-07-19T02:18:09",
+  "html": "<p>Nice blog, Tamer!  I would also like to see our community doing one more thing:  De-focus on papers, and paper counts, and focus on results instead.  I.e.:  Produce cool results.  Build systems that embody them.  Measure them.  Be proud of them.  THEN publish them.  Back in the early days, back when we were working on coal-fired databases, the interest seemed to be on SOLVING PROBLEMS and/or BUILDING THINGS that worked well (e.g., by finding good new algorithms).  These days the focus seems to be almost solely on writing papers; we are now dying of metricitis as a result.  I HATE IT when I hear colleagues raving about how many papers researcher R published, or how what R&#8217;s XYZ-index (pick your favorite metric) is, etc.  Once upon a time the measure of success discussed, e.g., at tenure time, was IMPACT, usually as measured by what one&#8217;s tenure letters said about the candidate&#8217;s major results and their reach.  Then yes, there were sanity checks:  Has enough journal papers, and/or papers in major conferences?  Teaching ratings above the bar?  Service above the bar?  Check, check, check.  Impact high, all boxes checked -&gt; tenure.  Those were the days&#8230;  (And hopefully still are at the top schools?  Not sure.)  Papers are a way of sharing results &#8211; not the end in themselves &#8211; we need to get back to that way of thinking.</p>"
+ },
+ {
+  "id": 454,
+  "depth": 1,
+  "author": "Tamer Ozsu",
+  "url": null,
+  "date": "2012-07-19T15:06:55",
+  "html": "<p>I fully agree with you Mike. A full discussion of this particular aspect requires a lot more space (or some discussion over beers) as there are a number of contributing factors. One that I wanted to highlight here, in hopes of getting some conversation going, is our changing attitude to hiring in academia. Our expectations have grown unrealistically from the days you and I entered the field to now. My experience with many institutions is that applicants who do not have 3-4 publications in top places have no shot at even getting an invitation for an interview. You take into account our low acceptance rates, and working backwards, grad students should start writing papers about  their second term of studies. And they are aware of this, or we make them aware in an attempt to assist them. So, there is a laser-like focus on improving one&#8217;s publication record to have a decent shot at an academic job. Unfortunately, this doesn&#8217;t work well in research that involves system building or even extensive validation/experimentation (which is yet another topic for discussion).</p>"
+ },
+ {
+  "id": 460,
+  "depth": 0,
+  "author": "Joe Hellerstein",
+  "url": "http://db.cs.berkeley.edu",
+  "date": "2012-07-20T09:15:01",
+  "html": "<p>I like the spirit of this Tamer, particularly as an author.  But I fear that we don&#8217;t have the capacity to support it long term.  Having chaired the first VLDB under the new monthly-submission regime, I can say that by the end of the year most of the people involved were exhausted by the pace and the volume of reviewing.</p>\n<p>It would be useful to run the numbers on the status quo, and on your proposal.  Do we have the aggregate reviewing bandwidth in the community to take on this project?  Or will the net effect simply be collective &#8220;burnout&#8221; in the course of a couple years?</p>"
+ },
+ {
+  "id": 462,
+  "depth": 1,
+  "author": "Tamer Ozsu",
+  "url": null,
+  "date": "2012-07-20T17:37:18",
+  "html": "<p>That is a concern Joe. I may be an outlier, but I served on the PVLDB last year and I was perfectly fine reviewing 1-3 papers each month. I thought I had enough time to read the paper, have it read by my students and compare notes before I finalized the reviews. I think over the entire year I was delayed only one month. I wonder if one of the problems is that we are not conditioned to operate this way. I was talking to colleagues from other sciences and their review times for each article is 2-4 weeks and they do this all the time. Our PVLDB papers are not that much longer than theirs. I wonder how much of our current difficulty is because we have not gotten used to the new system and have not adjusted our personal workflows. I don&#8217;t know. I have been asked to continue serving on PVLDB for one more year and I suspect I&#8217;ll have a better perspective at the end of the second year. So far, I have not had any difficulty keeping up with the workload for the past 14-15 months.</p>"
+ },
+ {
+  "id": 490,
+  "depth": 2,
+  "author": "Tamer",
+  "url": null,
+  "date": "2012-07-24T21:02:34",
+  "html": "<p>Wecan run the numbers but that misses the point I am making. My major point is that we will  (eventually) shift to a journal-first-and-foremost model consistent with all the other science and e gineering disciplines. There is no good argument why we should not and many good arguments why we should. The other suggestions are intermediate steps that we can take in getting there from here. When we are in the journal publishing model, we will handle this many papers within is time frame anyway. I was trying to get that main point across.</p>"
+ },
+ {
+  "id": 468,
+  "depth": 0,
+  "author": "Juan Sequeda",
+  "url": "http://www.cs.utexas.edu/~jsequeda",
+  "date": "2012-07-21T16:18:43",
+  "html": "<p>Tamer, thanks for this great post. As a PhD student, I have found the publication process overwhelming. Given a rolling (bi-)monthly deadline takes the pressure off and makes sure that as researchers, we are submitting the best work possible. </p>\n<p>In the Semantic Web community (my research area), one of the main conferences, ISWC, has the senior pc member structure. I find this very valuable because during the review process, the senior pc member makes sure that sufficient discussion about the paper and reviews is made. I wish ISWC would follow the same rolling deadline as VLDB.</p>\n<p>I agree with your proposal of changing the structure of paper presentations at conferences. I&#8217;m very concerned that workshops, which are suppose to spark discussion, are starting to become mini-conferences: 20 min talk and 5 min questions. Sometimes they even have lower acceptance rates than the main conference. As the organizer of a workshop, I want to make sure that there is discussion and I think the idea of having the poster presentations would work. </p>\n<p>A final question: what is your opinion about the open review process, for example Semantic Web Journal (<a href=\"http://www.semantic-web-journal.net/\" rel=\"nofollow ugc\">http://www.semantic-web-journal.net/</a>)</p>"
+ },
+ {
+  "id": 491,
+  "depth": 1,
+  "author": "Tamer",
+  "url": null,
+  "date": "2012-07-24T21:07:45",
+  "html": "<p>You make a number of good points Juan. I think some of the db conferences a also moving into the senior PC structure &#8211; I served as one for CIKM this year. It does help somewhat if the senior members are on top of things and push for discussion.</p>\n<p>The issue of workshops morphing into conferences has been going on for some time and I don&#8217;t like it. At some workshops discussion time is less than what they are at conferences, which is already low as I argued. My favorite workshop model is the Dagstuhl workshops where there are no proceedings, not every attendee has to &#8220;present&#8221; a paper, but everyone is heavily engaged in discussions on the topic. Give me one of those any day.</p>\n<p>Finally your question about the open review process &#8211; I don&#8217;t know what it is, but I&#8217;ll go figure out and postmy views then.</p>"
+ },
+ {
+  "id": 475,
+  "depth": 0,
+  "author": "Anastasia Ailamaki",
+  "url": null,
+  "date": "2012-07-22T18:21:18",
+  "html": "<p>Very nice blog, Tamer. I particularly like the idea of the presentation getting shorter and the discussion getting longer. Indeed, to devote adequate time to discussions in conferences these days, one has to skip sessions &#8212; which kind of defeats the purpose of having the talks. Which &#8212; being a chain PC chair these days &#8212; beings me to a related thought: arm-wrestling the authors of the papers to come to the conference and present seems a bit absurd. Yes there are strong reasons, e.g. conference attendees expect to see the authors of accepted papers and discuss with them, but as we move a to a more meaningful paper-conference relationship we can decouple the publication from the attendance/presentation (perhaps even credit them separately).</p>"
+ },
+ {
+  "id": 492,
+  "depth": 1,
+  "author": "Tamer",
+  "url": null,
+  "date": "2012-07-24T21:11:23",
+  "html": "<p>Natassa, this is. It a problem that I paid too much attention to until now, because the number of authors who fail to attend and present their papers have been low in the database conferences in my experience. However, your experience seems to differ, and to the extent tha this is happening it is disturbing, and I agree that we might look at decoupling the two concerns.</p>\n<p>A thought that occurs to me is whether this is the result of proliferation of conferences. I don&#8217;t know if this could be the reason.</p>"
+ },
+ {
+  "id": 545,
+  "depth": 2,
+  "author": "Tamer Ozsu",
+  "url": null,
+  "date": "2012-07-30T17:16:08",
+  "html": "<p>Sorry, I don&#8217;t know what happened, but the first sentence should have read &#8220;&#8230;this is not a problem that I paid too much attention to until now&#8230;&#8221;</p>"
+ },
+ {
+  "id": 522,
+  "depth": 0,
+  "author": "H. V. Jagadish",
+  "url": null,
+  "date": "2012-07-28T13:48:26",
+  "html": "<p>Thank you for a thoughtful post, Tamer.  I thought I would add a couple more observations from PVLDB.</p>\n<p>w.r.t. your point regarding immediate publication, PVLDB does do this now, in batch mode, approximately monthly. The production process still takes a few weeks from acceptance to publication.</p>\n<p>w.r.t. your point regarding PC continuity &#8212; this was discussed by the VLDB Endowment trustees.  There are benefits to continuity, and benefits to new blood.  Currently, there is a recommendation to reappoint approximately 2/3 of the review board from the previous year, but it is not an enforced requirement, and is left completely up to the Editor-in-Chief each year.  In practice, a substantial fraction, but well under 2/3 appear to be reappointed.</p>\n<p>A related point has to do with how much year-to-year change is good.  Journals have Editors-in-chief serve for multiple years, and each strives to leave their legacy.  Conferences have a new program chair each year, and some PC chairs have innovative schemes they need the room to try out.  Yet, I feel that many conferences, and even PVLDB, have too much change year-to-year.  I am not sure what the right balance is, but this is an issue worth thinking about too.</p>\n<p>Finally, in response to Joe Hellerstein, I&#8217;d like to say that I don&#8217;t see the numbers change w.r.t. the number of reviewers if the aggregate total number of submissions doesn&#8217;t change.  There is a change in the distribution of workload &#8212; which some reviewers may prefer and others not.  I think that year-round submissions, and management of revisions, definitely are more work for the editors, so authors should be grateful to the few who willingly take on this task.</p>"
+ },
+ {
+  "id": 542,
+  "depth": 1,
+  "author": "Tamer Ozsu",
+  "url": null,
+  "date": "2012-07-30T15:34:01",
+  "html": "<p>Thanks for the clarifications regarding PVLDB Jag. With respect to the question of how much change should happen year-to-year, my main point is that we will eventually be moving to a journal publication model, so these are steps that we can take to get ready for that time when we will have to manage these submissions in a very different environment.</p>\n<p>The issue of whether we will (or should) move to a journal publication model is one that we may wish to debate and discuss &#8212; that is really the main point. Besides the reasons I have enumerated here and elsewhere, I have been told recently that NIH discounts conference publications. If that is true, we do have a problem with joint work in life sciences.</p>"
+ },
+ {
+  "id": 543,
+  "depth": 0,
+  "author": "Tamer Ozsu",
+  "url": null,
+  "date": "2012-07-30T15:35:18",
+  "html": "<p>There was a related panel at the recent CRA Snowbird conference that Moshe Vardi organized. There is a very nice summary of the panel at CACM Blog that SIGMOD members may wish to read:</p>\n<p><a href=\"http://cacm.acm.org/blogs/blog-cacm/153898-should-computer-scientists-change-how-they-publish/fulltext\" rel=\"nofollow ugc\">http://cacm.acm.org/blogs/blog-cacm/153898-should-computer-scientists-change-how-they-publish/fulltext</a></p>"
+ }
+]

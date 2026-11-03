@@ -1,0 +1,26 @@
+[
+ {
+  "id": 53501,
+  "depth": 0,
+  "author": "Eduardo Cunha de Almeida",
+  "url": "http://www.inf.ufpr.br/eduardo",
+  "date": "2015-06-14T12:19:16",
+  "html": "<p>Hi Stratos,</p>\n<p>nice post, but have you considered design patterns and Software product lines?<br />\nWhat you&#8217;ve described rings the bell &#8230;</p>\n<p>About testing, have you considered non-functional testing for each storage layout? </p>\n<p>best,<br />\nEddie de Almeida</p>"
+ },
+ {
+  "id": 53503,
+  "depth": 1,
+  "author": "Stratos Idreos",
+  "url": "http://stratos.seas.harvard.edu/",
+  "date": "2015-06-15T17:02:18",
+  "html": "<p>Thanks much for the feedback Eddie.</p>\n<p>Both comments are spot on.</p>\n<p>We indeed have a lot to learn from software engineering, especially when it comes to composability. I tried to briefly hint about that on my post. </p>\n<p>For testing, indeed we need to test each individual configuration, layout etc. The kinds of tests can be flexible depending on what is important for the specific application (response time, energy, etc.). One of the interesting challenges is to be able to test multiple different designs concurrently and efficiently by sharing as much of the testing costs as possible. </p>\n<p>Thanks,<br />\nStratos</p>"
+ },
+ {
+  "id": 53567,
+  "depth": 0,
+  "author": "Fabio Porto",
+  "url": "http://dexl.lncc.br",
+  "date": "2015-06-24T19:01:55",
+  "html": "<p>Hi Stratos,<br />\n very interesting ideas in your post!!<br />\n  i have been developing a system called QEF for Query Engine Framework (see <a href=\"http://dexl.lncc.br/qef.html\" rel=\"nofollow ugc\">http://dexl.lncc.br/qef.html</a>). QEF has been designed to be extensible. We can plug in execution model components, different data sources and algorithms, data types etc. It is not automatic though, requiring users to  describe how answers are computed by provided operators, building something similar to dataflows. We have supported various different applications such as: e-learning; semantic web service discovery, scientific visualization, astronomy pipelines. The most basic unit that glues all the rest is the iteration execution model and the tuple data structure.</p>\n<p> best regards,<br />\nFabio.</p>"
+ }
+]

@@ -1,0 +1,10 @@
+[
+ {
+  "id": 54417,
+  "depth": 0,
+  "author": "william e winkler",
+  "url": "https://www.census.gov/srd/csrmreports/byyear.html",
+  "date": "2018-04-19T14:54:18",
+  "html": "<p>Entity resolution (record linkage) has been a major area of research since the 1950s.  There was a big expansion after<br />\nRahm, E., and Do, H.-H. (2000), “Data Cleaning: Problems and Current Approaches,” IEEE Bulletin on Data Engineering, 23 (4), 3-13.</p>\n<p>This is my sixth keynote at a workshop at a major international cs conference.</p>\n<p><a href=\"https://sites.google.com/site/dinaworkshop2015/invited-speakers\" rel=\"nofollow ugc\">https://sites.google.com/site/dinaworkshop2015/invited-speakers</a></p>\n<p>I introduced the generalized software in two short courses that I taught at the University of London and again lectured on the ideas when I was back in Cambridge at the Isaac Newton Institute (talks organized by Peter Christen).</p>\n<p>The following paper gives a few more details and references.</p>\n<p><a href=\"https://www.census.gov/srd/papers/pdf/RRS2018-05.pdf\" rel=\"nofollow ugc\">https://www.census.gov/srd/papers/pdf/RRS2018-05.pdf</a></p>\n<p>Our record linkage systems are ML that must do unsupervised learning in ~500 regions into which the U.S. is divided.  In 1990, we had to match the entire U.S. in less than six weeks as part of a large system to meet deadlines established in U.S. law.</p>"
+ }
+]

@@ -1,0 +1,17 @@
+{%- comment -%} Read-only comment threads from the old WordPress blog (_data/comments/<wp_id>.json). {%- endcomment -%}
+{%- assign cid = include.wp_id | append: "" %}
+{%- assign thread = site.data.comments[cid] %}
+{%- if thread and thread.size > 0 %}
+<section class="archived-comments" id="comments">
+  <h2>Discussion on the previous blog <span class="count">({{ thread.size }} comment{% if thread.size != 1 %}s{% endif %})</span></h2>
+  <p class="small">These comments were posted on the previous ACM SIGMOD Blog and are archived here; they are closed to new replies.</p>
+  {%- for c in thread %}
+  {%- assign depth = c.depth | at_most: 3 %}
+  <article class="comment depth-{{ depth }}" id="comment-{{ c.id }}">
+    <p class="comment-meta"><strong>{% if c.url %}<a href="{{ c.url }}" rel="nofollow ugc noopener">{{ c.author }}</a>{% else %}{{ c.author }}{% endif %}</strong>
+      <a class="comment-date" href="#comment-{{ c.id }}">{{ c.date | date: "%B %-d, %Y" }}</a></p>
+    <div class="comment-body">{{ c.html }}</div>
+  </article>
+  {%- endfor %}
+</section>
+{%- endif %}
