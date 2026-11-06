@@ -1,6 +1,6 @@
 # ACM SIGMOD Blog
 
-Source of the [ACM SIGMOD Blog](https://sigmod-org.github.io/blog.sigmod.org/), a
+Source of the [ACM SIGMOD Blog](https://blog.sigmod.org/), a
 Jekyll site with a layout modelled on the [SIGPLAN blog](https://blog.sigplan.org/).
 Pushes to `main` are built and deployed to GitHub Pages by
 `.github/workflows/pages.yml`.
@@ -46,5 +46,5 @@ fields kept in imported posts and pages, `_data/authors.yml` and
 
 ```bash
 bundle install
-bundle exec jekyll serve      # http://localhost:4000/blog.sigmod.org/
+bundle exec jekyll serve      # http://localhost:4000/
 ```
