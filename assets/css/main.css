@@ -1,4 +1,5 @@
-/* ACM SIGMOD Blog — layout modelled on the SIGPLAN blog (Divi, boxed layout). */
+/* ACM SIGMOD Blog — layout modelled on the SIGPLAN blog (Divi, boxed layout), with
+   posts and widgets in rounded boxes and the fonts, colours and buttons of sigmod.org. */
 
 :root {
   --page-bg: #dddddd;
@@ -11,13 +12,21 @@
   --accent: #23177a;       /* SIGMOD logo indigo */
   --accent-hover: #3a2fb0;
   --link: #2f3fb5;
-  --button-bg: #eeeeee;
   --footer-bg: #222222;
   --footer-text: #bbbbbb;
-  /* Main text font. Any family loaded in _layouts/default.html (Google Fonts link) can be used;
-     weights loaded there: 400 (regular), 500, 600, 700. */
-  --heading-font: "Roboto Condensed", Helvetica, Arial, sans-serif;
-  --body-font: "Source Sans 3", "Source Sans Pro", Helvetica, Arial, sans-serif;
+  --content-bg: #f0f0f2;   /* grey behind the boxes */
+  --sigmod-blue: #1f4fa3;  /* sigmod.org buttons and links */
+  --sigmod-blue-hover: #173d80;
+  /* Boxes: rounded corners, outline and shadow as on sigmod.org, indigo rule at the bottom */
+  --card-radius: 10px;
+  --card-line: 1px solid #e5e7eb;
+  --card-shadow: 0 10px 30px -18px rgba(17, 24, 39, 0.35);
+  --card-rule: 2px solid var(--accent);
+  /* Fonts as on sigmod.org, loaded in _layouts/default.html (Google Fonts link):
+     Newsreader 500/600 for headings, Inter 400-700 for text and UI. */
+  --heading-font: "Newsreader", Georgia, serif;
+  --body-font: "Inter", system-ui, sans-serif;
+  --ui-font: "Inter", system-ui, sans-serif;
   --body-weight: 400;
   --body-size: 16px;
 }
@@ -33,7 +42,7 @@ body {
   font-family: var(--body-font);
   font-weight: var(--body-weight);
   font-size: var(--body-size);
-  line-height: 1.7;
+  line-height: 1.65;
   /* Same as the SIGPLAN (Divi) theme: thinner, lighter glyphs on macOS. */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -44,7 +53,8 @@ a:hover { color: var(--accent-hover); text-decoration: underline; }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--heading-font);
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: var(--heading);
   line-height: 1.2;
   margin: 0 0 10px;
@@ -92,11 +102,23 @@ img { max-width: 100%; height: auto; }
 
 #top-menu a {
   color: rgba(0, 0, 0, 0.6);
+  font-family: var(--ui-font);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
 }
 #top-menu a:hover { color: var(--accent); text-decoration: none; opacity: 0.8; }
 #top-menu .search-link { display: inline-flex; color: var(--accent); }
+/* Link to sigmod.org: outlined pill, filled on hover */
+#top-menu .nav-sigmod {
+  color: var(--sigmod-blue);
+  border: 1.5px solid var(--sigmod-blue);
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+#top-menu .nav-sigmod:hover { background: var(--sigmod-blue); color: #fff; opacity: 1; }
+.nav-sigmod .ext { margin-left: 4px; vertical-align: 0; }
 
 .nav-toggle, .nav-toggle-label { display: none; }
 
@@ -110,6 +132,7 @@ img { max-width: 100%; height: auto; }
 
 .band-title {
   font-family: var(--heading-font);
+  font-weight: 500;
   font-size: 26px;
   margin: 0 0 8px;
   line-height: 1.2;
@@ -121,33 +144,44 @@ img { max-width: 100%; height: auto; }
 
 /* ---------- Content + sidebar ---------- */
 
-#main-content { flex: 1; }
+#main-content { flex: 1; background: var(--content-bg); }
 
 #content-area {
   display: flex;
   position: relative;
-  padding-top: 58px;
+  padding-top: 32px;
 }
 
 #left-area {
   flex: 1;
   min-width: 0;
-  padding: 0 5.5% 50px 0;
+  padding: 0 28px 50px 0;
 }
 
 #sidebar {
-  width: 25%;
+  width: 28%;
   flex-shrink: 0;
-  padding: 0 0 28px 30px;
-  border-left: 1px solid var(--rule);
   font-size: 14px;
 }
 
-#sidebar .widget { margin-bottom: 30px; }
+/* Posts, pages and sidebar widgets each sit in a box */
+.post-card, .single-post, .author-header, .archive-month, .pagination, #sidebar .widget {
+  background: var(--box-bg);
+  border: var(--card-line);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+.post-card, .single-post, .author-header, .archive-month { border-bottom: var(--card-rule); }
+
+#sidebar .widget { padding: 20px 24px; margin-bottom: 18px; }
 
 .widgettitle {
-  font-size: 16px;
+  font-family: var(--ui-font);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: var(--sigmod-blue);
   padding-bottom: 10px;
   border-bottom: 1px solid var(--rule);
   margin-bottom: 12px;
@@ -155,69 +189,76 @@ img { max-width: 100%; height: auto; }
 
 #sidebar ul { list-style: none; margin: 0; padding: 0; }
 #sidebar li { margin-bottom: 8px; line-height: 1.3; }
-#sidebar li a { color: var(--heading); font-family: var(--heading-font); font-size: 15px; }
+#sidebar li a { color: var(--heading); font-family: var(--ui-font); font-size: 14px; font-weight: 500; }
 #sidebar li a:hover { color: var(--accent); }
 #sidebar p { margin: 0 0 10px; line-height: 1.6; }
 #sidebar select { width: 100%; padding: 6px; font: inherit; border: 1px solid #ccc; border-radius: 3px; background: #fff; }
 
+/* Pill button, as "Join SIGMOD" on sigmod.org */
 .button {
   display: inline-block;
-  padding: 8px 14px;
-  background: var(--button-bg);
-  color: var(--heading);
-  font-family: var(--heading-font);
-  font-size: 16px;
+  padding: 10px 16px;
+  background: var(--sigmod-blue);
+  color: #fff;
+  font: 600 14px/1 var(--ui-font);
+  white-space: nowrap;
   border: 0;
-  border-radius: 3px;
+  border-radius: 999px;
   cursor: pointer;
 }
-.button:hover { background: var(--accent); color: #fff; text-decoration: none; }
+.button:hover { background: var(--sigmod-blue-hover); color: #fff; text-decoration: none; }
+/* In the sidebar it fills its box, so it stays centred however narrow the sidebar gets */
+#sidebar .button { display: block; text-align: center; white-space: normal; line-height: 1.25; }
 
 /* ---------- Post list ---------- */
 
 .post-card {
-  margin-bottom: 60px;
+  padding: 26px 28px 20px;
+  margin-bottom: 22px;
 }
 .post-card::after { content: ""; display: table; clear: both; }
 
 .post-thumb {
   float: right;
-  width: 300px;
-  max-width: 45%;
-  margin: 0 0 15px 25px;
+  width: 220px;
+  max-width: 30%;
+  margin: 4px 0 12px 24px;
 }
 .post-thumb img {
   display: block;
   width: 100%;
   aspect-ratio: 300 / 190;
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: 8px;
 }
 
 .entry-title { font-size: 26px; padding-bottom: 10px; margin: 0; }
-.entry-title a { color: var(--heading); }
-.entry-title a:hover { color: var(--accent); text-decoration: none; }
+.entry-title a { color: var(--accent); }
+.entry-title a:hover { color: var(--accent-hover); text-decoration: none; }
 
-.post-meta { font-size: 14px; margin: 0 0 15px; }
-.post-meta a { color: var(--heading); }
-.post-meta a:hover { color: var(--accent); }
+/* Author and categories: links stand out subtly from "by … on …" */
+.post-meta { font-family: var(--ui-font); font-size: 14px; margin: 0 0 15px; }
+.post-meta a { color: var(--sigmod-blue); font-weight: 500; }
+.post-meta a:hover { color: var(--sigmod-blue-hover); text-decoration: underline; text-underline-offset: 2px; }
 
 .post-excerpt { margin: 0 0 12px; }
 
-.more-link { font-size: 15px; }
+.more-link { font-family: var(--ui-font); font-size: 14px; font-weight: 600; }
 
-.archive-title { font-size: 30px; margin-bottom: 30px; }
+.archive-title { font-size: 26px; margin-bottom: 20px; }
 
 .pagination {
   display: flex;
   justify-content: space-between;
-  font-family: var(--heading-font);
-  font-size: 16px;
+  padding: 14px 26px;
+  font-family: var(--ui-font);
+  font-size: 14px;
 }
 
 /* ---------- Single post ---------- */
 
-.single-post h1.entry-title { font-size: 30px; line-height: 1.15; }
+.single-post { padding: 34px 38px 26px; margin-bottom: 22px; }
+.single-post h1.entry-title { font-size: 30px; line-height: 1.15; color: var(--accent); }
 
 .entry-content { font-size: 16px; }
 .entry-content p { margin: 0 0 1.2em; }
@@ -304,14 +345,15 @@ img { max-width: 100%; height: auto; }
 .author-box img { width: 64px; height: 64px; object-fit: cover; border-radius: 50%; flex-shrink: 0; }
 .author-box p { margin: 0; }
 .author-name { font-family: var(--heading-font); font-size: 17px; color: var(--heading); }
-.author-header { margin-top: 0; margin-bottom: 40px; border-top: 0; padding-top: 0; }
+.author-header { margin-top: 0; margin-bottom: 22px; padding: 20px 26px; }
 .author-header .archive-title { margin-bottom: 4px; }
 
 .post-nav {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  font-family: var(--heading-font);
+  font-family: var(--ui-font);
+  font-size: 14px;
   margin: 20px 0;
 }
 .post-nav .next { text-align: right; margin-left: auto; }
@@ -319,7 +361,7 @@ img { max-width: 100%; height: auto; }
 .legacy-note { font-size: 13px; color: var(--muted); margin-top: 30px; }
 
 /* Archived comments from the old WordPress blog */
-.archived-comments { margin-top: 40px; padding-top: 24px; border-top: 1px solid var(--rule); }
+.archived-comments { margin-top: 30px; padding-top: 24px; border-top: 1px solid var(--rule); }
 .archived-comments h2 { font-size: 22px; margin-bottom: 4px; }
 .archived-comments h2 .count { font-weight: 400; color: var(--muted); font-size: 18px; }
 .comment { padding: 14px 0 6px; border-bottom: 1px solid var(--rule); }
@@ -339,8 +381,9 @@ img { max-width: 100%; height: auto; }
 
 /* ---------- Archives / search ---------- */
 
+.archive-month { padding: 18px 26px 4px; margin-bottom: 18px; }
 .archive-month h2 { font-size: 20px; margin-top: 10px; }
-.archive-month ul { padding-left: 1.2em; margin: 0 0 30px; }
+.archive-month ul { padding-left: 1.2em; margin: 0 0 16px; }
 
 .search-form { display: flex; gap: 10px; margin-bottom: 30px; }
 .search-form input {
@@ -378,7 +421,8 @@ img { max-width: 100%; height: auto; }
   .container { width: auto; margin: 0 16px; }
   #content-area { flex-direction: column; padding-top: 32px; }
   #left-area { padding-right: 0; }
-  #sidebar { width: 100%; padding: 30px 0 0; border-left: 0; border-top: 1px solid var(--rule); }
+  #sidebar { width: 100%; padding-top: 10px; }
+  #sidebar .button { display: inline-block; }
   .footer-widgets { grid-template-columns: 1fr; }
 
   .nav-toggle-label {
@@ -417,13 +461,24 @@ img { max-width: 100%; height: auto; }
     padding: 10px 16px;
   }
   #top-menu a { padding: 8px 0; width: 100%; }
+  #top-menu .nav-sigmod { align-self: flex-start; width: auto; margin-top: 6px; }
   .nav-toggle:checked ~ #top-menu { display: flex; }
 }
 
 @media (max-width: 560px) {
-  .post-thumb { float: none; width: 100%; max-width: none; margin: 0 0 15px; }
+  .post-thumb { width: 36%; max-width: 140px; margin: 4px 0 8px 14px; }
+  .post-card { padding: 18px 18px 16px; }
+  .single-post { padding: 22px 18px 18px; }
   .entry-title { font-size: 22px; }
   .single-post h1.entry-title { font-size: 26px; }
   .alignleft, .alignright { float: none; margin: 1em auto; display: block; }
   .wp-block-media-text.is-stacked-on-mobile { grid-template-columns: 1fr !important; }
+}
+
+/* Wide screens: wider page box and content; the extra room goes to the posts */
+@media (min-width: 1280px) {
+  #page-container { max-width: 1320px; }
+  .container { width: 90%; max-width: 1180px; }
+  #sidebar { width: 300px; }
+  body, .entry-content { font-size: 17px; }
 }
