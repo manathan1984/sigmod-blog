@@ -107,7 +107,7 @@
   "id": 54144,
   "depth": 1,
   "author": "Phil Bernstein",
-  "url": "http://philbe@microsoft.com",
+  "url": null,
   "date": "2017-01-19T22:38:25",
   "html": "<p>I’m on the SIGMOD advisory committee and support the decision. I can’t speak for the Executive Committee, but let me offer my personal perspective on the good questions you ask, all of which came up during our discussion:<br />\n1. This decision does add precedent, in that we’re backing out of a planned venue. However, SIGMOD and VLDB have both been careful to avoid locations where the government sponsors discrimination. The difference here is that the conference was planned before the law was passed. In answer to your hypothetical scenarios, in my opinion, a wall with Mexico would not be a SIGMOD problem, but if there were a ban on Muslim visitors to the U.S., I would support moving the conference outside the U.S. until that ban was lifted.<br />\n2. A suggestion to move the conference was discussed at the business meeting at SIGMOD 2016. Given the difficulty of moving, the officers decided to wait, and hope that the repeal initiative would pass. When the initiative failed, many leading database researchers made a personal choice to boycott the conference. As the extent of that boycott became known, and given the many other high-profile organizations that were pulling out, SIGMOD leadership decided to reconsider.<br />\n3. Half of the SIGMOD Executive Committee and many advisory board members live outside the U.S., and many U.S.-resident members are not native-born Americans. The international perspective was certainly considered.</p>"
  },
@@ -291,7 +291,7 @@
   "id": 54182,
   "depth": 0,
   "author": "Julian Dolby",
-  "url": "http://researcher.watson.ibm.com/researcher/view.php?person=us-dolby",
+  "url": "https://web.archive.org/web/20170125003855/http://researcher.watson.ibm.com:80/researcher/view.php?person=us-dolby",
   "date": "2017-01-28T14:05:59",
   "html": "<p>If SIGMOD is to move anyway, what do people think of moving it outside the United States?  Given the recent American immigration policy changes, it may be impossible for some people to attend if the conference is in the US.</p>"
  },
@@ -299,7 +299,7 @@
   "id": 54183,
   "depth": 0,
   "author": "Julian Dolby",
-  "url": "http://researcher.watson.ibm.com/researcher/view.php?person=us-dolby",
+  "url": "https://web.archive.org/web/20170125003855/http://researcher.watson.ibm.com:80/researcher/view.php?person=us-dolby",
   "date": "2017-01-28T15:24:38",
   "html": "<p>Perhaps SIGMOD should consider moving the conference out of the United States entirely, given the recent changes to immigration rules.  What I have read suggests that some of our fellow researchers could now have trouble coming to the United States, and hence could not attend a conference here.</p>"
  },

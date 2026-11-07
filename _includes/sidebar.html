@@ -35,6 +35,21 @@
     </select>
   </div>
   <div class="widget">
+    <h4 class="widgettitle">Authors</h4>
+    <select aria-label="Authors" onchange="if(this.value)location.href=this.value">
+      <option value="">Select Author</option>
+      {%- assign by_author = site.posts | group_by: "author" %}
+      {%- capture author_rows %}
+        {%- for a in by_author %}{{ site.data.authors[a.name].name | default: a.name }}#{{ a.name }}#{{ a.size }}{% unless forloop.last %};;{% endunless %}{% endfor %}
+      {%- endcapture %}
+      {%- assign author_rows = author_rows | split: ";;" | sort_natural %}
+      {%- for row in author_rows %}
+      {%- assign f = row | split: "#" %}
+      <option value="{{ '/author/' | append: f[1] | append: '/' | relative_url }}">{{ f[0] }}&nbsp;&nbsp;({{ f[2] }})</option>
+      {%- endfor %}
+    </select>
+  </div>
+  <div class="widget">
     <h4 class="widgettitle">ACM SIGMOD</h4>
     <p class="small">The ACM Special Interest Group on Management of Data (SIGMOD) is concerned with the principles, techniques and applications of database management systems and data management technology.</p>
   </div>

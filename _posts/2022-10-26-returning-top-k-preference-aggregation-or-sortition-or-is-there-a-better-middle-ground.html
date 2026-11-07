@@ -9,6 +9,7 @@ excerpt: "Given a large number of users’ preferences (numerical or ordinal sco
 image: "/wp-content/uploads/2022/10/Screenshot-2022-10-28-at-1.57.12-AM-705x1024.png"
 wp_id: 3564
 permalink: "/2022/10/26/returning-top-k-preference-aggregation-or-sortition-or-is-there-a-better-middle-ground/"
+keep_local_edits: true
 ---
 {% raw %}
 <p class="wp-block-paragraph">Given a large number of users’ preferences (numerical or ordinal scores, ranked order) over a large number of objects,&nbsp; returning top-k results entails selecting a small list/set containing exactly k objects that are most &#8220;appropriate &#8220;. In this article,&nbsp; I will investigate two alternatives for selecting a top-k list/set that consumes such preference based inputs. First, the so-called <strong><em>preference aggregation</em></strong><em> </em><strong><em>models </em></strong><em>(</em><strong><em>selection by election)</em></strong><em> that combine individual preferences and aggregate them to select the final top-k.&nbsp; </em>I will revisit a rich body of existing quantitative models adopted from the social choice theory that are designed to represent <em>democratic ideals </em>in the selected top-k. Then, I will present the <strong><em>Sortition process</em></strong><em>,</em>&nbsp; or <strong>election by lot</strong>, a method practiced by Ancient Athens for choosing public officials in some ancient Greek city-states, which selects top-k objects as a random sample from a larger pool of candidates. Obviously, compared to the existing preference aggregation models, the qualitative properties of the Sortition process is Iess investigated mathematically &#8211; albeit there exists anecdotal evidence in favor of it. I intend to compare these two alternatives from several dimensions as well as investigate their computational implications. I will conclude the article by laying out a middle ground which perhaps is the best of both worlds.</p>
@@ -77,7 +78,7 @@ permalink: "/2022/10/26/returning-top-k-preference-aggregation-or-sortition-or-i
 
 <p class="wp-block-paragraph">I refer to Table-1 that enlists several (not complete though) popular aggregation methods and describes their properties and types<sup>1</sup> . These methods are quantitative and a mathematical model exists for each.</p>
 
-<p class="wp-block-paragraph"><sup>1</sup><a href="http://​​https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/" data-type="URL" data-id="​​https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/">​​https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/</a></p>
+<p class="wp-block-paragraph"><sup>1</sup><a href="https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/" data-type="URL" data-id="https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/">https://stanford.library.sydney.edu.au/archives/fall2018/entries/social-choice/</a></p>
 
 <h3 class="wp-block-heading">Computational Implications</h3>
 
