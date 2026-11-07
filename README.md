@@ -9,17 +9,27 @@ Pushes to `main` are built and deployed to GitHub Pages by
 
 ## Major TODOs
 
-- [ ] **Page view counters.** Show a view count on each post (e.g. with
-  [GoatCounter](https://www.goatcounter.com/), which is free for non-commercial
-  sites and needs no cookies). Possibly start from the old blog's counts: wp.sigmod.org
-  uses the *Post Views Counter* plugin, which publishes each post's total at
-  `https://wp.sigmod.org/index.php?rest_route=/post-views-counter/get-post-views/<wp_id>`.
-  Save them (e.g. as `_data/legacy_views.yml`, keyed by `wp_id`) **before the
-  WordPress site goes offline**, and show old + new.
 - [ ] **Discussion on new posts.** Add a comment option, e.g.
   [Giscus](https://giscus.app/) (backed by GitHub Discussions on this repository;
   commenters sign in with GitHub, editors moderate there). Comments from the old
   blog are already archived read-only under each post (see below).
+
+## View counts
+
+Page views are counted by [GoatCounter](https://sigmod-blog.goatcounter.com)
+(code `goatcounter: sigmod-blog` in `_config.yml`). It sets no cookies, and the
+script is only added when `JEKYLL_ENV=production`, so local previews are not counted.
+
+Each post's byline shows "N reads": the post's views on the old WordPress blog,
+frozen in `_data/legacy_views.yml` (keyed by `wp_id`), plus its new views, which
+`assets/js/reads.js` reads from GoatCounter's public counter
+(`https://sigmod-blog.goatcounter.com/counter/<path>.json`; this needs
+*Allow adding visitor counts on your website* switched on in GoatCounter's settings).
+Without JavaScript, only the old count shows; new posts show nothing until their first view.
+
+The old counts were read with `tools/wp_import.py --views` from
+[sigmod-org/wp.sigmod.org](https://github.com/sigmod-org/wp.sigmod.org). **Run it once
+more just before the old WordPress site (wp-old.sigmod.org) goes offline.**
 
 ## Archived comments
 

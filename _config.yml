@@ -8,6 +8,9 @@ baseurl: ""
 editors_page: /editors/
 sigmod_url: "https://sigmod.org"
 
+# Page view counts: https://sigmod-blog.goatcounter.com (only counted on the live site).
+goatcounter: sigmod-blog
+
 timezone: UTC
 permalink: /:year/:month/:day/:title/
 paginate: 10

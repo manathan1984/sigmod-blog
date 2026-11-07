@@ -12,6 +12,9 @@
   <link rel="icon" href="{{ '/favicon.svg' | relative_url }}" type="image/svg+xml">
   <link rel="apple-touch-icon" href="{{ '/apple-touch-icon.png' | relative_url }}">
   {% feed_meta %}
+  {%- if site.goatcounter and jekyll.environment == "production" %}
+  <script data-goatcounter="https://{{ site.goatcounter }}.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+  {%- endif %}
 </head>
 <body>
   <div id="page-container">
