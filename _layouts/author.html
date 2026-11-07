@@ -3,11 +3,15 @@ layout: default
 ---
 {%- assign a = site.data.authors[page.author] %}
 <div class="author-box author-header">
-  {%- if a.avatar %}<img src="{{ a.avatar | relative_url }}" alt="" width="64" height="64">{% endif %}
+  {%- if a.avatar and a.avatar != "" %}<img src="{{ a.avatar | relative_url }}" alt="" width="64" height="64">{% endif %}
   <div>
+    {%- if a.members %}
+    <h1 class="archive-title">Posts by {% include author-names.html keys=a.members %}</h1>
+    <p class="small">Each author's own page: {% include author-names.html keys=a.members links=true %}</p>
+    {%- else %}
     <h1 class="archive-title">Posts by {{ a.name | default: page.title }}</h1>
     {%- if a.url and a.url != "" %}<p class="small"><a href="{{ a.url }}">{{ a.url | remove: "https://" | remove: "http://" }}</a></p>{% endif %}
+    {%- endif %}
   </div>
 </div>
-{% assign posts = site.posts | where: "author", page.author %}
-{% include post-list.html posts=posts %}
+{% include post-list.html posts=page.author_posts %}

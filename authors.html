@@ -4,28 +4,20 @@ title: Authors
 permalink: /authors/
 ---
 <h1 class="archive-title">Authors</h1>
-{%- assign by_author = site.posts | group_by: "author" %}
-{%- capture author_rows %}
-  {%- for a in by_author %}{{ site.data.authors[a.name].name | default: a.name }}#{{ a.name }}#{{ a.size }}#{{ a.items.first.date | date: "%b %Y" }}{% unless forloop.last %};;{% endunless %}{% endfor %}
-{%- endcapture %}
-{%- assign author_rows = author_rows | split: ";;" | sort_natural %}
 <section class="authors-index">
-  <p class="small">{{ author_rows.size }} authors have written for the blog.</p>
+  <p class="small">{{ site.data.author_index.size }} authors have written for the blog.</p>
   <ul class="authors-grid">
-    {%- for row in author_rows %}
-    {%- assign f = row | split: "#" %}
-    {%- assign slug = f[1] %}
-    {%- assign info = site.data.authors[slug] %}
+    {%- for row in site.data.author_index %}
     <li>
-      <a class="author-tile" href="{{ '/author/' | append: slug | append: '/' | relative_url }}">
-        {%- if info.avatar and info.avatar != "" %}
-        <img src="{{ info.avatar | relative_url }}" alt="" width="48" height="48" loading="lazy">
+      <a class="author-tile" href="{{ '/author/' | append: row.key | append: '/' | relative_url }}">
+        {%- if row.avatar and row.avatar != "" %}
+        <img src="{{ row.avatar | relative_url }}" alt="" width="48" height="48" loading="lazy">
         {%- else %}
-        <span class="author-initial" aria-hidden="true">{{ f[0] | slice: 0 }}</span>
+        <span class="author-initial" aria-hidden="true">{{ row.name | slice: 0 }}</span>
         {%- endif %}
         <span class="author-tile-text">
-          <span class="author-tile-name">{{ f[0] }}</span>
-          <span class="small">{{ f[2] }} post{% if f[2] != "1" %}s{% endif %} &middot; latest {{ f[3] }}</span>
+          <span class="author-tile-name">{{ row.name }}</span>
+          <span class="small">{{ row.count }} post{% if row.count != 1 %}s{% endif %} &middot; latest {{ row.latest | date: "%b %Y" }}</span>
         </span>
       </a>
     </li>

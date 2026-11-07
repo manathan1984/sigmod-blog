@@ -1,0 +1,10 @@
+{%- comment -%}
+  "A", "A and B" or "A, B, and C" from a list of _data/authors.yml keys (a post's author_keys).
+  links=true links each name to the person's author page.
+{%- endcomment -%}
+{%- for k in include.keys -%}
+  {%- assign who = site.data.authors[k] -%}
+  {%- unless forloop.first -%}{%- if forloop.last -%}{%- if forloop.length > 2 -%},{%- endif %} and {% else -%}, {% endif -%}{%- endunless -%}
+  {%- if include.links -%}<a href="{{ '/author/' | append: k | append: '/' | relative_url }}">{{ who.name | default: k }}</a>
+  {%- else -%}{{ who.name | default: k }}{%- endif -%}
+{%- endfor -%}

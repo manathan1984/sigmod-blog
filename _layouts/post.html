@@ -7,15 +7,22 @@ layout: default
   <div class="entry-content">
     {{ content }}
   </div>
-  {%- assign a = site.data.authors[page.author] %}
-  {%- if a %}
-  <div class="author-box">
-    {%- if a.avatar %}<img src="{{ a.avatar | relative_url }}" alt="" width="64" height="64">{% endif %}
-    <div>
-      <p class="author-name">Posted by <a href="{{ '/author/' | append: page.author | append: '/' | relative_url }}">{{ a.name }}</a></p>
-      {%- if a.url and a.url != "" %}<p class="small"><a href="{{ a.url }}">{{ a.url | remove: "https://" | remove: "http://" }}</a></p>{% endif %}
+  {%- assign keys = page.author_keys %}
+  {%- if keys.size > 0 %}
+  <section class="author-box{% if keys.size > 1 %} several{% endif %}{% if keys.size > 3 %} many{% endif %}" aria-label="Authors">
+    {%- if keys.size > 1 %}<p class="author-box-label">Posted by</p>{% endif %}
+    {%- for k in keys %}
+    {%- assign a = site.data.authors[k] %}
+    <div class="author">
+      {%- if a.avatar and a.avatar != "" %}<img src="{{ a.avatar | relative_url }}" alt="" width="64" height="64" loading="lazy">
+      {%- else %}<span class="author-initial" aria-hidden="true">{{ a.name | default: k | slice: 0 }}</span>{% endif %}
+      <div>
+        <p class="author-name">{% if keys.size == 1 %}Posted by {% endif %}<a href="{{ '/author/' | append: k | append: '/' | relative_url }}">{{ a.name | default: k }}</a></p>
+        {%- if a.url and a.url != "" and keys.size < 4 %}<p class="small"><a href="{{ a.url }}">{{ a.url | remove: "https://" | remove: "http://" | remove: "www." }}</a></p>{% endif %}
+      </div>
     </div>
-  </div>
+    {%- endfor %}
+  </section>
   {%- endif %}
   <nav class="post-nav">
     {%- if page.previous %}<a class="prev" href="{{ page.previous.url | relative_url }}">&larr; {{ page.previous.title }}</a>{% else %}<span></span>{% endif %}

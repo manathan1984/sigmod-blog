@@ -34,7 +34,8 @@ hyphenated title). It is published at `/YYYY/MM/DD/short-title/`.
 ```markdown
 ---
 title: "Learned Indexes, Revisited"
-author: jane-doe                          # key from _data/authors.yml (step 3)
+author: jane-doe                          # key from _data/authors.yml (step 3);
+                                          # several authors: authors: [jane-doe, john-roe]
 categories: [Databases, Machine Learning] # existing names, or add one (step 4)
 excerpt: "One or two sentences for the home page."      # optional
 image: /assets/posts/2026-11-15-learned-indexes-revisited/figure1.png  # optional thumbnail
@@ -55,25 +56,20 @@ Word file: *File → Download → Markdown* in Google Docs, or
 
 ## 3. Add the author (if new)
 
-Append to `_data/authors.yml` (put the headshot, ~300 px, in `assets/authors/`):
+Add one entry per person to `_data/authors.yml` (put the headshot, a square
+~300 px JPEG, in `assets/authors/`):
 
 ```yaml
 "jane-doe":
-  name: "Jane Doe"                         # for several authors: "Jane Doe and John Roe"
+  name: "Jane Doe"
   url: "https://janedoe.example.org"       # optional
   avatar: "/assets/authors/jane-doe.jpg"   # optional
 ```
 
-and create `author/jane-doe.html`:
-
-```yaml
----
-layout: author
-title: "Jane Doe"
-author: "jane-doe"
-permalink: /author/jane-doe/
----
-```
+That's all: the author page `/author/jane-doe/` is created automatically
+(`_plugins/authors.rb`). For a co-written post, add each author this way and list
+them in the post, in byline order: `authors: [jane-doe, john-roe]`. Never make one
+entry for a group; each person then gets their own page, listing all their posts.
 
 ## 4. Add the category (if new)
 

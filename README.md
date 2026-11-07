@@ -31,6 +31,20 @@ The old counts were read with `tools/wp_import.py --views` from
 [sigmod-org/wp.sigmod.org](https://github.com/sigmod-org/wp.sigmod.org). **Run it once
 more just before the old WordPress site (wp-old.sigmod.org) goes offline.**
 
+## Authors
+
+Each person has one entry in `_data/authors.yml` and a page at `/author/<key>/`.
+A post names its author with `author: <key>`, or several with
+`authors: [<key>, <key>]`. `_plugins/authors.rb` works out each post's list of
+people (`author_keys`), makes the author pages that have no file in `author/`,
+and builds the list used by the Authors page and the sidebar.
+
+Posts imported from the old blog keep their old combined bylines (e.g.
+`author: azzaandpaolo`); that entry's `members` lists the people behind it, so the
+post is shown under each of them. The combined pages (`/author/azzaandpaolo/`)
+stay, because old `?author=` links redirect there; they link to each person.
+Headshots split from the old group photos are in `assets/authors/`.
+
 ## Archived comments
 
 The comment threads of the old WordPress blog (158 comments on 23 posts) are kept

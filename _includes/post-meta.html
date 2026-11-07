@@ -1,6 +1,5 @@
-{%- assign a = site.data.authors[include.post.author] -%}
 <p class="post-meta">by
-  <a href="{{ '/author/' | append: include.post.author | append: '/' | relative_url }}">{{ a.name | default: include.post.author }}</a>
+  {% include author-names.html keys=include.post.author_keys links=true %}
   on <span class="published">{{ include.post.date | date: "%b %-d, %Y" }}</span>
   {%- if include.post.categories.size > 0 %} | Categories:
     {% for c in include.post.categories -%}

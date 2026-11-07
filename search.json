@@ -8,7 +8,7 @@ permalink: /search.json
     "title": {{ post.title | jsonify }},
     "url": {{ post.url | relative_url | jsonify }},
     "date": {{ post.date | date: "%b %-d, %Y" | jsonify }},
-    "author": {{ site.data.authors[post.author].name | default: post.author | jsonify }},
+    "author": {% capture names %}{% include author-names.html keys=post.author_keys %}{% endcapture %}{{ names | jsonify }},
     "categories": {{ post.categories | jsonify }},
     "excerpt": {{ post.excerpt | strip_html | truncatewords: 40 | jsonify }},
     "text": {{ post.content | strip_html | normalize_whitespace | downcase | jsonify }}
