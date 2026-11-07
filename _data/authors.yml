@@ -139,6 +139,7 @@
   avatar: "/wp-content/uploads/2016/04/felixnaumann-150x129.jpg"
 "george-papastefanatos":
   name: "George Papastefanatos"
+  avatar: "/assets/authors/george-papastefanatos.jpg"
 "georgiakoutrika":
   name: "Georgia Koutrika"
   wp_id: 3
@@ -159,6 +160,7 @@
   avatar: "/assets/authors/giorgos-giannopoulos.jpg"
 "guoliang-li":
   name: "Guoliang Li"
+  avatar: "/assets/authors/guoliang-li.jpg"
 "guy-lohman":
   name: "Guy Lohman"
   wp_id: 20
@@ -269,6 +271,7 @@
   members: ["kyle-deeds", "ziniu-wu"]
 "leilani-battle":
   name: "Leilani Battle"
+  avatar: "/assets/authors/leilani-battle.jpg"
 "lenzerini":
   name: "Maurizio Lenzerini"
   wp_id: 15
@@ -325,10 +328,13 @@
   avatar: "/wp-content/uploads/2023/02/sharaf-117x150.jpg"
 "nesime-tatbul":
   name: "Nesime Tatbul"
+  avatar: "/assets/authors/nesime-tatbul.jpg"
 "nikos-bikakis":
   name: "Nikos Bikakis"
+  avatar: "/assets/authors/nikos-bikakis.jpg"
 "panos-chrysanthis":
   name: "Panos K. Chrysanthis"
+  avatar: "/assets/authors/panos-chrysanthis.jpg"
 "paolo-papotti":
   name: "Paolo Papotti"
   avatar: "/assets/authors/paolo-papotti.jpg"
@@ -445,6 +451,7 @@
   name: "Wei Hu"
 "wolfgang-lehner":
   name: "Wolfgang Lehner"
+  avatar: "/assets/authors/wolfgang-lehner.jpg"
 "wukhan":
   name: "Arijit Khan and Yinghui Wu"
   wp_id: 50
